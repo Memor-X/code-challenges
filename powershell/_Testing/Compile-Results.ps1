@@ -1,5 +1,5 @@
 # File Imports
-. "$($PSScriptRoot)\lib\Common.ps1"
+. "$($PSScriptRoot)\..\lib\Common.ps1"
 
 $global:logSetting.showDebug = $false
 
@@ -213,4 +213,3 @@ $coverageObj = @{
 Write-Log "Getting Code Coverage Data"
 $coverageObj."test-suites" = @(Get-Coverage $coverageXML)
 Write-File "$($PSScriptRoot)\results\Compiled-Coverage_data.js" "var coverageData = JSON.parse('$(($coverageObj | ConvertTo-Json -Compress -EscapeHandling 'EscapeHtml' -Depth 100))')"
-

@@ -1,9 +1,9 @@
 ########################################
 #
 # File Name:	Tests.ps1
-# Date Created:	04/03/2024
+# Date Created:	13/08/2024
 # Description:	
-#	Test Runner for Pester Powershell Unit Tests
+#	Test Runner for pytest Python Unit Tests
 #
 ########################################
 
@@ -17,20 +17,11 @@ function Write-Test-Log($str)
     Write-Host "$($str)" -Foregroundcolor Magenta
 }
 
+Write-Test-Log "Setting Up Pyunit"
+
 #------------------------------------------------------------------
 
-Write-Test-Log "Setting Up Pester"
-$config = New-PesterConfiguration
-
-$config.CodeCoverage.Enabled = $true
-$config.CodeCoverage.OutputPath = "$($PSScriptRoot)\results\coverage.xml"
-$config.CodeCoverage.OutputFormat = "CoverageGutters"
-$config.CodeCoverage.CoveragePercentTarget = 90
-
-$config.TestResult.Enabled = $true
-$config.TestResult.OutputPath = "$($PSScriptRoot)\results\testResults.xml"
-
-$config.Output.Verbosity = "Detailed"
+$coveragePercentTarget = 90
 
 #------------------------------------------------------------------
 
@@ -46,12 +37,12 @@ $codeCoverageSuite = @()
 if($fullSuiteVals.Contains($suite) -eq $true)
 {
     Write-Test-Log "Collecting all Tests for Suite"
-    $files = Get-ChildItem -Path ".." -Filter "*.Tests.ps1" -Recurse
+    $files = Get-ChildItem -Path ".." -Filter "*Tests.py" -Recurse
     foreach($file in $files)
     {
         Write-Test-Log "`tAdding Test - $($file.FullName)"
         $testSuite += @($file.FullName)
-        $codeCoverageSuite += @($file.FullName.Replace(".Tests",""))
+        $codeCoverageSuite += @($file.FullName.Replace("Tests",""))
     }
 }
 else
@@ -64,17 +55,18 @@ else
         {
             Write-Test-Log "Adding Single File - $($file)"
             $testSuite += @($file)
-            $codeCoverageSuite += @($file.Replace(".Tests",""))
+            $codeCoverageSuite += @($file.Replace("Tests",""))
         }
         elseif((Test-Path $file -PathType Container) -eq $true)
         {
             Write-Test-Log "Adding Folder - $($file)"
-            $files = Get-ChildItem -Path $file -Filter "*.Tests.ps1" -Recurse
+            $files = Get-ChildItem -Path $file -Filter "*Tests.ps1" -Recurse
             foreach($subfile in $files)
             {
                 Write-Test-Log "`tAdding Test from folder Folder - $($subfile.FullName)"
                 $testSuite += @($subfile.FullName)
-                $codeCoverageSuite += @($subfile.FullName.Replace(".Tests",""))
+                $directoryPath = Split-Path -Path $testSuite
+                $codeCoverageSuite += @($directoryPath)
             }
         }
         else
@@ -84,10 +76,18 @@ else
     }
 }
 
-$config.Run.Path = $testSuite
-$config.CodeCoverage.Path = $codeCoverageSuite
-
-#------------------------------------------------------------------
 
 Write-Test-Log ""
-Invoke-Pester -Configuration $config
+
+$cmd = "pytest --cache-clear --cov-config=coveragerc.ini --cov-report=xml --cov -v -r a --junit-xml=`"results\testResults.xml`""
+$cov = " --cov=cov-start.py"
+for($i = 0; $i -lt $testSuite.Length; $i++)
+{
+    $cmd += " $($testSuite[$i])"
+    $cov += " --cov=$($codeCoverageSuite[$i])"
+}
+$cmd += " --cov=cov-end.py"
+#$cmd += $cov
+
+Write-Test-Log "Command = $($cmd)"
+Invoke-Expression -Command "& $($cmd)"

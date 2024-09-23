@@ -31,8 +31,75 @@ function Run-Command($cmd,$logDir=".")
     Invoke-Expression -Command "& ${cmd}"
 }
 
-# $XMLFile = "file.xml"
-# [XML]$settings = Get-Content $XmlFile
+########################################
+#
+# Name:		Initalize-Hash-Branch
+# Input:	$hash <Hash Object>
+#           $path <Array>
+# Output:	$hash <Hash Object>
+# Description:	
+#	Initalizes the branch of an hash object based off the array passed
+#   gets used recusivley
+#
+########################################
+function Initalize-Hash-Branch($hash,$path)
+{
+    $first, $rest = $path
+    if($null -eq $hash."$($first)")
+    {
+        $hash."$($first)" = @{}
+    }
+    elseif($hash."$($first)".GetType().Name -ne "Hashtable")
+    {
+        Write-Warning "element $($first) is not a Hash Object"
+        return $hash
+    }
+
+    if($rest.Count -gt 0)
+    {
+        $hash."$($first)" = Initalize-Hash-Branch $hash."$($first)" $rest
+    }
+
+    return $hash
+}
+
+########################################
+#
+# Name:		Populate-Hash-Branch
+# Input:	$hash <Hash Object>
+#           $path <Array>
+#           $val <Various>
+# Output:	$rtnHash <Hash Object>
+# Description:	
+#	Assigns a value to the branch of an hash object based off the array passed
+#   gets used recusivley
+#
+########################################
+function Populate-Hash-Branch($hash,$path,$val)
+{
+    $first, $rest = $path
+
+    if($null -eq $hash."$($first)")
+    {
+        $hash."$($first)" = @{}
+    }
+
+    if($rest.Count -gt 0)
+    {
+        if($hash."$($first)".GetType().Name -ne "Hashtable")
+        {
+            $hash."$($first)" = @{}
+        }
+        $hash."$($first)" = Populate-Hash-Branch $hash."$($first)" $rest $val
+    }
+    else
+    {
+        $hash."$($first)" = $val
+    }
+
+    return $hash
+}
+
 ########################################
 #
 # Name:		Fetch-XMLVal

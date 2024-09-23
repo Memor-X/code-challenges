@@ -8,7 +8,7 @@
 ########################################
 
 # File Imports
-. "$($PSScriptRoot)\..\..\lib\Common.ps1"
+. "$($PSScriptRoot)\..\..\..\lib\Common.ps1"
 #=======================================
 
 # Global Variables

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<test>
+	<testChild1>Test Data 1</testChild1>
+	<general>
+		<testChild2>Test Data 2</testChild2>
+	</general>
+	<attrib>
+		<testChild3 childAttrib1="Atrib1" childAttrib2="Atrib2">Test 3</testChild3>
+		<testChild1>Test Data 4</testChild1>
+	</attrib>
+</test>

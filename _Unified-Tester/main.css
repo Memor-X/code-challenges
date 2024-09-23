@@ -12,6 +12,23 @@ tr[data-test-type="test-suite"]{
     color: #FF0000;
 }
 
+.prog-hide{
+    display:none
+}
+
+/* Filelist */
+li.lang-ps1 { 
+    list-style-image: url(img/icons/programming-powershell.svg); 
+}
+li.lang-rb { 
+    list-style-image: url(img/icons/programming-ruby.svg); 
+}
+
+li.lang-py { 
+    list-style-image: url(img/icons/programming-python.svg); 
+}
+
+
 /* Test Results Table */
 #test-collection td:nth-child(1), #test-collection th:nth-child(1){
     width: 700px;

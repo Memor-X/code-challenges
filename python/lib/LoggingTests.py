@@ -1,9 +1,12 @@
-import unittest
+# File Imports
+import pytest, unittest
 from unittest import TestCase
 from unittest.mock import Mock, MagicMock, patch
 
+# Loading LocalLib Library
 import Logging
 
+# Setting up sys.stdout.write mock and output buffer
 outputBuffer = {}
 outputBuffer["screen"] = []
 def mocked_write(string):
@@ -11,7 +14,7 @@ def mocked_write(string):
 
 @patch('sys.stdout.write', wraps=mocked_write)
 
-class describe_Logging(TestCase):
+class describe_log(TestCase):
     def setUp(self):
         global outputBuffer
         outputBuffer = {}

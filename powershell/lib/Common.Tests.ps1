@@ -1,20 +1,51 @@
 BeforeAll {
     . $PSCommandPath.Replace('.Tests.ps1','.ps1')
 
-    $global:fileOutputBuffer = @{}
+    # Variables
+    $global:outputBuffer = @{}
+    $outputBuffer."screen" = @()
 
-    Mock Write-Log {}
+    # Function Mocking
     Mock Add-Content {
         $file = (Out-String -InputObject $PesterBoundParameters.Path).Trim()
-        if($fileOutputBuffer.ContainsKey($file) -eq $false)
+        if($outputBuffer.ContainsKey($file) -eq $false)
         {
-            $fileOutputBuffer.$file = @()
+            $outputBuffer.$file = @()
         }
-        $fileOutputBuffer.$file += @($PesterBoundParameters.Value)
+        $outputBuffer.$file += @($PesterBoundParameters.Value)
     }
     Mock Set-Content {
         $file = (Out-String -InputObject $PesterBoundParameters.Path).Trim()
-        $fileOutputBuffer.$file = @($PesterBoundParameters.Value)
+        $outputBuffer.$file = @($PesterBoundParameters.Value)
+    }
+    Mock Write-Host {
+        $outputBuffer."screen" += @(@{
+            "msg" = (Out-String -InputObject $PesterBoundParameters.Object).Trim()
+            "color" = (Out-String -InputObject $PesterBoundParameters.ForegroundColor).Trim()
+        })
+    }
+    Mock Get-Date {
+        $returnVal = ""
+        switch($PesterBoundParameters.UFormat)
+        {
+            "%m-%d-%Y" {
+                $returnVal = "01-01-2000"
+                break
+            }
+            "%R"{
+                $returnVal = "11:10"
+                break
+            }
+            "%m/%d/%Y %R"{
+                $returnVal = "01/01/2000 11:10"
+                break
+            }
+            default {
+                $returnVal = New-Object DateTime 2000, 2, 1, 11, 10, 0
+                break
+            }
+        }
+        return $returnVal
     }
 }
 
@@ -36,15 +67,404 @@ Describe 'Run-Command' {
             }
             return $returnVal
         }
-        $global:fileOutputBuffer = @{}
+        $global:outputBuffer = @{}
     }
     It 'Check that Log entry was made' {
         Run-Command "dir"
-        $fileOutputBuffer['.\_log\commands_01-01-2000.txt'][0] | Should -Be "[11:10] | dir"
+        $outputBuffer['.\_log\commands_01-01-2000.txt'][0] | Should -Be "[11:10] | dir"
     }
     It 'Check that command output is returned' {
         $returnData = Run-Command "dir"
         $returnData | Should -Be "& dir"
+    }
+}
+
+Describe 'Initalize-Hash-Branch' {
+    Context 'Empty Hash' {
+        Context 'Child element' {
+            BeforeEach{
+                $hash = @{}
+                $path = @("first-child")
+                $initalizedHash = Initalize-Hash-Branch $hash $path
+            }
+
+            It 'Should only have 1 child' {
+                $initalizedHash.Keys.Count | Should -Be 1
+            }
+            It 'child should be first-child' {
+                $initalizedHash.Keys[0] | Should -Be $path[0]
+            }
+            It 'child should be empty' {
+                $initalizedHash."$($path[0])".Count | Should -Be 0
+            }
+        }
+
+        Context 'Granndchild element' {
+            BeforeEach{
+                $hash = @{}
+                $path = @("first-child","grand-child")
+                $initalizedHash = Initalize-Hash-Branch $hash $path
+            }
+
+            It 'Should only have 1 child' {
+                $initalizedHash.Keys.Count | Should -Be 1
+            }
+            It 'child should be first-child' {
+                $initalizedHash.Keys[0] | Should -Be $path[0]
+            }
+            It 'child should have 1 child' {
+                $initalizedHash."$($path[0])".Keys.Count | Should -Be 1
+            }
+            It 'grandchild should be grand-child' {
+                $initalizedHash."$($path[0])".Keys[0] | Should -Be $path[1]
+            }
+            It 'grandchild should be empty' {
+                $initalizedHash."$($path[0])"."$($path[1])".Count | Should -Be 0
+            }
+        }
+
+        Context 'Great Grandchild element' {
+            BeforeEach{
+                $hash = @{}
+                $path = @("first-child","grand-child","great-child")
+                $initalizedHash = Initalize-Hash-Branch $hash $path
+            }
+
+            It 'Should only have 1 child' {
+                $initalizedHash.Keys.Count | Should -Be 1
+            }
+            It 'child should be first-child' {
+                $initalizedHash.Keys[0] | Should -Be $path[0]
+            }
+            It 'child should have 1 child' {
+                $initalizedHash."$($path[0])".Keys.Count | Should -Be 1
+            }
+            It 'grandchild should be grand-child' {
+                $initalizedHash."$($path[0])".Keys[0] | Should -Be $path[1]
+            }
+            It 'grandchild should have 1 child' {
+                $initalizedHash."$($path[0])"."$($path[1])".Count | Should -Be 1
+            }
+            It 'great grandchild should be great-child' {
+                $initalizedHash."$($path[0])"."$($path[1])".Keys[0] | Should -Be $path[2]
+            }
+            It 'great grandchild should be empty' {
+                $initalizedHash."$($path[0])"."$($path[1])"."$($path[2])".Count | Should -Be 0
+            }
+        }
+    }
+
+    Context 'Existing Hash' {
+        Context 'Child element' {
+            BeforeEach{
+                $hash = @{
+                    "first" = 6
+                    "second" = "two"
+                    "third" = @(4,6,"twelove")
+                    "4" = @{
+                        "hellow" = "world"
+                    }
+                }
+                $path = @("first-child")
+                $initalizedHash = Initalize-Hash-Branch $hash $path
+            }
+
+            It 'Should have 5 children' {
+                $initalizedHash.Keys.Count | Should -Be 5
+            }
+            It 'one should be first-child' {
+                $initalizedHash.ContainsKey($path[0]) | Should -Be $true
+            }
+            It 'child should be empty' {
+                $initalizedHash."$($path[0])".Count | Should -Be 0
+            }
+        }
+
+        Context 'Granndchild element' {
+            BeforeEach{
+                $hash = @{
+                    "first" = 6
+                    "second" = "two"
+                    "third" = @(4,6,"twelove")
+                    "4" = @{
+                        "hellow" = "world"
+                    }
+                }
+                $path = @("first-child","grand-child")
+                $initalizedHash = Initalize-Hash-Branch $hash $path
+            }
+
+            It 'Should have 5 children' {
+                $initalizedHash.Keys.Count | Should -Be 5
+            }
+            It 'child should be first-child' {
+                $initalizedHash.ContainsKey($path[0]) | Should -Be $true
+            }
+            It 'child should have 1 child' {
+                $initalizedHash."$($path[0])".Keys.Count | Should -Be 1
+            }
+            It 'grandchild should be grand-child' {
+                $initalizedHash."$($path[0])".Keys[0] | Should -Be $path[1]
+            }
+            It 'grandchild should be empty' {
+                $initalizedHash."$($path[0])"."$($path[1])".Count | Should -Be 0
+            }
+        }
+
+        Context 'Great Grandchild element' {
+            BeforeEach{
+                $hash = @{
+                    "first" = 6
+                    "second" = "two"
+                    "third" = @(4,6,"twelove")
+                    "4" = @{
+                        "hellow" = "world"
+                    }
+                }
+                $path = @("first-child","grand-child","great-child")
+                $initalizedHash = Initalize-Hash-Branch $hash $path
+            }
+
+            It 'Should have 5 children' {
+                $initalizedHash.Keys.Count | Should -Be 5
+            }
+            It 'child should be first-child' {
+                $initalizedHash.ContainsKey($path[0]) | Should -Be $true
+            }
+            It 'child should have 1 child' {
+                $initalizedHash."$($path[0])".Keys.Count | Should -Be 1
+            }
+            It 'grandchild should be grand-child' {
+                $initalizedHash."$($path[0])".Keys[0] | Should -Be $path[1]
+            }
+            It 'grandchild should have 1 child' {
+                $initalizedHash."$($path[0])"."$($path[1])".Count | Should -Be 1
+            }
+            It 'great grandchild should be great-child' {
+                $initalizedHash."$($path[0])"."$($path[1])".Keys[0] | Should -Be $path[2]
+            }
+            It 'great grandchild should be empty' {
+                $initalizedHash."$($path[0])"."$($path[1])"."$($path[2])".Count | Should -Be 0
+            }
+        }
+    }
+
+    Context 'Existing Key in Hash' {
+        Context 'first-child hash element' {
+            BeforeEach{
+                $hash = @{
+                    "first" = 6
+                    "second" = "two"
+                    "third" = @(4,6,"twelove")
+                    "first-child" = @{
+                        "hellow" = "world"
+                    }
+                }
+                $path = @("first-child","grand-child")
+                $initalizedHash = Initalize-Hash-Branch $hash $path
+            }
+
+            It 'Should only have 4 children' {
+                $initalizedHash.Keys.Count | Should -Be 4
+            }
+            It 'one child should be first-child' {
+                $initalizedHash.ContainsKey($path[0]) | Should -Be $true
+            }
+            It 'first-child should have 2 children' {
+                $initalizedHash."$($path[0])".Keys.Count | Should -Be 2
+            }
+            It 'one grandchild should be grand-child' {
+                $initalizedHash."$($path[0])".ContainsKey($path[1]) | Should -Be $true
+            }
+            It 'grand-child should be empty' {
+                $initalizedHash."$($path[0])"."$($path[1])".Count | Should -Be 0
+            }
+        }
+
+        Context 'grand-child non hash element' {
+            BeforeEach{
+                $global:outputBuffer = @{}
+                $outputBuffer."screen" = @()
+                $hash = @{
+                    "first" = 6
+                    "second" = "two"
+                    "third" = @(4,6,"twelove")
+                    "first-child" = @{
+                        "hellow" = "world"
+                        "grand-child" = "helo"
+                        "54" = "8765"
+                    }
+                }
+                $path = @("first-child","grand-child","great-child")
+                $initalizedHash = Initalize-Hash-Branch $hash $path
+            }
+
+            It 'Should only have 4 children' {
+                $initalizedHash.Keys.Count | Should -Be 4
+            }
+            It 'one child should be first-child' {
+                $initalizedHash.ContainsKey($path[0]) | Should -Be $true
+            }
+            It 'first-child should have 2 children' {
+                $initalizedHash."$($path[0])".Keys.Count | Should -Be 3
+            }
+            It 'one grandchild should be grand-child' {
+                $initalizedHash."$($path[0])".ContainsKey($path[1]) | Should -Be $true
+            }
+            It 'grand-child should not be a hash' {
+                $initalizedHash."$($path[0])"."$($path[1])".GetType().Name | Should -Not -Be "HashTable"
+            }
+            It 'have warning about datatype' {
+                $outputBuffer."screen"[0].msg | Should -Be "[WARNING] 01/01/2000 11:10 | element $($path[1]) is not a Hash Object"
+                $outputBuffer."screen"[0].color | Should -Be "Yellow"
+            }
+        }
+    }
+}
+
+Describe 'Populate-Hash-Branch' {
+    BeforeEach{
+        $hash = @{
+            "first" = 6
+            "second" = "two"
+            "third" = @(4,6,"twelove")
+            "first-child" = @{
+                "hellow" = "world"
+                "grand-child" = "helo"
+                "54" = "8765"
+            }
+            "existchild" = @{
+                "hello" = "world"
+                "existgarnd" = @{}
+            }
+        }
+    }
+
+    Context 'Adding new values' {
+        Context 'creates string for child forth' {
+            BeforeEach{
+                $path = @("forth")
+                $val = "test"
+                $newHash = Populate-Hash-Branch $hash $path $val
+            }
+            It 'key forth exists as direct child' {
+                
+                $newHash.ContainsKey($path[0]) | Should -Be $true
+            }
+            It 'value set should be test' {
+                
+                $newHash."$($path[0])" | Should -Be $val
+            }
+        }
+
+        Context 'creates string for new child-grandchild' {
+            BeforeEach{
+                $path = @("forth","child")
+                $val = "test"
+                $newHash = Populate-Hash-Branch $hash $path $val
+            }
+            It 'key forth exists as direct child' {
+                
+                $newHash.ContainsKey($path[0]) | Should -Be $true
+            }
+            It 'key child exists as grand child to forth' {
+                
+                $newHash."$($path[0])".ContainsKey($path[1]) | Should -Be $true
+            }
+            It 'value set should be test' {
+                
+                $newHash."$($path[0])"."$($path[1])" | Should -Be $val
+            }
+        }
+
+        Context 'creates string for new child-grandchild-greatgrandchild' {
+            BeforeEach{
+                $path = @("forth","child","world")
+                $val = "test"
+                $newHash = Populate-Hash-Branch $hash $path $val
+            }
+            It 'key forth exists as direct child' {
+                
+                $newHash.ContainsKey($path[0]) | Should -Be $true
+            }
+            It 'key child exists as grand child to forth' {
+                
+                $newHash."$($path[0])".ContainsKey($path[1]) | Should -Be $true
+            }
+            It 'key child exists as grand child to forth' {
+                
+                $newHash."$($path[0])"."$($path[1])".ContainsKey($path[2]) | Should -Be $true
+            }
+            It 'value set should be test' {
+                
+                $newHash."$($path[0])"."$($path[1])"."$($path[2])" | Should -Be $val
+            }
+        }
+    }
+
+    Context 'Adding new values to existing keys' {
+        Context 'creates string for new grandchild' {
+            BeforeEach{
+                $path = @("first-child","child")
+                $val = "test"
+                $newHash = Populate-Hash-Branch $hash $path $val
+            }
+            It 'existing child key exists' {
+                
+                $newHash.ContainsKey($path[0]) | Should -Be $true
+            }
+            It 'new grand child key is created for child key' {
+                
+                $newHash."$($path[0])".ContainsKey($path[1]) | Should -Be $true
+            }
+            It 'value set should be test' {
+                
+                $newHash."$($path[0])"."$($path[1])" | Should -Be $val
+            }
+        }
+
+        Context 'creates string for new child-grandchild-greatgrandchild' {
+            BeforeEach{
+                $path = @("existchild","existgarnd","greatgrandchild")
+                $val = "test"
+                $newHash = Populate-Hash-Branch $hash $path $val
+            }
+            It 'existing child key exists' {
+                $newHash.ContainsKey($path[0]) | Should -Be $true
+            }
+            It 'existing grand child exists' {
+                $newHash."$($path[0])".ContainsKey($path[1]) | Should -Be $true
+            }
+            It 'new great grand child key is created for grand child key' {
+                $newHash."$($path[0])"."$($path[1])".ContainsKey($path[2]) | Should -Be $true
+            }
+            It 'value set should be test' { 
+                $newHash."$($path[0])"."$($path[1])"."$($path[2])" | Should -Be $val
+            }
+        }
+    }
+
+    Context 'Overwriting values' {
+        It 'Overrite direct child' {
+            $path = @("first")
+            $val = 999
+            $newHash = Populate-Hash-Branch $hash $path $val
+            $newHash."$($path[0])" | Should -Be $val
+        }
+
+        It 'Overrite grand child' {
+            $path = @("first-child","hellow")
+            $val = 999
+            $newHash = Populate-Hash-Branch $hash $path $val
+            $newHash."$($path[0])"."$($path[1])" | Should -Be $val
+        }
+
+        It 'Overrite grand child with new great grand child' {
+            $path = @("first-child","hellow","new-element")
+            $val = 999
+            $newHash = Populate-Hash-Branch $hash $path $val
+            $newHash."$($path[0])"."$($path[1])"."$($path[2])" | Should -Be $val
+        }
     }
 }
 
@@ -550,44 +970,44 @@ Describe 'Compress-Spaces'{
 Describe 'Append-File'{
     BeforeEach{
         Mock Create-Path {}
-        $global:fileOutputBuffer = @{}
+        $global:outputBuffer = @{}
     }
 
     It 'Create File and insert 1 line' {
         Append-File "c:\test\path\tesfile.txt" "Test"
-        $fileOutputBuffer['c:\test\path\tesfile.txt'][0] | Should -Be "Test"
+        $outputBuffer['c:\test\path\tesfile.txt'][0] | Should -Be "Test"
     }
 
     It 'Create File and insert 3 lines using new line characters' {
         Append-File "c:\test\path\tesfile.txt" "Test"
-        $fileOutputBuffer['c:\test\path\tesfile.txt'][0] | Should -Be "Test"
+        $outputBuffer['c:\test\path\tesfile.txt'][0] | Should -Be "Test"
     }
 
     It 'Create File and insert 3 line' {
         Append-File "c:\test\path\tesfile.txt" "Test Line 1"
         Append-File "c:\test\path\tesfile.txt" "Test Line 2"
         Append-File "c:\test\path\tesfile.txt" "Test Line 3"
-        $fileOutputBuffer['c:\test\path\tesfile.txt'][0] | Should -Be "Test Line 1"
-        $fileOutputBuffer['c:\test\path\tesfile.txt'][1] | Should -Be "Test Line 2"
-        $fileOutputBuffer['c:\test\path\tesfile.txt'][2] | Should -Be "Test Line 3"
+        $outputBuffer['c:\test\path\tesfile.txt'][0] | Should -Be "Test Line 1"
+        $outputBuffer['c:\test\path\tesfile.txt'][1] | Should -Be "Test Line 2"
+        $outputBuffer['c:\test\path\tesfile.txt'][2] | Should -Be "Test Line 3"
     }
 }
 
 Describe 'Write-File'{
     BeforeEach{
         Mock Create-Path {}
-        $global:fileOutputBuffer = @{}
+        $global:outputBuffer = @{}
     }
 
     It 'Create File and insert 1 line' {
         Write-File "c:\test\path\tesfile.txt" "Test"
-        $fileOutputBuffer['c:\test\path\tesfile.txt'][0] | Should -Be "Test"
+        $outputBuffer['c:\test\path\tesfile.txt'][0] | Should -Be "Test"
     }
 
     It 'Create File with only 1 line' {
         Write-File "c:\test\path\tesfile.txt" "Test Line 1"
         Write-File "c:\test\path\tesfile.txt" "Test Line 2"
         Write-File "c:\test\path\tesfile.txt" "Test Line 3"
-        $fileOutputBuffer['c:\test\path\tesfile.txt'][0] | Should -Be "Test Line 3"
+        $outputBuffer['c:\test\path\tesfile.txt'][0] | Should -Be "Test Line 3"
     }
 }

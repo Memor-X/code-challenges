@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<settings>
+    <unittester>
+        <language>[LAMGUAGE NAME]]</language>
+        <extensions>
+            <ext>[FILE EXTENSION]</ext>
+        </extensions>
+        <directories>
+            <tester>[TESTER LOCATION]</tester>
+            <results>[TESTER RESULTS LOCATION]</results>
+        </directories>
+        <command>[TEST COMMAND]</command>
+        <testkey>[TEST FILTER]</testkey>
+    </unittester>
+</settings>
