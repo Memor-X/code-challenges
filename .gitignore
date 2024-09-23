@@ -1,0 +1,7 @@
+#files
+changelog-*.txt
+
+#folders
+_log/
+*/_log/
+*/_Testing/results

@@ -1,0 +1,55 @@
+advent-code-code Commit History
+
+f36a378079241092403e05faa9e76383c5f9a20f | Memor-X | 1720490883 | add Day 6 Puzzle 2. updated AdventOfCode Library for static answer display and added tests
+5a4d9998bdc8c2e6bbeac7579285a6a10b81983d | Memor-X | 1720161077 | changed sub Describes to Context
+3d0f0f18ffdf651947a6ce33e0c2e7262518c438 | Memor-X | 1720075088 | added README Template
+b05930c70d5f97110b0aad9647d244887dfead63 | Memor-X | 1720075041 | added Day 6 Puzzle 1
+806f3e66edf4a25575323aca3b1bdedf813bbb7a | Memor-X | 1719815295 | added Unit Test results to READMEs
+c0ea2af1a97bf7e43a040dd4738d63d315a7c8a6 | Memor-X | 1719806419 | Added Day 5 Puzzle 2 Solution
+2757a66b4112790d503247b4e38126b62991e7bf | Memor-X | 1718257833 | updated Day 5 Puzzle 1 with unit tests
+ea0af73c0a6faa0c208f4802ccd51e01eae18859 | Memor-X | 1718257810 | updated Day 4 Puzzles with unit tests
+e0cda51c4a3107b3f79ebaf45fc6197ef5e17606 | Memor-X | 1718257791 | updated Day 3 Puzzles with unit tests
+1d56204a8530555145913b9f84f66f007d9e2c51 | Memor-X | 1718257769 | updated Day 2 Puzzles with unit tests
+ed3f4bbfb3716be275fcca0795a483a2c3aec7bd | Memor-X | 1718257750 | updated Day 1 Puzzles with unit tests
+53e696d4c462a43f6edf35a84764f71be6c904c0 | Memor-X | 1718257709 | updated powershell libraries from private repo
+bed551b1efbc4655f0c68ff34ac1f90b5fd8ac10 | Memor-X | 1718257659 | updated gitignore for testing
+10d5ee990cf3b8fcf2d514ec33d73103132ce86f | Memor-X | 1718257559 | updated Powershell tester. wrote script to update testing when provided with packages
+ea0ab560d519c537fb859d66347a53d37764a1d5 | Memor-X | 1715319415 | updated powershall libraries. added Pester Unit Testing
+6d862724c755811be384da723361602048e22c32 | Memor-X | 1708485209 | fixed day for READMEs pointing to day 3 code
+2b1aaf127dae7fd8f76fcda99d0b72fd21ec2b90 | Memor-X | 1708484014 | added 2023 Day 5 Puzzle 1 solution. updated AoC library to have Get-Answer do more than just summing. created maths library for extended math function (eg. min/max working with Arrays). updated string String-To-Int to be Int64
+8178622fd3b5def58d949803c572be000845955d | Memor-X | 1707795046 | added 2023 Day 4 Puzzle 2 solution. moved JsonObj-To-Hash and NameValueCollection-To-Array to Data library. added Count-Array-Matches and Initalize-Array to Common Library
+a74da12eb5d45c54e1076fc2835b9f5280a2b323 | Memor-X | 1707714448 | 2023 Day 4 Puzzle 1 solution
+2d6b0bc05661bb5fb1aa01f3dfba1c254d20cf31 | Memor-X | 1707457262 | added 2023 Day 3 solutions. created AdventOfCode Library file. moved Data type related functions to seperate library file and included it in Common.ps1. added file output functionality for logging
+0de481a11427c448ac7a047f84eeeffed4f625f6 | Memor-X | 1706584193 | re-organized advent of code folder to seperate based off language
+c839a9046ed7b2803d7309822f12780aa033e73d | Memor-X | 1702012764 | fix formatting in Day 2 Puzzle 1 README (also fixing up git config on home pc)
+45dca006ae0199ab6de59dec3c008c88792767e5 | unknown | 1702011664 | adding Day 2 Puzzle 2. updated READMEs with url hoping its still there after December
+300f904e9365932adf76a2dc6018cf54dbefd0fd | unknown | 1702000294 | updated Day 2 Puzzle 1 Readme with Approach
+c54cecb9e520fc31fd3fa7b3ef51ef1473dc5466 | Memor-X | 1701990295 | added Day 2 - Puzzle 1
+e4069db112a2beca990912c22c9018656d92c0bd | Memor-X | 1701918885 | fixed description documentation in Day 1 Puzzle 2
+f021c1ee72e5ed80be7f74565026cd5fa0bb5401 | Memor-X | 1701918836 | added answers to main README. added READMEs to each puzzle with the problem and approach
+88761bb0f21889514a32c00ade10d3262505da68 | Memor-X | 1701917111 | updated root README. testing to see if links work
+5760a82933e527430f19f68e3d09691f34ae02db | Memor-X | 1701916720 | updated Common Library
+decbdaa05f5b64fe5aaced02236cb613d3f1dca5 | Memor-X | 1701841689 | fixed issue in Day 1 Puzzle 2 regrading overlapping number words
+dd4e927fce32cde928f49860b5bc6428662200bf | Memor-X | 1701833478 | added Day 1 Puzzle 2
+1c72e606658487b63f7ee2b67312f546aedd9848 | Memor-X | 1701832815 | added Day 1 Puzzle 1
+a234c846b7568baf14b97b9f35109a8d0ac822aa | Memor-X | 1701829255 | Initial commit
+
+codewars Commit History
+
+17516ab5c9ac389c52e9ff7b00b67c8e970bcd4e | Memor-X | 1723783922 | added new kata solution
+66c42c903249ba2bec26f9eb471b66317d60b6f9 | Memor-X | 1722408788 | fixed URL in main README
+6813d98c8310258cedee3e3e779d2e70efa0298a | Memor-X | 1722408729 | fixed URL in main README
+194c203bea4e36954e3fda02b2b97ff16e270d78 | Memor-X | 1722408518 | added new Codewars solution. updated main README
+09622daa4c6c435c6b8e506a8292df0be914201e | Memor-X | 1722396513 | fixed broken links in main README
+e2e3e4fdd34f7570ff2f22a3ec5e06c76e9e1c16 | Memor-X | 1722396423 | added new Codewars solution. updated main README
+7dd873c8e283c87446b95367bedddfd922b78c56 | Memor-X | 1722396363 | changed folder for Split Strings Codewars solution for new organized folder structure
+de3b61b8d1d9b219a2886ba35c277c1226432aae | Memor-X | 1722217658 | added expanded tests
+6b1f10d97b273ca179084a6e87b929f70cb47f3a | Memor-X | 1721970876 | updated Split Strings README
+79e6edd02cafd4ae68819ff138b3560c14306fbb | Memor-X | 1721970776 | fixed link being broken by space
+ab16af6a2e20f8a28b2807250880ab09ee93e5c9 | Memor-X | 1721970718 | fixed table in main README
+be941c6be4ae545f96e08015531d4004e7fccf68 | Memor-X | 1721970666 | changed format of Kata Table in main README
+3dbe5c91376c72f986a4c9fdbcd1a2f3ea2e57c3 | Memor-X | 1721970535 | adding Split Strings Kata solution
+a033f93d12822b5d37a70ed59de79b641f0a7a6a | Memor-X | 1721965222 | removed Advent of Code Library thats not going to be needed for Codewars
+deefba174a584bcadab8ab5e45cbd9a9a839cb09 | Memor-X | 1721964742 | added powershell unit tester
+3e62bcb79f6bab9a0d56b3d80115b36c102c6123 | Memor-X | 1721958204 | fixed README Heading
+6fd6553e197e2fe475849bcd2bb7dfc6f6420764 | Memor-X | 1721958046 | first commit
