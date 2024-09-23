@@ -1,0 +1,4 @@
+gem install minitest
+gem install simplecov
+
+gem install minitest-junit
