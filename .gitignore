@@ -1,5 +1,6 @@
 #files
 changelog-*.txt
+_util/project-ids.txt
 
 #folders
 _log/
