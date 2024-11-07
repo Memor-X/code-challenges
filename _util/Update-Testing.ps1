@@ -2,11 +2,11 @@ $packageDir = "C:\_Work\_Packages"
 $packages = @{
     "Unified-Tester" = @{
         "version" = "1.0.0"
-        "loc" = "$($PSScriptRoot)\_Unified-Tester"
+        "loc" = "$($PSScriptRoot)\..\_Unified-Tester"
     }
     "Unit-Test-Display" = @{
         "version" = "1.0.2"
-        "loc" = "$($PSScriptRoot)\_Unified-Tester"
+        "loc" = "$($PSScriptRoot)\..\_Unified-Tester"
     }
 }
 
