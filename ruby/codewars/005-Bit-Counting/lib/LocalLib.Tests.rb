@@ -7,17 +7,19 @@ require_relative 'LocalLib.rb'
 # Setting up sys.stdout.write mock and output buffer
 $outputBuffer = {}
 $outputBuffer["screen"] = []
+def print(str)
+    $outputBuffer["screen"].append(str)
+end
 
 # Tests
 describe "LocalLib" do
-    
     # Clears the output buffer after every test
     before do
         $outputBuffer = {}
         $outputBuffer["screen"] = []
     end
-
     describe "count_bits" do
+
         describe "Codewars Tests" do
             describe "Fixed tests" do
                 it "should pass Fixed Test 1" do
@@ -41,6 +43,6 @@ describe "LocalLib" do
                 end
             end
         end
-    end
 
+    end
 end

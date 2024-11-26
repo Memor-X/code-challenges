@@ -18,6 +18,7 @@ param (
 #=======================================
 
 # Global Variables
+$global:logSetting.showDebug = $false
 
 #=======================================
 

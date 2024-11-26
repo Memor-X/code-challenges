@@ -51,24 +51,26 @@ BeforeAll {
 }
 
 # Tests
-Describe 'No Test' {
+Describe 'Get-SumOfMultiples' {
     BeforeEach {
             $global:outputBuffer = @{}
             $outputBuffer."screen" = @()
         }
 
-    Context  "Fixed Tests" {
-        It "Should Pass" {
-            Get-SumOfMultiples(10) | Should -Be 23
-        }
-        It "Should Pass" {
-            Get-SumOfMultiples(20) | Should -Be 78
-        }
-        It "Should Pass" {
-            Get-SumOfMultiples(200) | Should -Be 9168
-        }
-        It "Should Pass" {
-            Get-SumOfMultiples(0) | Should -Be 0
+    Context  "Codewars Tests" {
+        Context  "Fixed Tests" {
+            It "Should Pass" {
+                Get-SumOfMultiples(10) | Should -Be 23
+            }
+            It "Should Pass" {
+                Get-SumOfMultiples(20) | Should -Be 78
+            }
+            It "Should Pass" {
+                Get-SumOfMultiples(200) | Should -Be 9168
+            }
+            It "Should Pass" {
+                Get-SumOfMultiples(0) | Should -Be 0
+            }
         }
     }
 }

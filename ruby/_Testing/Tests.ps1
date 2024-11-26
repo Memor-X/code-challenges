@@ -17,7 +17,7 @@ function Write-Test-Log($str)
     Write-Host "$($str)" -Foregroundcolor Magenta
 }
 
-Write-Test-Log "Setting Up Pyunit"
+Write-Test-Log "Setting Up minitest"
 
 #------------------------------------------------------------------
 
@@ -75,7 +75,7 @@ else
 Write-Test-Log ""
 
 Write-Test-Log "Clearing previous results"
-Remove-Item -Path "results\*testResults.xml"
+Remove-Item -Path "results\*testResults*.xml"
 
 Write-Test-Log "Running test files"
 for($i = 0; $i -lt $testSuite.Length; $i++)

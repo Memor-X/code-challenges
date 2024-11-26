@@ -33,7 +33,7 @@ $testResultsObj = @{
 
 Write-Log "Sorting Test Results"
 $testHash = @{}
-$files = Get-ChildItem -Path "./results" -Filter "*-testResults.xml" -Recurse
+$files = Get-ChildItem -Path "./results" -Filter "*-testResults*.xml" -Recurse
 foreach($file in $files)
 {
     [XML]$testResultsXML = Get-Content $file
@@ -42,10 +42,10 @@ foreach($file in $files)
     $testHash."$($testedFile)" = @{}
     foreach($testCase in $testCases)
     {
-        $classSplit = $testCase.classname -split "::"
+        $classSplit = @($testCase.classname -split "::")
         $dropped, $classSplit = $classSplit
         $testName = $testCase.name.Split("_",3)
-        $classSplit = @($classSplit, $testName[2])
+        $classSplit = @($classSplit) + @($testName[2])
         Write-Log "Sorting $($testName[2])"
         $testHash."$($testedFile)" = Initalize-Hash-Branch $testHash."$($testedFile)" $classSplit
         $addedTestCase = @{

@@ -1,15 +1,15 @@
 Clear-Host
 $data = @{
-    "title" = "Camel Cards"
-    "mainfile" = "Camel-Cards"
+    "title" = "Median of Two Sorted Arrays"
+    "mainfile" = ""
 
-    "challange" = "advent-of-code"
+#    "challange" = "advent-of-code"
 #    "challange" = "codewars"
-#    "challange" = "leetcode"
+    "challange" = "leetcode"
 
-    "language" = "powershell"
+#    "language" = "powershell"
 #    "language" = "python"
-#    "language" = "ruby"
+    "language" = "ruby"
 
     "aoc-year" = "2023"
 }
@@ -83,5 +83,5 @@ $cmd = "`".\gen-$($data.language)`" `"$($dest)`" `"$($data.mainfile).$($ext."$($
 Write-Host "Command Generated = $($cmd)"
 Invoke-Expression -Command "& cd `"$($paths.projectGen)`""
 Invoke-Expression -Command "& $($cmd)"
-Set-Content -Path "$($PSScriptRoot)\project-ids.txt" -Value (ConvertTo-Json -InputObject $projectIds)
+Set-Content -Path "$($PSScriptRoot)\project-ids.txt" -Value (ConvertTo-Json -InputObject $projectIds -Compress)
 Invoke-Expression -Command "& cd `"$($PSScriptRoot)`""
