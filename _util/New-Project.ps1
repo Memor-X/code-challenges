@@ -1,15 +1,15 @@
 Clear-Host
 $data = @{
     "title" = "Median of Two Sorted Arrays"
-    "mainfile" = ""
+    "mainfile" = "Camel"
 
-#    "challange" = "advent-of-code"
+    "challange" = "advent-of-code"
 #    "challange" = "codewars"
-    "challange" = "leetcode"
+#    "challange" = "leetcode"
 
-#    "language" = "powershell"
+    "language" = "powershell"
 #    "language" = "python"
-    "language" = "ruby"
+#    "language" = "ruby"
 
     "aoc-year" = "2023"
 }

@@ -4,6 +4,7 @@ Memor-X's Public Programming Challenges Solutions
 ## Advent of Code
 
 ### 2023
+
 | Day | Puzzle | Answer | Language | Solution | Tests | Coverage |
 | --- | --- | --- | --- | --- | --- | --- |
 | [01](https://adventofcode.com/2023/day/1) | 1 | 56506 | ![Powershell Static Badge](https://img.shields.io/badge/Powershell-012456?style=for-the-badge&logo=powershell) | [Link](powershell/advent-of-code/2023/01-Puzzle1) | 4 | 100% |
@@ -18,11 +19,12 @@ Memor-X's Public Programming Challenges Solutions
 | | 2 | 108956227 | ![Powershell Static Badge](https://img.shields.io/badge/Powershell-012456?style=for-the-badge&logo=powershell) | [Link](powershell/advent-of-code/2023/05-Puzzle2) | 132 | 100% |
 | [06](https://adventofcode.com/2023/day/6) | 1 | 281600 | ![Powershell Static Badge](https://img.shields.io/badge/Powershell-012456?style=for-the-badge&logo=powershell) | [Link](powershell/advent-of-code/2023/06-Puzzle1) | 46 | 100% |
 | | 2 | 33875953 | ![Powershell Static Badge](https://img.shields.io/badge/Powershell-012456?style=for-the-badge&logo=powershell) | [Link](powershell/advent-of-code/2023/06-Puzzle2) | 9 | 100% |
+| [07](https://adventofcode.com/2023/day/7) | 1 | 253313241 | ![Powershell Static Badge](https://img.shields.io/badge/Powershell-012456?style=for-the-badge&logo=powershell) | [Link](powershell/advent-of-code/2023/07-Puzzle1) | 46 | 100% |
 | --- | --- | --- | --- | --- | --- | --- |
 
 ## Codewars
 
-| Kata | Challange Type | Language | Solution | Tests | Coverage |
+| Kata | Challenge Type | Language | Solution | Tests | Coverage |
 | --- | --- | --- | --- | --- | --- |
 | [001-Split Strings](https://www.codewars.com/kata/515de9ae9dcfc28eb6000001) | Rank Up | ![Powershell Static Badge](https://img.shields.io/badge/Powershell-012456?style=for-the-badge&logo=powershell) | [Link](powershell/codewars/001-Split%20Strings) | 9 | 100% |
 | [002-Are they the "same"?](https://www.codewars.com/kata/550498447451fbbd7600041c) | Rank Up | ![Powershell Static Badge](https://img.shields.io/badge/Powershell-012456?style=for-the-badge&logo=powershell) | [Link](powershell/codewars/002-Are%20they%20the%20same) | 40 | 100% |
