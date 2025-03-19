@@ -1,4 +1,4 @@
-# --- Day 7: Camel Cards ---
+# --- [Day 7: Camel Cards](https://adventofcode.com/2023/day/7) ---
 
 Language: ![Powershell Static Badge](https://img.shields.io/badge/Powershell-012456?style=for-the-badge&logo=powershell&logoColor=012456&labelColor=FFFFFF)
 
