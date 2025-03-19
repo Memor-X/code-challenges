@@ -1,4 +1,7 @@
 # --- [Day 2: Cube Conundrum](https://adventofcode.com/2023/day/2) ---
+
+Language: ![Powershell Static Badge](https://img.shields.io/badge/Powershell-012456?style=for-the-badge&logo=powershell&logoColor=012456&labelColor=FFFFFF)
+
 ## --- Part Two ---
 The Elf says they've stopped producing snow because they aren't getting any **water**! He isn't sure why the water stopped; however, he can show you how to get to the water source to check it out for yourself. It's just up ahead!
 
@@ -6,7 +9,7 @@ As you continue your walk, the Elf poses a second question: in each game you pla
 
 Again consider the example games from earlier:
 
-```
+```text
 Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
 Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue
 Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red
@@ -34,6 +37,7 @@ Code Coverage Req: 90%
 | **Total** | 6 | <span style="color:green">100%</span> |
 
 ## --- Approach ---
+
 - Importing Data
 No change
 

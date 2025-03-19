@@ -1,0 +1,6 @@
+{
+    "MD010": false,
+    "MD013": false,
+    "MD022": { "lines_above": 1, "lines_below": -1 },
+    "MD033": { "allowed_elements": ["span"] }
+}

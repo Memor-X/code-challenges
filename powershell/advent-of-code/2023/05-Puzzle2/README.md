@@ -1,4 +1,7 @@
 # --- [Day 5: If You Give A Seed A Fertilizer](https://adventofcode.com/2023/day/5) ---
+
+Language: ![Powershell Static Badge](https://img.shields.io/badge/Powershell-012456?style=for-the-badge&logo=powershell&logoColor=012456&labelColor=FFFFFF)
+
 ## --- Part Two ---
 Everyone will starve if you only plant such a small number of seeds. Re-reading the almanac, it looks like the seeds: line actually describes **ranges of seed numbers.**
 
@@ -25,6 +28,6 @@ Code Coverage Req: 90%
 ## --- Approach ---
 data import remains the same
 
-used Range logic prsented by [schnitzelditzel's javascript solution](https://www.reddit.com/r/adventofcode/comments/18b4b0r/comment/kc4nr60/) while looping in intervals of 100,000 to get collection of Locations to find minimum
+used Range logic presented by [schnitzelditzel's javascript solution](https://www.reddit.com/r/adventofcode/comments/18b4b0r/comment/kc4nr60/) while looping in intervals of 100,000 to get collection of Locations to find minimum
 
-am not sure if this solution will work for all variations of data. original attempteded solutions is block commented out with hope to get that working one day
+am not sure if this solution will work for all variations of data. original attempted solutions is block commented out with hope to get that working one day

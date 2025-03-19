@@ -6,7 +6,7 @@ Complete the solution so that it splits the string into pairs of two characters.
 
 Examples:
 
-```
+```text
 * 'abc' =>  ['ab', 'c_']
 * 'abcdef' => ['ab', 'cd', 'ef']
 ```

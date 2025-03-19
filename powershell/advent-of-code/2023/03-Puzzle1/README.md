@@ -1,4 +1,7 @@
 # --- [Day 3: Gear Ratios](https://adventofcode.com/2023/day/3) ---
+
+Language: ![Powershell Static Badge](https://img.shields.io/badge/Powershell-012456?style=for-the-badge&logo=powershell&logoColor=012456&labelColor=FFFFFF)
+
 ## --- Part One ---
 You and the Elf eventually reach a gondola lift station; he says the [gondola lift](https://en.wikipedia.org/wiki/Gondola_lift) will take you up to the **water source**, but this is as far as he can bring you. You go inside.
 
@@ -14,7 +17,7 @@ The engine schematic (your puzzle input) consists of a visual representation of 
 
 Here is an example engine schematic:
 
-```
+```text
 467..114..
 ...*......
 ..35..633.
@@ -41,12 +44,13 @@ Code Coverage Req: 90%
 | **Total** | 0 | <span style="color:green">100%</span> |
 
 ## --- Approach ---
+
 1. Load data into array
 2. loop though each line
     1. find number by looking for first and last digit and recording positions
     2. generate string by collecting strings from
         - previous line starting at position before current number of length of current number + 2
-        - character infront of current number (skip if at start of the line)
+        - character in front of current number (skip if at start of the line)
         - next starting at position before current number of length of current number + 2
     3. replace all . with nothing
     4. if string is greater than 0, part number to array

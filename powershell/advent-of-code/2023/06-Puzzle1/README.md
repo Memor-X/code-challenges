@@ -1,4 +1,7 @@
 # --- [Day 6: Wait For It](https://adventofcode.com/2023/day/6) ---
+
+Language: ![Powershell Static Badge](https://img.shields.io/badge/Powershell-012456?style=for-the-badge&logo=powershell&logoColor=012456&labelColor=FFFFFF)
+
 ## --- Part One ---
 The ferry quickly brings you across Island Island. After asking around, you discover that there is indeed normally a large pile of sand somewhere near here, but you don't see anything besides lots of water and the small island where the ferry has docked.
 
@@ -12,10 +15,11 @@ The organizer brings you over to the area where the boat races are held. The boa
 
 For example:
 
-```
+```text
 Time:      7  15   30
 Distance:  9  40  200
 ```
+
 This document describes three races:
 
 - The first race lasts 7 milliseconds. The record distance in this race is 9 millimeters.
@@ -35,14 +39,13 @@ So, because the first race lasts 7 milliseconds, you only have a few options:
 - Hold the button for **6 milliseconds**, causing the boat to travel a total of **6 millimeters**.
 - Hold the button for **7 milliseconds**. That's the entire duration of the race. You never let go of the button. The boat can't move until you let go of the button. Please make sure you let go of the button so the boat gets to move. **0 millimeters**.
 
-
 Since the current record for this race is 9 millimeters, there are actually **4** different ways you could win: you could hold the button for 2, 3, 4, or 5 milliseconds at the start of the race.
 
 In the second race, you could hold the button for at least 4 milliseconds and at most 11 milliseconds and beat the record, a total of **8** different ways to win.
 
 In the third race, you could hold the button for at least 11 milliseconds and no more than 19 milliseconds and still beat the record, a total of **9** ways you could win.
 
-To see how much margin of error you have, determine the **number of ways you can beat the record** in each race; in this example, if you multiply these values together, you get **288** (4 * 8 * 9).
+To see how much margin of error you have, determine the **number of ways you can beat the record** in each race; in this example, if you multiply these values together, you get **288** (4 \* 8 \* 9).
 
 Determine the number of ways you could beat the record in each race. **What do you get if you multiply these numbers together?**
 
@@ -56,11 +59,12 @@ Code Coverage Req: 90%
 | **Total** | 46 | <span style="color:green">100%</span> |
 
 ## --- Approach ---
+
 1. Load data into array
-2. collpase all double spaces to be single spaces and strip out row titled
+2. collapse all double spaces to be single spaces and strip out row titled
 3. split on space and store each race in hash object
 4. loop through every race
-    1. initalize array of size Race Time + 1
+    1. initialize array of size Race Time + 1
     2. calculate charge times and distances
         - charge time X remaining Time = distance
     3. store charge time, remaining time and distance covered in same index as charge time

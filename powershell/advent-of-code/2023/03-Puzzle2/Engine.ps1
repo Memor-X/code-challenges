@@ -11,7 +11,7 @@
 . "$($PSScriptRoot)\..\..\lib\AdventOfCode.ps1"
 . "$($PSScriptRoot)\lib\LocalLib.ps1"
 
-# Global Varible Setting
+# Global Variable Setting
 $global:AoC.puzzle = "3-2"
 $global:AoC.testInputMode = $false
 

@@ -470,6 +470,34 @@ function Compress-Spaces($string,$hash2)
 }
 
 ########################################
+#
+# Name:		
+# Input:	
+# Output:	
+# Description:	
+#	
+#
+########################################
+function Add-Into-Array($arr, $val, $pos)
+{
+    $arrStart = @()
+    $arrEnd = @()
+
+    if($pos -gt 0)
+    {
+        $arrStart = $arr[0..($pos-1)]
+    }
+
+    if($pos -lt $arr.length)
+    {
+        $arrEnd = $arr[($pos)..$arr.length]
+    }
+
+    $newArr = $arrStart + @($val) + $arrEnd
+    return $newArr
+}
+
+########################################
 # File I/O
 ########################################
 ########################################

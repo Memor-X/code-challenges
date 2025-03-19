@@ -1,4 +1,7 @@
 # --- [Day 3: Gear Ratios](https://adventofcode.com/2023/day/3) ---
+
+Language: ![Powershell Static Badge](https://img.shields.io/badge/Powershell-012456?style=for-the-badge&logo=powershell&logoColor=012456&labelColor=FFFFFF)
+
 ## --- Part Two ---
 Yhe engineer finds the missing part and installs it in the engine! As the engine springs to life, you jump in the closest gondola, finally ready to ascend to the water source.
 
@@ -12,7 +15,7 @@ This time, you need to find the gear ratio of every gear and add them all up so 
 
 Consider the same engine schematic again:
 
-```
+```text
 467..114..
 ...*......
 ..35..633.
@@ -39,13 +42,14 @@ Code Coverage Req: 90%
 | **Total** | 0 | <span style="color:green">100%</span> |
 
 ## --- Approach ---
+
 1. Load data into array
 2. loop though each line
     1. loop through each character
         1. check if the current character is a *
         2. if character is *, check surrounding characters for digits
         3. if digit is found, find the adjacent numbers and store the completed number in array
-        4. after checking surroudning characters, if found exactly 2 numbers, multiply and add resutling Gear Ratio to array
+        4. after checking surrounding characters, if found exactly 2 numbers, multiply and add resulting Gear Ratio to array
 3. loop though array of Gear Ratios, summing together
 
 ## Check.xlsx
@@ -60,4 +64,4 @@ Check.xlsx was used to debug the collected Gear Ratios. in order to load data in
 7. open .csv in excel
 8. copy and paste cells into Check.xlsx
 
-the rules should high light all *'s as green, all numbers surrounding *'s as blue and empty spaces as gold. you can now go though the spreadsheet finding all Gear pairs and deleteing the * to track your progress
+the rules should high light all \*'s as green, all numbers surrounding \*'s as blue and empty spaces as gold. you can now go though the spreadsheet finding all Gear pairs and deleting the \* to track your progress

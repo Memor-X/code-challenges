@@ -1,10 +1,13 @@
 # --- [Day 6: Wait For It](https://adventofcode.com/2023/day/6) ---
+
+Language: ![Powershell Static Badge](https://img.shields.io/badge/Powershell-012456?style=for-the-badge&logo=powershell&logoColor=012456&labelColor=FFFFFF)
+
 ## --- Part Two ---
 As the race is about to start, you realize the piece of paper with race times and record distances you got earlier actually just has very bad [kerning](https://en.wikipedia.org/wiki/Kerning). There's really **only one race** - ignore the spaces between the numbers on each line.
 
 So, the example from before:
 
-```
+```text
 Time:      7  15   30
 Distance:  9  40  200
 ```
@@ -27,9 +30,10 @@ Code Coverage Req: 90%
 | **Total** | 9 | <span style="color:green">100%</span> |
 
 ## --- Approach ---
+
 1. Load data into array
 2. strip out row titles and all spaces
-3. calculate half of race (distance from charge time is a bell curve, dimishing returns after midway
-4. determin when winner start
+3. calculate half of race (distance from charge time is a bell curve, diminishing returns after midway
+4. determine when winner start
 5. calculate how many winners from start time to mid point, then double for other half
     - if no winner start, be 0

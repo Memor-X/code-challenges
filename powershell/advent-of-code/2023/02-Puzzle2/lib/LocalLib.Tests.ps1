@@ -1,5 +1,5 @@
 BeforeAll {
-    # Dyanmic Link to file to test
+    # Dynamic Link to file to test
     . $PSCommandPath.Replace('.Tests.ps1','.ps1')
 
     # Variables

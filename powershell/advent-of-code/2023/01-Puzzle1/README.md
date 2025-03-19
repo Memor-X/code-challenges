@@ -1,4 +1,7 @@
 # --- [Day 1: Trebuchet?!](https://adventofcode.com/2023/day/1) ---
+
+Language: ![Powershell Static Badge](https://img.shields.io/badge/Powershell-012456?style=for-the-badge&logo=powershell&logoColor=012456&labelColor=FFFFFF)
+
 ## --- Part One ---
 Something is wrong with global snow production, and you've been selected to take a look. The Elves have even given you a map; on it, they've used stars to mark the top fifty locations that are likely to be having problems.
 
@@ -14,7 +17,7 @@ The newly-improved calibration document consists of lines of text; each line ori
 
 For example:
 
-```
+```test
 1abc2
 pqr3stu8vwx
 a1b2c3d4e5f
@@ -35,6 +38,7 @@ Code Coverage Req: 90%
 | **Total** | 4 | <span style="color:green">100%</span> |
 
 ## --- Approach ---
+
 1. Load input into an array
 2. loop though each line
 	1. extract all numbers from letters maintaining datatype

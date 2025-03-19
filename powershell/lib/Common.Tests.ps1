@@ -18,7 +18,7 @@ BeforeAll {
         $file = (Out-String -InputObject $PesterBoundParameters.Path).Trim()
         $outputBuffer.$file = @($PesterBoundParameters.Value)
     }
-    Mock Write-Host {
+   Mock Write-Host {
         $outputBuffer."screen" += @(@{
             "msg" = (Out-String -InputObject $PesterBoundParameters.Object).Trim()
             "color" = (Out-String -InputObject $PesterBoundParameters.ForegroundColor).Trim()
@@ -788,6 +788,48 @@ Describe 'Initalize-Array'{
         $newArray[7] | Should -Be "all"
         $newArray[8] | Should -Be "worlds"
         $newArray[9] | Should -Be "hello"
+    }
+}
+
+Describe 'Add-Into-Array'{
+    BeforeEach{
+        Mock New-Item {}
+        Mock Split-Path {
+            $split = $PesterBoundParameters.Path -Split "/"
+
+            return $split[0..($split.Length-1)] -Join "/"
+        }
+    }
+
+    It 'Inserting value <addVal> into index <injectingPos> of array <initArrStr>' -TestCases @(
+        @{initArr = @("a", "b", "c"); injectingPos = 1; addVal = "d"; initArrStr = "(a, b, c)"}
+        @{initArr = @("a", "b", "c"); injectingPos = 2; addVal = "d"; initArrStr = "(a, b, c)"}
+        @{initArr = @("a", "b", "c"); injectingPos = 0; addVal = "d"; initArrStr = "(a, b, c)"}
+        @{initArr = @("a"); injectingPos = 0; addVal = "d"; initArrStr = "(a)"}
+        @{initArr = @("a"); injectingPos = 1; addVal = "d"; initArrStr = "(a)"}
+    ){
+        $newArray = Add-Into-Array $initArr $addVal $injectingPos
+        $expectedLength = $initArr.length+1
+
+        $newArray.Length | Should -Be $expectedLength
+        for($i = 0; $i -lt $newArray.length; $i++)
+        {
+            $testval = "NOVAL"
+            if($i -lt $injectingPos)
+            {
+                $testval = $initArr[$i]
+            }
+            elseif($i -gt $injectingPos)
+            {
+                $testval = $initArr[$i-1]
+            }
+            else
+            {
+                $testval = $addVal
+            }
+
+            $newArray[$i] | Should -Be $testval
+        }
     }
 }
 

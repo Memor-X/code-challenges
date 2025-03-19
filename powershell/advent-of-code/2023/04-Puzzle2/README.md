@@ -1,4 +1,7 @@
 # --- [Day 4: Scratchcards](https://adventofcode.com/2023/day/4) ---
+
+Language: ![Powershell Static Badge](https://img.shields.io/badge/Powershell-012456?style=for-the-badge&logo=powershell&logoColor=012456&labelColor=FFFFFF)
+
 ## --- Part Two ---
 Just as you're about to report your findings to the Elf, one of you realizes that the rules have actually been printed on the back of every card this whole time.
 
@@ -10,7 +13,7 @@ Copies of scratchcards are scored like normal scratchcards and have the **same c
 
 This time, the above example goes differently:
 
-```
+```text
 Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53
 Card 2: 13 32 20 16 61 | 61 30 68 82 17 32 24 19
 Card 3:  1 21 53 59 44 | 69 82 63 72 16 21 14  1
@@ -41,12 +44,13 @@ Code Coverage Req: 90%
 | **Total** | 0 | <span style="color:green">100%</span> |
 
 ## --- Approach ---
-1. initalize array of 0's as size of the number of cards
+
+1. initialize array of 0's as size of the number of cards
 2. same as Puzzle 1 up until number of wins is calculated
-3. for each copy of a card (having atleast 1)
+3. for each copy of a card (having at least 1)
     1. add 1 of the current card
     2. for each win add 1 copy to the next card, moving to the next card after for each subsequent win
     3. after processing add Number of current cards to array
-3. loop though array of Card Counts, summing together
+4. loop though array of Card Counts, summing together
 
 if there is a win, the loop for 3-2 will be increased when the next card is processed

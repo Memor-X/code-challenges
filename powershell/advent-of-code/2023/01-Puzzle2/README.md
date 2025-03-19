@@ -1,10 +1,13 @@
 # --- [Day 1: Trebuchet?!](https://adventofcode.com/2023/day/1) ---
+
+Language: ![Powershell Static Badge](https://img.shields.io/badge/Powershell-012456?style=for-the-badge&logo=powershell&logoColor=012456&labelColor=FFFFFF)
+
 ## --- Part Two ---
 Your calculation isn't quite right. It looks like some of the digits are actually **spelled out with letters**: one, two, three, four, five, six, seven, eight, and nine **also** count as valid "digits".
 
 Equipped with this new information, you now need to find the real first and last digit on each line. For example:
 
-```
+```text
 two1nine
 eightwothree
 abcone2threexyz
@@ -29,6 +32,7 @@ Code Coverage Req: 90%
 
 ## --- Approach ---
 using Part 1's Solution. inside Input Loop processing
+
 1. find first and last instance of worded numbers
 2. record which integer they represent
 3. insert integer into the position of worded numbers

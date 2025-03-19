@@ -1,4 +1,7 @@
 # --- [Day 2: Cube Conundrum](https://adventofcode.com/2023/day/2) ---
+
+Language: ![Powershell Static Badge](https://img.shields.io/badge/Powershell-012456?style=for-the-badge&logo=powershell&logoColor=012456&labelColor=FFFFFF)
+
 ## --- Part One ---
 You're launched high into the atmosphere! The apex of your trajectory just barely reaches the surface of a large island floating in the sky. You gently land in a fluffy pile of leaves. It's quite cold, but you don't see much snow. An Elf runs over to greet you.
 
@@ -12,7 +15,7 @@ You play several games and record the information from each game (your puzzle in
 
 For example, the record of a few games might look like this:
 
-```
+```text
 Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
 Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue
 Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red
@@ -38,6 +41,7 @@ Code Coverage Req: 90%
 | **Total** | 6 | <span style="color:green">100%</span> |
 
 ## --- Approach ---
+
 - Importing Data
     1. create an empty hash object to store the game data
     2. create a hash object with red, green and blue as keys with values of 0 to use as a template

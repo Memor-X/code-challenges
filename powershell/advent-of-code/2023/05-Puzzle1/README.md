@@ -1,4 +1,7 @@
 # --- [Day 5: If You Give A Seed A Fertilizer](https://adventofcode.com/2023/day/5) ---
+
+Language: ![Powershell Static Badge](https://img.shields.io/badge/Powershell-012456?style=for-the-badge&logo=powershell&logoColor=012456&labelColor=FFFFFF)
+
 ## --- Part One ---
 You take the boat and find the gardener right where you were told he would be: managing a giant "garden" that looks more to you like a farm.
 
@@ -14,7 +17,7 @@ The almanac (your puzzle input) lists all of the seeds that need to be planted. 
 
 For example:
 
-```
+```text
 seeds: 79 14 55 13
 
 seed-to-soil map:
@@ -58,7 +61,7 @@ Rather than list every source number and its corresponding destination number on
 
 Consider again the example seed-to-soil map:
 
-```
+```text
 50 98 2
 52 50 48
 ```
@@ -71,7 +74,7 @@ Any source numbers that aren't mapped correspond to the same destination number.
 
 So, the entire list of seed numbers and their corresponding soil numbers looks like this:
 
-```
+```text
 seed  soil
 0     0
 1     1
@@ -115,12 +118,13 @@ Code Coverage Req: 90%
 | **Total** | 8 | <span style="color:green">100%</span> |
 
 ## --- Approach ---
+
 1. Load data into array
 2. for each line (starting at Line 2)
     1. if line is blank, set header flag
     2. if header flag is true, split the line and store it in the current set mapping
-    3. if header flag is false and line has "map" in it, 
-        1. set header flag to true 
+    3. if header flag is false and line has "map" in it,
+        1. set header flag to true
         2. replace the "map:" in the line and set the result as the current mapping
 3. fetch the first line of the loaded data and split it on the space
 4. for each seed we got
@@ -128,6 +132,6 @@ Code Coverage Req: 90%
         1. determine where the seed lines in terms of the mapping start
         2. calculate the difference between the seed and the mapping start
         3. if the diff is less than the mapping step count and greater than 0, add the diff to the mapping destination
-    2. repeate for each mapping until humidity-to-location
+    2. repeat for each mapping until humidity-to-location
     3. add Location to array
 5. loop though array of Locations, determining the smallest
