@@ -39,6 +39,9 @@ foreach($testerXML in $settings.settings.unittester)
         "cmd" = $testerXML.command
     }
 
+    # resetting unit test results for unit tester incase if it doesn't run
+    Set-Content -Path "$($testerXML.directories.results)\Compiled-Test_data.js" -Value "var testData = JSON.parse('{}')"
+
     foreach($ext in $testerXML.extensions.ext)
     {
         Write-Log "Adding tester for $($ext)"
@@ -129,7 +132,7 @@ foreach($unittestExt in $testers.Keys)
 Write-Log "--------------------"
 #------------------------------------------------------------------
 
-Write-Log "Combaining Unit Tester Results"
+Write-Log "Combining Unit Tester Results"
 $combinedTestResultObj = @{
     "system" = @{
         "program" = "Unified Tester"
