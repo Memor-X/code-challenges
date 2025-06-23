@@ -7,9 +7,9 @@ Write-Log "Compiling Inital Test Result Object"
 $durationCol = @()
 $testResultsObj = @{
     "system" = @{
-        "program" = "minitess"
+        "program" = "pytest"
         "runtime" = "$($testResultsNode.date) $($testResultsNode.time)"
-        "language" = "Ruby"
+        "language" = "Python"
         "time" = ""
     }
     "test-results-summary" = @{
@@ -39,12 +39,13 @@ $file = Get-ChildItem -Path "./results/testResults.xml"
 $testCases = @(Fetch-XMLVal $testResultsXML "testsuites.testsuite.testcase")
 #$testedFile = ($testCases[0].classname -split ".describe_")[0]
 #$testHash."$($testedFile)" = @{}
-foreach($testCase in $testCases)
+foreach ($testCase in $testCases)
 {
+    Write-Log "setting up `"$($testCase.classname)`" for processing"
     $classSplit = $testCase.classname -split ".describe_"
     $testedFile, $classSplit = $classSplit
     $testedFile += ".py"
-    if($testHash.ContainsKey($testedFile) -eq $false)
+    if ($testHash.ContainsKey($testedFile) -eq $false)
     {
         $testHash."$($testedFile)" = @{}
     }
@@ -79,11 +80,11 @@ function Process-Test-Case($key, $hash)
         "type" = ""
     }
 
-    if($hash.ContainsKey("type") -eq $true)
+    if ($hash.ContainsKey("type") -eq $true)
     {
         $testCase.type = "test-case"
         $testCase."success" = $hash.result
-        if($hash.result -ne "True")
+        if ($hash.result -ne "True")
         {
             $testCase."result" = "Failure"
         }
@@ -93,11 +94,11 @@ function Process-Test-Case($key, $hash)
     {
         $testCase.type = "test-suite"
         $testCase."tests" = @()
-        foreach($test in $hash.Keys)
+        foreach ($test in $hash.Keys)
         {
             $testCaseAdd = Process-Test-Case $test $hash."$($test)"
             $testCase."tests" += @($testCaseAdd)
-            if($testCaseAdd.result -ne "Success")
+            if ($testCaseAdd.result -ne "Success")
             {
                 $testCase."result" = "Failure"
             }
@@ -109,13 +110,13 @@ function Process-Test-Case($key, $hash)
 }
 
 Write-Log "Compiling sorted Test Results"
-foreach($key in $testHash.Keys)
+foreach ($key in $testHash.Keys)
 {
     Write-Log "Compiling $($key)"
     $testSuite = @{
         "test-case-count" = "0"
         "executed" = "True"
-        "file" = $key.Replace(".Test","")
+        "file" = $key.Replace(".Test", "")
         "test-file" = $key
         "result" = "Success"
         "success" = "True"
@@ -125,11 +126,11 @@ foreach($key in $testHash.Keys)
 
     $testCases = @()
 
-    foreach($testName in $testHash."$($key)".Keys)
+    foreach ($testName in $testHash."$($key)".Keys)
     {
         Write-Debug "`"$($key)`".`"$($testName)`""
         $testCase = Process-Test-Case $testName $testHash."$($key)"."$($testName)"
-        if($testCase.result -ne "Success")
+        if ($testCase.result -ne "Success")
         {
             $testSuite.result = "Failure"
         }
@@ -143,5 +144,129 @@ foreach($key in $testHash.Keys)
     $testResultsObj."test-suites" += @($testSuite)
 }
 
+
+
 Write-Log "Outputting Tests data"
 Write-File "$($PSScriptRoot)\results\Compiled-Test_data.js" "var testData = JSON.parse('$(($testResultsObj | ConvertTo-Json -Compress -EscapeHandling 'EscapeHtml' -Depth 100))')"
+
+function Get-Coverage($coverageJSON)
+{
+    $returnArr = @()
+    $compileHash = @{}
+    $files = ($coverageJSON."files").GetType().GetProperty('Keys').GetValue($coverageJSON."files")
+
+    foreach ($file in $files)
+    {
+        Write-Debug $file
+        $correctedSourceName = "$($file.Replace("\","/"))"
+
+        $compileHash."$($correctedSourceName)" = @{
+            "lines" = @()
+            "functions" = @()
+        }
+
+        Write-Log "Processing Methods"
+        $methods = ($coverageJSON."files"."$($file)"."functions").GetType().GetProperty('Keys').GetValue($coverageJSON."files"."$($file)"."functions")
+        foreach ($method in $methods)
+        {
+            $fixMethod = $method
+            if ($fixMethod.length -eq "")
+            {
+                $fixMethod = "<script>"
+            }
+            Write-Log "Processing $($fixMethod)"
+            $allLines = @($coverageJSON."files"."$($file)"."functions"."$($method)"."missing_lines") + @($coverageJSON."files"."$($file)"."functions"."$($method)"."executed_lines") + @($coverageJSON."files"."$($file)"."functions"."$($method)"."excluded_lines")
+            $allLines = $allLines | Sort-Object
+
+            $missedLines = $coverageJSON."files"."$($file)"."functions"."$($method)"."missing_lines".length + $coverageJSON."files"."$($file)"."functions"."$($method)"."excluded_lines".length
+            $coveredLines = $coverageJSON."files"."$($file)"."functions"."$($method)"."executed_lines".length
+
+            $functionHash = @{
+                "name" = "$($fixMethod)"
+                "line no" = $allLines[0]
+                "lines" = @{
+                    "covered" = $coveredLines
+                    "missed" = $missedLines
+                }
+                "methods" = @{
+                    "covered" = $coveredLines
+                    "missed" = $missedLines
+                }
+                "instructions" = @{
+                    "covered" = $coveredLines
+                    "missed" = $missedLines
+                }
+            }
+
+            $compileHash."$($correctedSourceName)"."functions" += @($functionHash)
+        }
+
+        Write-Log "Processing Lines"
+        $allLines = @($coverageJSON."files"."$($file)"."missing_lines") + @($coverageJSON."files"."$($file)"."executed_lines") + @($coverageJSON."files"."$($file)"."excluded_lines")
+        $allLines = ($allLines | Sort-Object)
+        Write-Debug "$($allLines)"
+        $lastLine = $allLines[$allLines.length - 1]
+
+        for ($i = 0; $i -lt $lastLine; $i++)
+        {
+            $linesCovered = 0
+            $linesMissed = 0
+            $emptyLine = $true
+            if ($coverageJSON."files"."$($file)"."executed_lines" -contains ($i + 1))
+            {
+                Write-Debug "Line $($i + 1) covered"
+                $linesCovered = 1
+                $emptyLine = $false
+            }
+            elseif (($coverageJSON."files"."$($file)"."missing_lines" -contains ($i + 1)) -or ($coverageJSON."files"."$($file)"."excluded_lines" -contains ($i + 1)))
+            {
+                Write-Debug "Line $($i + 1) missed"
+                $linesMissed = 1
+                $emptyLine = $false
+            }
+
+            if ($linesCovered -ge 0 -and $linesMissed -ge 0)
+            {
+                $lineData = @{
+                    "line number" = $i + 1
+                    "instructions" = @{
+                        "missed" = $linesMissed
+                        "covered" = $linesCovered
+                    }
+                    "branches" = @{
+                        "missed" = 0
+                        "covered" = 0
+                    }
+                }
+
+                $compileHash."$($correctedSourceName)"."lines" += @($lineData)
+            }
+            else
+            {
+                Write-Warning "Line $($i + 1) not scanned"
+            }
+        }
+    }
+
+    foreach ($result in $compileHash.GetEnumerator())
+    {
+        $returnArr += @(@{
+                "name" = $result.Name
+                "lines" = $result.Value.lines
+                "functions" = $result.Value.functions
+            })
+    }
+
+    return $returnArr
+}
+
+Write-Log "Getting Code Coverage Data"
+$coverage = "$($PSScriptRoot)\results\coverage.json"
+$coverageJSON = ConvertFrom-Json $(Get-Content $coverage -Raw) -AsHashtable
+$coverageObj = @{
+    "system" = $testResultsObj.system
+    "environment" = $testResultsObj.environment
+}
+$coverageObj."test-suites" = @(Get-Coverage $coverageJSON)
+Write-File "$($PSScriptRoot)\results\Compiled-Coverage_data.js" "var coverageData = JSON.parse('$(($coverageObj | ConvertTo-Json -Compress -EscapeHandling 'EscapeHtml' -Depth 100))')"
+

@@ -1,3 +1,4 @@
 python -m pip install pytest
 python -m pip install pytest-mock
 python -m pip install pytest-cov
+python -m pip install coverage

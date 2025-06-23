@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<settings>
+    <unittester>
+        <language>Powershell</language>
+        <extensions>
+            <ext>.ps1</ext>
+        </extensions>
+        <directories>
+            <tester>C:\_Work\_git\code-challenges\powershell\_Testing</tester>
+            <results>C:\_Work\_git\code-challenges\powershell\_Testing\results</results>
+        </directories>
+        <command>test "[FILES]" "true" "true"</command>
+        <testkey>.Tests</testkey>
+    </unittester>
+    <unittester>
+        <language>Ruby</language>
+        <extensions>
+            <ext>.rb</ext>
+        </extensions>
+        <directories>
+            <tester>C:\_Work\_git\code-challenges\ruby\_Testing</tester>
+            <results>C:\_Work\_git\code-challenges\ruby\_Testing\results</results>
+        </directories>
+        <command>test "[FILES]" "true" "true"</command>
+        <testkey>.Tests</testkey>
+    </unittester>
+    <unittester>
+        <language>Python</language>
+        <extensions>
+            <ext>.py</ext>
+        </extensions>
+        <directories>
+            <tester>C:\_Work\_git\code-challenges\python\_Testing</tester>
+            <results>C:\_Work\_git\code-challenges\python\_Testing\results</results>
+        </directories>
+        <command>test "[FILES]" "true" "true"</command>
+        <testkey>Tests</testkey>
+    </unittester>
+</settings>

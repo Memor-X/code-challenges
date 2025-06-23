@@ -18,7 +18,6 @@ param (
 #=======================================
 
 # Global Variables
-$global:logSetting.showDebug = $false
 
 #=======================================
 
@@ -38,9 +37,6 @@ foreach($testerXML in $settings.settings.unittester)
         "test_key" = $testerXML."testkey"
         "cmd" = $testerXML.command
     }
-
-    # resetting unit test results for unit tester incase if it doesn't run
-    Set-Content -Path "$($testerXML.directories.results)\Compiled-Test_data.js" -Value "var testData = JSON.parse('{}')"
 
     foreach($ext in $testerXML.extensions.ext)
     {
@@ -132,7 +128,7 @@ foreach($unittestExt in $testers.Keys)
 Write-Log "--------------------"
 #------------------------------------------------------------------
 
-Write-Log "Combining Unit Tester Results"
+Write-Log "Combaining Unit Tester Results"
 $combinedTestResultObj = @{
     "system" = @{
         "program" = "Unified Tester"

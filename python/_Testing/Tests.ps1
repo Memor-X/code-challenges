@@ -9,7 +9,7 @@
 
 # File Arguments
 param (
-    $suite="*"
+    $suite = "*"
 )
 
 function Write-Test-Log($str)
@@ -32,41 +32,37 @@ $fullSuiteVals = @(
     "full"
 )
 $testSuite = @()
-$codeCoverageSuite = @()
 
-if($fullSuiteVals.Contains($suite) -eq $true)
+if ($fullSuiteVals.Contains($suite) -eq $true)
 {
     Write-Test-Log "Collecting all Tests for Suite"
     $files = Get-ChildItem -Path ".." -Filter "*Tests.py" -Recurse
-    foreach($file in $files)
+    foreach ($file in $files)
     {
         Write-Test-Log "`tAdding Test - $($file.FullName)"
         $testSuite += @($file.FullName)
-        $codeCoverageSuite += @($file.FullName.Replace("Tests",""))
     }
 }
 else
 {
     Write-Test-Log "Splitting string for Suite"
     $testSplit = $suite.split("<|>")
-    foreach($file in $testSplit)
+    foreach ($file in $testSplit)
     {
-        if((Test-Path $file -PathType Leaf) -eq $true)
+        if ((Test-Path $file -PathType Leaf) -eq $true)
         {
             Write-Test-Log "Adding Single File - $($file)"
             $testSuite += @($file)
-            $codeCoverageSuite += @($file.Replace("Tests",""))
         }
-        elseif((Test-Path $file -PathType Container) -eq $true)
+        elseif ((Test-Path $file -PathType Container) -eq $true)
         {
             Write-Test-Log "Adding Folder - $($file)"
             $files = Get-ChildItem -Path $file -Filter "*Tests.ps1" -Recurse
-            foreach($subfile in $files)
+            foreach ($subfile in $files)
             {
                 Write-Test-Log "`tAdding Test from folder Folder - $($subfile.FullName)"
                 $testSuite += @($subfile.FullName)
                 $directoryPath = Split-Path -Path $testSuite
-                $codeCoverageSuite += @($directoryPath)
             }
         }
         else
@@ -78,16 +74,13 @@ else
 
 
 Write-Test-Log ""
+$testSuiteStr = ($testSuite -join "`" `"")
 
-$cmd = "pytest --cache-clear --cov-config=coveragerc.ini --cov-report=xml --cov -v -r a --junit-xml=`"results\testResults.xml`""
-$cov = " --cov=cov-start.py"
-for($i = 0; $i -lt $testSuite.Length; $i++)
-{
-    $cmd += " $($testSuite[$i])"
-    $cov += " --cov=$($codeCoverageSuite[$i])"
-}
-$cmd += " --cov=cov-end.py"
-#$cmd += $cov
+#$cmd = "coverage run -m pytest --cache-clear -v -r a --junit-xml=`"results\testResults.xml`""
+$cmd = "coverage run -m pytest --cache-clear -v -r a --junit-xml=`"results\testResults.xml`" `"$($testSuiteStr)`""
 
 Write-Test-Log "Command = $($cmd)"
 Invoke-Expression -Command "& $($cmd)"
+
+Write-Test-Log "running code coverage"
+Invoke-Expression -Command "& coverage json"

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <!-- <script src="./results/Compiled-Coverage_data.js"></script> -->
+        <script src="./results/Compiled-Coverage_data.js"></script>
         <script>
             var coverageDataFound = true
             try 
@@ -133,89 +133,86 @@
         for(var i = 0; i < testData["test-suites"].length; i++) 
         {
             let testSuiteData = testData["test-suites"][i]
-            if(testSuiteData != null)
+            let file = testData["test-suites"][i].file
+            let filesplit = file.split(".")
+            let ext = filesplit[filesplit.length-1]
+
+            let fileItem = document.createElement("li");
+            fileItem.setAttribute("class","lang-"+ext)
+            fileItem.appendChild(document.createTextNode("["));
+            let testLink = document.createElement("a");
+            testLink.href = "#test_"+file
+            testLink.setAttribute("class","test-link")
+            testLink.appendChild(document.createTextNode("T"));
+            fileItem.appendChild(testLink)
+            fileItem.appendChild(document.createTextNode("]"))
+
+            if(coverageDataFound === true)
             {
-                let file = testData["test-suites"][i].file
-                let filesplit = file.split(".")
-                let ext = filesplit[filesplit.length-1]
-
-                let fileItem = document.createElement("li");
-                fileItem.setAttribute("class","lang-"+ext)
+                fileItem.appendChild(document.createTextNode(" | "));
                 fileItem.appendChild(document.createTextNode("["));
-                let testLink = document.createElement("a");
-                testLink.href = "#test_"+file
-                testLink.setAttribute("class","test-link")
-                testLink.appendChild(document.createTextNode("T"));
-                fileItem.appendChild(testLink)
+                let coverageLink = document.createElement("a");
+                coverageLink.href = "#coverage_"+file
+                coverageLink.setAttribute("class","coverage-link")
+                coverageLink.appendChild(document.createTextNode("C"));
+                fileItem.appendChild(coverageLink)
                 fileItem.appendChild(document.createTextNode("]"))
+            }
+            
+            fileItem.appendChild(document.createTextNode(" "+file))
+            fileLink.appendChild(fileItem)
 
-                if(coverageDataFound === true)
-                {
-                    fileItem.appendChild(document.createTextNode(" | "));
-                    fileItem.appendChild(document.createTextNode("["));
-                    let coverageLink = document.createElement("a");
-                    coverageLink.href = "#coverage_"+file
-                    coverageLink.setAttribute("class","coverage-link")
-                    coverageLink.appendChild(document.createTextNode("C"));
-                    fileItem.appendChild(coverageLink)
-                    fileItem.appendChild(document.createTextNode("]"))
-                }
-                
-                fileItem.appendChild(document.createTextNode(" "+file))
-                fileLink.appendChild(fileItem)
+            let testSuite = document.createElement("div");
+            testSuite.setAttribute("id","test_"+file)
 
-                let testSuite = document.createElement("div");
-                testSuite.setAttribute("id","test_"+file)
+            let testSuiteHeading = document.createElement("h3");
+            testSuiteHeading.appendChild(document.createTextNode(file));
+            testSuite.appendChild(testSuiteHeading)
 
-                let testSuiteHeading = document.createElement("h3");
-                testSuiteHeading.appendChild(document.createTextNode(file));
-                testSuite.appendChild(testSuiteHeading)
+            let testCases = document.createElement("table");
 
-                let testCases = document.createElement("table");
+            let testRowData = {
+                cells: [
+                    {val: "Name"},
+                    {val: "Result"},
+                    {val: "Run Time"},
+                ],
+                rowType: "th"
+            }
+            testCases = createTableRow(testCases,testRowData)
 
-                let testRowData = {
+            for(let j = 0; j < testSuiteData["test-cases"].length; j++)
+            {
+                let testCollectionData = testSuiteData["test-cases"][j]
+
+                let functionRowData = {
                     cells: [
-                        {val: "Name"},
-                        {val: "Result"},
-                        {val: "Run Time"},
+                        {val: testCollectionData.name},
+                        {val: testCollectionData.result},
+                        {val: testCollectionData.time},
                     ],
-                    rowType: "th"
+                    rowType: "th",
+                    rowAttribs: [
+                        {name: "data-result",val: testCollectionData.result}
+                    ]
                 }
-                testCases = createTableRow(testCases,testRowData)
+                testCases = createTableRow(testCases,functionRowData)
 
-                for(let j = 0; j < testSuiteData["test-cases"].length; j++)
+                for(let k = 0; k < testCollectionData["tests"].length; k++)
                 {
-                    let testCollectionData = testSuiteData["test-cases"][j]
-
-                    let functionRowData = {
-                        cells: [
-                            {val: testCollectionData.name},
-                            {val: testCollectionData.result},
-                            {val: testCollectionData.time},
-                        ],
-                        rowType: "th",
-                        rowAttribs: [
-                            {name: "data-result",val: testCollectionData.result}
-                        ]
-                    }
-                    testCases = createTableRow(testCases,functionRowData)
-
-                    for(let k = 0; k < testCollectionData["tests"].length; k++)
-                    {
-                        let testData = testCollectionData["tests"][k]
-                        testCases = createTestRow(testData, testCases)
-                    }
+                    let testData = testCollectionData["tests"][k]
+                    testCases = createTestRow(testData, testCases)
                 }
+            }
 
-                let returnLink = document.createElement("a");
-                returnLink.href = "#file-list"
-                returnLink.appendChild(document.createTextNode("^ Return to Top"));
-                testSuite.appendChild(testCases);
-                testSuite.appendChild(returnLink);
+            let returnLink = document.createElement("a");
+            returnLink.href = "#file-list"
+            returnLink.appendChild(document.createTextNode("^ Return to Top"));
+            testSuite.appendChild(testCases);
+            testSuite.appendChild(returnLink);
 
-                const element = document.getElementById("test-collection");
-                element.appendChild(testSuite);
-        }
+            const element = document.getElementById("test-collection");
+            element.appendChild(testSuite);
         }
 
         const fileList = document.getElementById("file-list");

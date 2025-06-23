@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="minitest" timestamp="2025-06-10T13:03:35+10:00" hostname="IBM-PF45RLVF" tests="11" skipped="0" failures="0" errors="0" time="0.000221">
+    <testcase classname="Common::get_version" name="test_0001_should return 1, 2 and 3" time="0.000045" file="C:/_Work/_git/script-library/ruby/lib/Common.Tests.rb" line="11" assertions="3"/>
+    <testcase classname="LocalLib::secondFunction::2 default aruments" name="test_0002_2 second test should return 6" time="0.000034" file="C:/_Work/_git/script-library/ruby/testApp/lib/LocalLib.Tests.rb" line="56" assertions="1"/>
+    <testcase classname="LocalLib::secondFunction::2 default aruments" name="test_0003_2 output buffer test" time="0.000010" file="C:/_Work/_git/script-library/ruby/testApp/lib/LocalLib.Tests.rb" line="60" assertions="1"/>
+    <testcase classname="LocalLib::secondFunction::2 default aruments" name="test_0001_2 should return 6" time="0.000008" file="C:/_Work/_git/script-library/ruby/testApp/lib/LocalLib.Tests.rb" line="52" assertions="1"/>
+    <testcase classname="LocalLib::testFunction::default arguments::return vals" name="test_0001_should return 6" time="0.000017" file="C:/_Work/_git/script-library/ruby/testApp/lib/LocalLib.Tests.rb" line="21" assertions="1"/>
+    <testcase classname="LocalLib::testFunction::default arguments::return vals" name="test_0002_second test should return 6" time="0.000020" file="C:/_Work/_git/script-library/ruby/testApp/lib/LocalLib.Tests.rb" line="25" assertions="1"/>
+    <testcase classname="LocalLib::testFunction::passed aruments" name="test_0001_should return 6 when true is passed" time="0.000019" file="C:/_Work/_git/script-library/ruby/testApp/lib/LocalLib.Tests.rb" line="39" assertions="1"/>
+    <testcase classname="LocalLib::testFunction::passed aruments" name="test_0002_output buffer test" time="0.000011" file="C:/_Work/_git/script-library/ruby/testApp/lib/LocalLib.Tests.rb" line="43" assertions="1"/>
+    <testcase classname="LocalLib::testFunction::default arguments::screen output" name="test_0001_output buffer test" time="0.000032" file="C:/_Work/_git/script-library/ruby/testApp/lib/LocalLib.Tests.rb" line="31" assertions="1"/>
+    <testcase classname="LocalLib::secondFunction::2 passed aruments" name="test_0001_2 should return 6 when true is passed" time="0.000014" file="C:/_Work/_git/script-library/ruby/testApp/lib/LocalLib.Tests.rb" line="67" assertions="1"/>
+    <testcase classname="LocalLib::secondFunction::2 passed aruments" name="test_0002_2 output buffer test" time="0.000010" file="C:/_Work/_git/script-library/ruby/testApp/lib/LocalLib.Tests.rb" line="71" assertions="1"/>
+  </testsuite>
+</testsuites>

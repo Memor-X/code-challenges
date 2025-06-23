@@ -28,10 +28,10 @@ function Sort-Filelist($filelist)
 {
     $sortedFiles = @{}
 
-    foreach($file in $filelist)
+    foreach ($file in $filelist)
     {
         $ext = [IO.Path]::GetExtension($file)
-        if($sortedFiles.ContainsKey($ext) -eq $false)
+        if ($sortedFiles.ContainsKey($ext) -eq $false)
         {
             $sortedFiles."$($ext)" = @()
         }

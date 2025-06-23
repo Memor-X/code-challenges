@@ -73,6 +73,22 @@ describe "LocalLib" do
                     answerObj.next.next.next.next.next.next.next.val]
                 _(answerArr).must_equal expected
             end
+            it "Case 3 Reversed" do
+                testValArg2 = new_ListNode_obj([9,9,9,9,9,9,9])
+                testValArg1 = new_ListNode_obj([9,9,9,9])
+                expected = [8,9,9,9,0,0,0,1]
+                
+                answerObj = add_two_numbers(testValArg1,testValArg2)
+                answerArr = [answerObj.val, 
+                    answerObj.next.val, 
+                    answerObj.next.next.val,
+                    answerObj.next.next.next.val,
+                    answerObj.next.next.next.next.val,
+                    answerObj.next.next.next.next.next.val,
+                    answerObj.next.next.next.next.next.next.val,
+                    answerObj.next.next.next.next.next.next.next.val]
+                _(answerArr).must_equal expected
+            end
         end
 
     end
