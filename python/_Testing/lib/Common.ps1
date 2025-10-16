@@ -22,7 +22,7 @@
 #	runs the command specified in $cmd and logs it to a .txt
 #
 ########################################
-function Run-Command($cmd,$logDir=".")
+function Run-Command($cmd, $logDir = ".")
 {
     $logFile = "${logDir}\_log\commands_$(Get-Date -UFormat "%m-%d-%Y").txt"
     $logEntry = "[$(Get-Date -UFormat "%R")] | ${cmd}"
@@ -42,25 +42,26 @@ function Run-Command($cmd,$logDir=".")
 #   gets used recursively
 #
 ########################################
-function Initalize-Hash-Branch($hash,$path)
+function Initalize-Hash-Branch($hash, $path)
 {
     Write-Warning "Incorrect Spelled Function (Initalize-Hash-Branch). To Be Removed"
     return Initialize-Hash-Branch $hash $path
 }
-function Initialize-Hash-Branch($hash,$path)
+function Initialize-Hash-Branch($hash, $path)
 {
     $first, $rest = $path
-    if($null -eq $hash."$($first)")
+    if ($null -eq $hash."$($first)")
     {
+        Write-Debug "Initialize-Hash-Branch - Adding Key '$($first)'"
         $hash."$($first)" = @{}
     }
-    elseif($hash."$($first)".GetType().Name -ne "Hashtable")
+    elseif ($hash."$($first)".GetType().Name -ne "Hashtable")
     {
         Write-Warning "element $($first) is not a Hash Object"
         return $hash
     }
 
-    if($rest.Count -gt 0)
+    if ($rest.Count -gt 0)
     {
         $hash."$($first)" = Initialize-Hash-Branch $hash."$($first)" $rest
     }
@@ -80,19 +81,20 @@ function Initialize-Hash-Branch($hash,$path)
 #   gets used recursively
 #
 ########################################
-function Populate-Hash-Branch($hash,$path,$val)
+function Populate-Hash-Branch($hash, $path, $val)
 {
     $first, $rest = $path
 
-    if($null -eq $hash."$($first)")
+    if ($null -eq $hash."$($first)")
     {
         $hash."$($first)" = @{}
     }
 
-    if($rest.Count -gt 0)
+    if ($rest.Count -gt 0)
     {
-        if($hash."$($first)".GetType().Name -ne "Hashtable")
+        if ($hash."$($first)".GetType().Name -ne "Hashtable")
         {
+            Write-Debug "Populate-Hash-Branch - Adding Key '$($first)'"
             $hash."$($first)" = @{}
         }
         $hash."$($first)" = Populate-Hash-Branch -hash $hash."$($first)" -path $rest -val $val
@@ -107,31 +109,9 @@ function Populate-Hash-Branch($hash,$path,$val)
 
 ########################################
 #
-# Name:		Fetch-XMLVal
-# Input:	$iniObj <XML Object>
-#			$path <String>
-# Output:	$val <Various>
-# Description:
-#	returns the XML Element specified by the passed dot separated path
-#
-########################################
-function Fetch-XMLVal($iniObj,$path)
-{
-    $pathParts = $path.Split(".")
-    $val = $iniObj
-    foreach($pathPart in $pathParts)
-    {
-        $val = $val.$pathPart
-    }
-    Write-Log "${path}: ${val}"
-    $val
-}
-
-########################################
-#
 # Name:		Bulk-Replace
 # Input:	$string <String>
-#			$values <Array>
+#			$values <Object>
 # Output:	$updatesString <String>
 # Description:
 #	does multiple substring replacements based on the key:value pairs passed in $values
@@ -139,14 +119,14 @@ function Fetch-XMLVal($iniObj,$path)
 #   value = replace
 #
 ########################################
-function Bulk-Replace($string,$values)
+function Bulk-Replace($string, $values)
 {
     $updatesString = $string
     Write-Log "-----<Bulk Replacing>-----"
-    foreach($val in $values.GetEnumerator())
+    foreach ($val in $values.GetEnumerator())
     {
         Write-Log "Replacing '$($val.Name)' with $($val.Value)"
-        $updatesString = $updatesString.Replace($val.Name,$val.Value)
+        $updatesString = $updatesString.Replace($val.Name, $val.Value)
     }
     Write-Log "--------------------------"
     $updatesString
@@ -163,18 +143,18 @@ function Bulk-Replace($string,$values)
 #   similar to IndexOfAny
 #
 ########################################
-function FirstIndexOfAnyStr($str,$vals)
+function FirstIndexOfAnyStr($str, $vals)
 {
     $arrIndex = -1
     $index = $str.Length
 
     $i = 0
-    foreach($val in $vals)
+    foreach ($val in $vals)
     {
         $newIndex = $str.IndexOf($val)
-        if($newIndex -gt -1)
+        if ($newIndex -gt -1)
         {
-            if($newIndex -lt $index)
+            if ($newIndex -lt $index)
             {
                 $index = $newIndex
                 $arrIndex = $i
@@ -196,18 +176,18 @@ function FirstIndexOfAnyStr($str,$vals)
 #	looks up which value in an array of strings appears last in a string and returns the array index
 #
 ########################################
-function LastIndexOfAnyStr($str,$vals)
+function LastIndexOfAnyStr($str, $vals)
 {
     $arrIndex = -1
     $index = -1
 
     $i = 0
-    foreach($val in $vals)
+    foreach ($val in $vals)
     {
         $newIndex = $str.LastIndexOf($val)
-        if($newIndex -gt -1)
+        if ($newIndex -gt -1)
         {
-            if($newIndex -gt $index)
+            if ($newIndex -gt $index)
             {
                 $index = $newIndex
                 $arrIndex = $i
@@ -231,7 +211,7 @@ function LastIndexOfAnyStr($str,$vals)
 function Find-Bell($str)
 {
     $pos = -1
-    if($str.length -gt 0)
+    if ($str.length -gt 0)
     {
         $pos = $string.IndexOf([char]7)
     }
@@ -253,18 +233,18 @@ Function Repair-Trim($str)
     $returnStr = $str
 
     $charIndex = 0
-    while($trimChars.Contains($returnStr[$charIndex]) -eq $true)
+    while ($trimChars.Contains($returnStr[$charIndex]) -eq $true)
     {
         $charIndex += 1
     }
-    $returnStr = $returnStr.Remove(0,$charIndex)
+    $returnStr = $returnStr.Remove(0, $charIndex)
 
     $charIndex = $returnStr.Length
-    while($trimChars.Contains($returnStr[$charIndex-1]))
+    while ($trimChars.Contains($returnStr[$charIndex - 1]))
     {
         $charIndex -= 1
     }
-    $returnStr = $returnStr.Remove($charIndex,$returnStr.Length-$charIndex)
+    $returnStr = $returnStr.Remove($charIndex, $returnStr.Length - $charIndex)
 
     return $returnStr
 }
@@ -278,7 +258,7 @@ Function Repair-Trim($str)
 #	checks if a function is defined
 #
 ########################################
-Function Test-Function-Exists($command, $crash=$true)
+Function Test-Function-Exists($command, $crash = $true)
 {
     # record existing error setting before changing
     $ErrorActionPreference_old = $ErrorActionPreference
@@ -286,7 +266,7 @@ Function Test-Function-Exists($command, $crash=$true)
     try
     {
         # tried to trigger an error
-        if(Get-Command $command)
+        if (Get-Command $command)
         {
             Write-Success “'${command}' exists”
         }
@@ -295,7 +275,7 @@ Function Test-Function-Exists($command, $crash=$true)
     {
         # if the error was triggered, display error message and exits the script if flagged
         Write-Error “${command} does not exist”
-        if($crash -eq $true)
+        if ($crash -eq $true)
         {
             Exit
         }
@@ -303,7 +283,7 @@ Function Test-Function-Exists($command, $crash=$true)
     finally
     {
         # restore error setting
-        $ErrorActionPreference=$ErrorActionPreference_old
+        $ErrorActionPreference = $ErrorActionPreference_old
     }
 }
 
@@ -316,9 +296,9 @@ Function Test-Function-Exists($command, $crash=$true)
 #	uses $commands in a loop to call Test-Function-Exists for consistent batch testing
 #
 ########################################
-Function Test-Function-Loop($commands, $crash=$true)
+Function Test-Function-Loop($commands, $crash = $true)
 {
-    foreach($command in $commands)
+    foreach ($command in $commands)
     {
         Write-Debug "testing ${command}"
         Test-Function-Exists $command $crash
@@ -338,7 +318,7 @@ Function Test-Function-Loop($commands, $crash=$true)
 function Count-Array-Matches($collection, $toFind)
 {
     $arrMatches = 0
-    foreach($val in $toFind)
+    foreach ($val in $toFind)
     {
         if ($collection.Contains($val) -eq $true)
         {
@@ -360,25 +340,25 @@ function Count-Array-Matches($collection, $toFind)
 #   by $initialVal
 #
 ########################################
-function Initalize-Array($size=1,$initialVal=@($null))
+function Initalize-Array($size = 1, $initialVal = @($null))
 {
     Write-Warning "Incorrect Spelled Function (Initalize-Array). To Be Removed"
     return Initialize-Array $size $initialVal
 }
-function Initialize-Array($size=1,$initialVal=@($null))
+function Initialize-Array($size = 1, $initialVal = @($null))
 {
     Write-Log "Initializing Array of size $($size) with initial value of $($initialVal)"
     $newArray = @($null)
     $insertVal = @($initialVal)
-    if(@($initialVal).Length -gt 1)
+    if (@($initialVal).Length -gt 1)
     {
         $insertVal = $initialVal[0]
     }
     $newArray[0] = $insertVal
 
-    for($arrayPointer = 1; $arrayPointer -lt $size; $arrayPointer += 1)
+    for ($arrayPointer = 1; $arrayPointer -lt $size; $arrayPointer += 1)
     {
-        if(@($initialVal).Length -gt 1)
+        if (@($initialVal).Length -gt 1)
         {
             $index = $arrayPointer % $initialVal.Length
             $insertVal = $initialVal[$index]
@@ -399,12 +379,12 @@ function Initialize-Array($size=1,$initialVal=@($null))
 #	Does .Replace but using an array of items to find
 #
 ########################################
-function Group-Replace($string,$findArr,$replaceStr)
+function Group-Replace($string, $findArr, $replaceStr)
 {
     $returnStr = $string
-    foreach($findVal in $findArr)
+    foreach ($findVal in $findArr)
     {
-        $returnStr = $returnStr.Replace($findVal,$replaceStr)
+        $returnStr = $returnStr.Replace($findVal, $replaceStr)
     }
     return $returnStr
 }
@@ -419,7 +399,7 @@ function Group-Replace($string,$findArr,$replaceStr)
 #	pulls apart a version number string and returns it as a hash object of integers
 #
 ########################################
-function Get-Version($str,$delimiter='[.]')
+function Get-Version($str, $delimiter = '[.]')
 {
     $versionSplit = $str -split $delimiter
     $versionObj = @{
@@ -441,12 +421,12 @@ function Get-Version($str,$delimiter='[.]')
 #	returns the XML Element specified by the passed dot separated path
 #
 ########################################
-function Merge-Hash($hash1,$hash2)
+function Merge-Hash($hash1, $hash2)
 {
     $returnHash = $hash1
-    foreach($key in $hash2.Keys)
+    foreach ($key in $hash2.Keys)
     {
-        if($returnHash.ContainsKey($key))
+        if ($returnHash.ContainsKey($key))
         {
             $combinedVal = @($returnHash.$key)
             $combinedVal += @($hash2.$key)
@@ -469,12 +449,12 @@ function Merge-Hash($hash1,$hash2)
 #	Converts multi-spaces in a provided string to be single spaces
 #
 ########################################
-function Compress-Spaces($string,$hash2)
+function Compress-Spaces($string, $hash2)
 {
-    $returnStr  = $string
-    while(($returnStr -like "*  *") -eq $true)
+    $returnStr = $string
+    while (($returnStr -like "*  *") -eq $true)
     {
-        $returnStr = $returnStr.Replace("  "," ")
+        $returnStr = $returnStr.Replace("  ", " ")
     }
     return $returnStr
 }
@@ -496,12 +476,12 @@ function Add-Into-Array($arr, $val, $pos)
     $arrStart = @()
     $arrEnd = @()
 
-    if($pos -gt 0)
+    if ($pos -gt 0)
     {
-        $arrStart = $arr[0..($pos-1)]
+        $arrStart = $arr[0..($pos - 1)]
     }
 
-    if($pos -lt $arr.length)
+    if ($pos -lt $arr.length)
     {
         $arrEnd = $arr[($pos)..$arr.length]
     }
@@ -524,7 +504,7 @@ function Add-Into-Array($arr, $val, $pos)
 ########################################
 function Create-Path($path)
 {
-    if((Test-Path -Path $path -PathType Container) -eq $false)
+    if ((Test-Path -Path $path -PathType Container) -eq $false)
     {
         Write-Log "$path detected to be file, extracting"
         $path = Split-Path -Path $path -Parent
@@ -532,7 +512,7 @@ function Create-Path($path)
     }
 
 
-    if((Test-Path -Path $path) -eq $false)
+    if ((Test-Path -Path $path) -eq $false)
     {
         Write-Warning "${path} does not exist, creating"
         New-Item -ItemType Directory -Force -Path $path
@@ -549,7 +529,7 @@ function Create-Path($path)
 #	Appends the passed $str to the specified $file
 #
 ########################################
-function Append-File($file,$str)
+function Append-File($file, $str)
 {
     Create-Path $file
     Write-Debug "Appending to ${file} - ${str}"
@@ -566,7 +546,7 @@ function Append-File($file,$str)
 #	replaces the content of $file with what is passed to $str
 #
 ########################################
-function Write-File($file,$str)
+function Write-File($file, $str)
 {
     Create-Path $file
     Write-Debug "Writing to ${file} - ${str}"

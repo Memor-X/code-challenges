@@ -1,0 +1,13 @@
+{
+    "python.analysis.extraPaths": [
+        "./python/lib"
+    ],
+    "powershell.codeFormatting.whitespaceBeforeOpenParen": false,
+    "powershell.codeFormatting.whitespaceInsideBrace": false,
+    "powershell.codeFormatting.useConstantStrings": false,
+    "powershell.codeFormatting.trimWhitespaceAroundPipe": true,
+    "powershell.codeFormatting.avoidSemicolonsAsLineTerminators": true,
+    "editor.tabSize": 4,
+    "files.encoding": "utf8",
+    "files.eol": "\r\n"
+}

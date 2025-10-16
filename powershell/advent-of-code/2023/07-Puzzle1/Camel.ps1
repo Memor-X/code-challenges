@@ -1,9 +1,9 @@
 ########################################
 #
 # File Name:	Camel.ps1
-# Date Created:	
-# Description:	
-#	
+# Date Created:
+# Description:
+#
 #
 ########################################
 
@@ -82,7 +82,7 @@ foreach($handType in $handTypes)
                     Write-Debug $i
                 }
             }
-            if($sortedArr.length -ne $sortTerminator+1)
+            if($sortedArr.length -ne $sortTerminator + 1)
             {
                 $sortedArr += @($hand)
             }
@@ -105,7 +105,7 @@ $winnings = @()
 for($i = 0; $i -lt $winningsOrder.Length; $i += 1)
 {
     Write-Debug "Adding $($winningsOrder[$i])'s winnings of $($cardHands[$winningsOrder[$i]]) | multiplayer $($i+1)"
-    $winning = $cardHands[$winningsOrder[$i]]*($i+1)
+    $winning = $cardHands[$winningsOrder[$i]] * ($i + 1)
     Write-Debug "Winnings = $($winning)"
     $winnings += @($winning)
 }

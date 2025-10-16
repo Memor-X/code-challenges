@@ -1,5 +1,56 @@
 BeforeAll {
-    . $PSCommandPath.Replace('.Tests.ps1','.ps1')
+    . $PSCommandPath.Replace('.Tests.ps1', '.ps1')
+
+    # Variables
+    $global:outputBuffer = @{}
+    $outputBuffer."screen" = @()
+
+    # Function Mocking
+    Mock Add-Content {
+        $file = (Out-String -InputObject $PesterBoundParameters.Path).Trim()
+        if ($outputBuffer.ContainsKey($file) -eq $false)
+        {
+            $outputBuffer.$file = @()
+        }
+        $outputBuffer.$file += @($PesterBoundParameters.Value)
+    }
+    Mock Set-Content {
+        $file = (Out-String -InputObject $PesterBoundParameters.Path).Trim()
+        $outputBuffer.$file = @($PesterBoundParameters.Value)
+    }
+    <# Mock Write-Host {
+        $outputBuffer."screen" += @(@{
+                "msg" = (Out-String -InputObject $PesterBoundParameters.Object).Trim()
+                "color" = (Out-String -InputObject $PesterBoundParameters.ForegroundColor).Trim()
+            })
+    } #>
+    Mock Get-Date {
+        $returnVal = ""
+        switch ($PesterBoundParameters.UFormat)
+        {
+            "%m-%d-%Y"
+            {
+                $returnVal = "01-01-2000"
+                break
+            }
+            "%R"
+            {
+                $returnVal = "11:10"
+                break
+            }
+            "%m/%d/%Y %R"
+            {
+                $returnVal = "01/01/2000 11:10"
+                break
+            }
+            default
+            {
+                $returnVal = New-Object DateTime 2000, 2, 1, 11, 10, 0
+                break
+            }
+        }
+        return $returnVal
+    }
 }
 
 Describe 'Is-Digit' {
@@ -126,7 +177,7 @@ Describe 'String-To-Int' {
     It 'Fail to convert character' {
         $ErrorActionPreference = 'SilentlyContinue'
         $val = "g"
-        {String-To-Int $val }| Should -Throw
+        {String-To-Int $val } | Should -Throw
         $ErrorActionPreference = 'Continue'
     }
     Context "Other Datatypes" {
@@ -219,17 +270,17 @@ Describe 'JsonObj-To-Hash' {
 
 Describe 'NameValueCollection-To-Array' {
     It 'Convert NameValueCollection of size 1' {
-        $col = New-Object -TypeName "System.Collections.Specialized.NameValueCollection";
-        $col.Add("key1", "val1");
+        $col = New-Object -TypeName "System.Collections.Specialized.NameValueCollection"
+        $col.Add("key1", "val1")
         $array = @(NameValueCollection-To-Array $col)
         $array[0] | Should -Be "key1 = val1"
     }
 
     It 'Convert NameValueCollection of size 3' {
-        $col = New-Object -TypeName "System.Collections.Specialized.NameValueCollection";
-        $col.Add("key1", "val1");
-        $col.Add("key2", "val2");
-        $col.Add("key3", "val3");
+        $col = New-Object -TypeName "System.Collections.Specialized.NameValueCollection"
+        $col.Add("key1", "val1")
+        $col.Add("key2", "val2")
+        $col.Add("key3", "val3")
         $array = @(NameValueCollection-To-Array $col)
         $array[0] | Should -Be "key1 = val1"
         $array[1] | Should -Be "key2 = val2"
@@ -238,39 +289,39 @@ Describe 'NameValueCollection-To-Array' {
 
     Context "Other Datatypes" {
         It 'Convert NameValueCollection of with form array' {
-            $col = New-Object -TypeName "System.Collections.Specialized.NameValueCollection";
-            $col.Add("key[]", "val1");
-            $col.Add("key[]", "val2");
+            $col = New-Object -TypeName "System.Collections.Specialized.NameValueCollection"
+            $col.Add("key[]", "val1")
+            $col.Add("key[]", "val2")
             $array = @(NameValueCollection-To-Array $col)
             $array[0] | Should -Be "key[] = val1"
             $array[1] | Should -Be "key[] = val2"
         }
     
         It 'Convert NameValueCollection of with array val' {
-            $col = New-Object -TypeName "System.Collections.Specialized.NameValueCollection";
-            $col.Add("key", @("val1","val2"));
+            $col = New-Object -TypeName "System.Collections.Specialized.NameValueCollection"
+            $col.Add("key", @("val1", "val2"))
             $array = @(NameValueCollection-To-Array $col)
             $array[0] | Should -Be "key = val1 val2"
         }
         
         Context "NameValueCollection with Int" {
             It 'Convert NameValueCollection with Int Key' {
-                $col = New-Object -TypeName "System.Collections.Specialized.NameValueCollection";
-                $col.Add(652, "val1");
+                $col = New-Object -TypeName "System.Collections.Specialized.NameValueCollection"
+                $col.Add(652, "val1")
                 $array = @(NameValueCollection-To-Array $col)
                 $array[0] | Should -Be "652 = val1"
             }
 
             It 'Convert NameValueCollection with Int val' {
-                $col = New-Object -TypeName "System.Collections.Specialized.NameValueCollection";
-                $col.Add("key1", 567);
+                $col = New-Object -TypeName "System.Collections.Specialized.NameValueCollection"
+                $col.Add("key1", 567)
                 $array = @(NameValueCollection-To-Array $col)
                 $array[0] | Should -Be "key1 = 567"
             }
 
             It 'Convert NameValueCollection with Int key and val' {
-                $col = New-Object -TypeName "System.Collections.Specialized.NameValueCollection";
-                $col.Add(87, 567);
+                $col = New-Object -TypeName "System.Collections.Specialized.NameValueCollection"
+                $col.Add(87, 567)
                 $array = @(NameValueCollection-To-Array $col)
                 $array[0] | Should -Be "87 = 567"
             }
@@ -278,22 +329,22 @@ Describe 'NameValueCollection-To-Array' {
 
         Context "Hash with Boolean" {
             It 'Convert NameValueCollection with Boolean Key' {
-                $col = New-Object -TypeName "System.Collections.Specialized.NameValueCollection";
-                $col.Add($true, "val1");
+                $col = New-Object -TypeName "System.Collections.Specialized.NameValueCollection"
+                $col.Add($true, "val1")
                 $array = @(NameValueCollection-To-Array $col)
                 $array[0] | Should -Be "true = val1"
             }
 
             It 'Convert NameValueCollection with Boolean val' {
-                $col = New-Object -TypeName "System.Collections.Specialized.NameValueCollection";
-                $col.Add("key1", $true);
+                $col = New-Object -TypeName "System.Collections.Specialized.NameValueCollection"
+                $col.Add("key1", $true)
                 $array = @(NameValueCollection-To-Array $col)
                 $array[0] | Should -Be "key1 = true"
             }
 
             It 'Convert NameValueCollection with Boolean key and val' {
-                $col = New-Object -TypeName "System.Collections.Specialized.NameValueCollection";
-                $col.Add($true, $false);
+                $col = New-Object -TypeName "System.Collections.Specialized.NameValueCollection"
+                $col.Add($true, $false)
                 $array = @(NameValueCollection-To-Array $col)
                 $array[0] | Should -Be "true = false"
             }

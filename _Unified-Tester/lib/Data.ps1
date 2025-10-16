@@ -2,7 +2,7 @@
 #
 # File Name:	Data.ps1
 # Date Created:	08/02/2024
-# Description:	
+# Description:
 #	Function library for Data Types
 #
 ########################################
@@ -18,7 +18,7 @@
 # Name:		Is-Digit
 # Input:	$char <String>
 # Output:	<Boolean>
-# Description:	
+# Description:
 #	checks if the supplied character is a digit
 #
 ########################################
@@ -36,14 +36,14 @@ Function Is-Digit($char)
 }
 
 ########################################
-# Data Convertion
+# Data Conversion
 ########################################
 ########################################
 #
 # Name:		Hash-To-Array
 # Input:	$hash <Hash Object>
 # Output:	$returnArr <Array>
-# Description:	
+# Description:
 #	converts a Hash object into an Array of Strings formatted as "key = value"
 #
 ########################################
@@ -62,16 +62,16 @@ Function Hash-To-Array($hash)
 #
 # Name:		String-To-Int
 # Input:	$str <String>
-# Output:	$retunVal <Intenger>
-# Description:	
+# Output:	$returnVal <Integer>
+# Description:
 #	Converts String to Integer
 #
 ########################################
 function String-To-Int($str)
 {
     #Write-Debug "String to convert - $($str)"
-    [int64]$retunVal = [convert]::ToInt64($str, 10)
-    return $retunVal 
+    [int64]$returnVal = [convert]::ToInt64($str, 10)
+    return $returnVal
 }
 
 ########################################
@@ -79,7 +79,7 @@ function String-To-Int($str)
 # Name:		JsonObj-To-Hash
 # Input:	$jsonObj <Object>
 # Output:	$returnHash <Hash Object>
-# Description:	
+# Description:
 #	converts a JSON object into an Hash Object
 #
 ########################################
@@ -98,7 +98,7 @@ Function JsonObj-To-Hash($jsonObj)
 # Name:		NameValueCollection-To-Array
 # Input:	$coll <Object - NameValueCollection>
 # Output:	$returnArr <Array>
-# Description:	
+# Description:
 #	converts a NameValueCollection object into an Array of Strings formatted as "key = value"
 #
 ########################################
@@ -126,8 +126,8 @@ Function NameValueCollection-To-Array($coll)
 # Name:		String-to-TimeSpan
 # Input:	$timeString <String>
 # Output:	$timeSpan <Object - Timespan>
-# Description:	
-#	converts a : seperated string to be a Timespan Object
+# Description:
+#	converts a : separated string to be a Timespan Object
 #
 ########################################
 Function String-to-TimeSpan($timeString)
@@ -135,7 +135,7 @@ Function String-to-TimeSpan($timeString)
     # splits the string into time components
     $split = $timeString -split ":"
 
-    # checks how many time components we are working with assuming order will always be Days > Hours > Minuites > Seconds
+    # checks how many time components we are working with assuming order will always be Days > Hours > Minutes > Seconds
     switch ($split.Count)
     {
         1 {
@@ -164,7 +164,7 @@ Function String-to-TimeSpan($timeString)
 # Name:		Timestamp-to-DateTime
 # Input:	$unixTimestamp <String>
 # Output:	$dateObj <Object - DateTime>
-# Description:	
+# Description:
 #	Converts a Unix Timestamp into a Date Time Object
 #
 ########################################
@@ -172,5 +172,5 @@ function Timestamp-to-DateTime($unixTimestamp)
 {
     $dateObj = New-Object -Type DateTime -ArgumentList 1970, 1, 1, 0, 0, 0, 0
     $dateObj = $dateObj.AddSeconds($unixTimestamp)
-    return $dateObj 
+    return $dateObj
 }

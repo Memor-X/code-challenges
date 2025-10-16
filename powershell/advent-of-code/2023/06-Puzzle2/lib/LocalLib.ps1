@@ -2,7 +2,7 @@
 #
 # File Name:	LocalLib.ps1
 # Date Created:	08/07/2024
-# Description:	
+# Description:
 #	Local Functions for Unit Testing
 #
 ########################################
@@ -20,7 +20,7 @@
 # Name:		Build-Race-Data
 # Input:	$inputData <Array>
 # Output:	$races <Array>
-# Description:	
+# Description:
 #	formats the input data into a Hash Object
 #
 ########################################
@@ -28,8 +28,8 @@ function Build-Race-Data($inputData)
 {
     Write-Log "Building Race Data"
     $cleanedData = $inputData
-    $cleanedData[0] = $cleanedData[0].Replace("Time:","").Replace(" ","").Trim()
-    $cleanedData[1] = $cleanedData[1].Replace("Distance:","").Replace(" ","").Trim()
+    $cleanedData[0] = $cleanedData[0].Replace("Time:", "").Replace(" ", "").Trim()
+    $cleanedData[1] = $cleanedData[1].Replace("Distance:", "").Replace(" ", "").Trim()
 
     Write-Log "Building  Race"
     $races = @{
@@ -45,7 +45,7 @@ function Build-Race-Data($inputData)
 # Name:		Find-Winning-Charges
 # Input:	$raceData <Array>
 # Output:	$winners <Integer>
-# Description:	
+# Description:
 #	calculates the possible ways to win a race
 #
 ########################################

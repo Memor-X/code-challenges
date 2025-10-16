@@ -1,6 +1,6 @@
 BeforeAll {
     # Dynamic Link to file to test
-    . $PSCommandPath.Replace('.Tests.ps1','.ps1')
+    . $PSCommandPath.Replace('.Tests.ps1', '.ps1')
 
     # Variables
     $global:outputBuffer = @{}
@@ -9,7 +9,7 @@ BeforeAll {
     # Function Mocking
     Mock Add-Content {
         $file = (Out-String -InputObject $PesterBoundParameters.Path).Trim()
-        if($outputBuffer.ContainsKey($file) -eq $false)
+        if ($outputBuffer.ContainsKey($file) -eq $false)
         {
             $outputBuffer.$file = @()
         }
@@ -21,27 +21,31 @@ BeforeAll {
     }
     Mock Write-Host {
         $outputBuffer."screen" += @(@{
-            "msg" = (Out-String -InputObject $PesterBoundParameters.Object).Trim()
-            "color" = (Out-String -InputObject $PesterBoundParameters.ForegroundColor).Trim()
-        })
+                "msg" = (Out-String -InputObject $PesterBoundParameters.Object).Trim()
+                "color" = (Out-String -InputObject $PesterBoundParameters.ForegroundColor).Trim()
+            })
     }
     Mock Get-Date {
         $returnVal = ""
-        switch($PesterBoundParameters.UFormat)
+        switch ($PesterBoundParameters.UFormat)
         {
-            "%m-%d-%Y" {
+            "%m-%d-%Y"
+            {
                 $returnVal = "01-01-2000"
                 break
             }
-            "%R"{
+            "%R"
+            {
                 $returnVal = "11:10"
                 break
             }
-            "%m/%d/%Y %R"{
+            "%m/%d/%Y %R"
+            {
                 $returnVal = "01/01/2000 11:10"
                 break
             }
-            default {
+            default
+            {
                 $returnVal = New-Object DateTime 2000, 1, 1, 11, 10, 0
                 break
             }
@@ -51,7 +55,7 @@ BeforeAll {
 }
 
 Describe 'Write-Log' {
-    BeforeEach{
+    BeforeEach {
         $global:outputBuffer = @{}
         $outputBuffer."screen" = @()
         $logSetting."showLog" = $true
@@ -76,7 +80,7 @@ Describe 'Write-Log' {
         Should -Invoke -CommandName New-Item -Times 1
     }
 
-    Context "Default Paramaters" {
+    Context "Default Parameters" {
         It 'Plain Log Message' {
             Write-Log "Hello World"
             $outputBuffer."screen"[0].msg | Should -Be "[LOG] 01/01/2000 11:10 | Hello World"
@@ -92,7 +96,7 @@ Describe 'Write-Log' {
         }
     }
 
-    Context "Indent Paramater" {
+    Context "Indent Parameter" {
         It 'Message with 1 indent' {
             Write-Log "Hello World" 1
             $outputBuffer."screen"[0].msg | Should -Be "[LOG] 01/01/2000 11:10 | `tHello World"
@@ -121,7 +125,6 @@ Describe 'Write-Log' {
             $outputBuffer."screen"[1].color | Should -Be "DarkGray"
         }
     }
-    
 
     Context "Change Color" {
         It 'Blue Log Message' {
@@ -155,7 +158,7 @@ Describe 'Write-Log' {
         }
     }
 
-    Context "File Output" {    
+    Context "File Output" {
         It 'Plain Log Message' {
             $logSetting."fileOutput" = $true
             Write-Log "Hello World"
@@ -173,7 +176,7 @@ Describe 'Write-Log' {
 }
 
 Describe 'Write-Warning' {
-    BeforeEach{
+    BeforeEach {
         $global:outputBuffer = @{}
         $outputBuffer."screen" = @()
         $logSetting."showLog" = $true
@@ -196,7 +199,7 @@ Describe 'Write-Warning' {
         }
     }
 
-    Context "Default Paramaters" {
+    Context "Default Parameters" {
         It 'Plain Warning Message' {
             Write-Warning "Warning World"
             $outputBuffer."screen"[0].msg | Should -Be "[WARNING] 01/01/2000 11:10 | Warning World"
@@ -212,7 +215,7 @@ Describe 'Write-Warning' {
         }
     }
 
-    Context "Indent Paramater" {
+    Context "Indent Parameter" {
         It 'Warning Message with 1 indent' {
             Write-Warning "Warning World" 1
             $outputBuffer."screen"[0].msg | Should -Be "[WARNING] 01/01/2000 11:10 | `tWarning World"
@@ -244,7 +247,7 @@ Describe 'Write-Warning' {
 }
 
 Describe 'Write-Error' {
-    BeforeEach{
+    BeforeEach {
         $global:outputBuffer = @{}
         $outputBuffer."screen" = @()
         $logSetting."showLog" = $true
@@ -267,7 +270,7 @@ Describe 'Write-Error' {
         }
     }
 
-    Context "Default Paramaters" {
+    Context "Default Parameters" {
         It 'Plain Error Message' {
             Write-Error "Error World"
             $outputBuffer."screen"[0].msg | Should -Be "[ERROR] 01/01/2000 11:10 | Error World"
@@ -283,7 +286,7 @@ Describe 'Write-Error' {
         }
     }
 
-    Context "Indent Paramater" {
+    Context "Indent Parameter" {
         It 'Error Message with 1 indent' {
             Write-Error "Error World" 1
             $outputBuffer."screen"[0].msg | Should -Be "[ERROR] 01/01/2000 11:10 | `tError World"
@@ -315,7 +318,7 @@ Describe 'Write-Error' {
 }
 
 Describe 'Write-Success' {
-    BeforeEach{
+    BeforeEach {
         $global:outputBuffer = @{}
         $outputBuffer."screen" = @()
         $logSetting."showLog" = $true
@@ -331,7 +334,7 @@ Describe 'Write-Success' {
         }
     }
 
-    Context "Default Paramaters" {
+    Context "Default Parameters" {
         It 'Plain Success Message' {
             Write-Success "Success World"
             $outputBuffer."screen"[0].msg | Should -Be "[SUCCESS] 01/01/2000 11:10 | Success World"
@@ -347,7 +350,7 @@ Describe 'Write-Success' {
         }
     }
 
-    Context "Indent Paramater" {
+    Context "Indent Parameter" {
         It 'Success Message with 1 indent' {
             Write-Success "Success World" 1
             $outputBuffer."screen"[0].msg | Should -Be "[SUCCESS] 01/01/2000 11:10 | `tSuccess World"
@@ -379,7 +382,7 @@ Describe 'Write-Success' {
 }
 
 Describe 'Write-Debug' {
-    BeforeEach{
+    BeforeEach {
         $global:outputBuffer = @{}
         $outputBuffer."screen" = @()
         $logSetting."showLog" = $true
@@ -402,7 +405,7 @@ Describe 'Write-Debug' {
         }
     }
 
-    Context "Default Paramaters" {
+    Context "Default Parameters" {
         It 'Plain Debug Message' {
             Write-Debug "Debug World"
             $outputBuffer."screen"[0].msg | Should -Be "[DEBUG] 01/01/2000 11:10 | Debug World"
@@ -418,7 +421,7 @@ Describe 'Write-Debug' {
         }
     }
 
-    Context "Indent Paramater" {
+    Context "Indent Parameter" {
         It 'Debug Message with 1 indent' {
             Write-Debug "Debug World" 1
             $outputBuffer."screen"[0].msg | Should -Be "[DEBUG] 01/01/2000 11:10 | `tDebug World"
@@ -450,13 +453,13 @@ Describe 'Write-Debug' {
 }
 
 Describe 'Write-Hash-Debug' {
-    BeforeEach{
+    BeforeEach {
         $global:outputBuffer = @{}
         $outputBuffer."screen" = @()
     }
 
-    It 'Output Debug Meesages for 1 element Hash Object' {
-        $hash = @{"key1" = "val1"}
+    It 'Output Debug Message for 1 element Hash Object' {
+        $hash = @{"key1" = "val1" }
         Write-Hash-Debug $hash
         $outputBuffer."screen"[0].msg | Should -Be "[DEBUG] 01/01/2000 11:10 | ------<Hash Object>------"
         $outputBuffer."screen"[0].color | Should -Be "Cyan"
@@ -466,8 +469,8 @@ Describe 'Write-Hash-Debug' {
         $outputBuffer."screen"[2].color | Should -Be "Cyan"
     }
 
-    It 'Output Debug Meesages for 3 element Hash Object' {
-        $hash = @{"key1" = "val1"; "key2" = "val2"; "key3" = "val3"}
+    It 'Output Debug Message for 3 element Hash Object' {
+        $hash = @{"key1" = "val1"; "key2" = "val2"; "key3" = "val3" }
         Write-Hash-Debug $hash
         $outputBuffer."screen"[0].msg | Should -Be "[DEBUG] 01/01/2000 11:10 | ------<Hash Object>------"
         $outputBuffer."screen"[0].color | Should -Be "Cyan"
@@ -483,7 +486,7 @@ Describe 'Write-Hash-Debug' {
 }
 
 Describe 'Write-Start' {
-    BeforeEach{
+    BeforeEach {
         $global:outputBuffer = @{}
         $outputBuffer."screen" = @()
     }
@@ -498,7 +501,7 @@ Describe 'Write-Start' {
 }
 
 Describe 'Write-End' {
-    BeforeEach{
+    BeforeEach {
         $global:outputBuffer = @{}
         $outputBuffer."screen" = @()
         $global:startTime = New-Object DateTime 2000, 1, 1, 11, 00, 0
@@ -545,7 +548,7 @@ Describe 'Gen-Block' {
 
 Describe 'Gen-Hash-Block' {
     It 'Generates a debugging block with 1 item in hash' {
-        $obj = @{"key1" = "val1"}
+        $obj = @{"key1" = "val1" }
         $block = @(Gen-Hash-Block $obj)
         $block[0]  | Should -Be "key1 = [String] val1"
     }
@@ -565,7 +568,7 @@ Describe 'Gen-Hash-Block' {
     It 'Generates a debugging block with a child item' {
         $obj = @{
             "key1" = "val1"
-            "key2" = @{"child1" = "childval1"}
+            "key2" = @{"child1" = "childval1" }
         }
         $block = @(Gen-Hash-Block $obj)
         $block[0]  | Should -Be "key1 = [String] val1"
@@ -576,7 +579,7 @@ Describe 'Gen-Hash-Block' {
     It 'Generates a debugging block with a grandchild item' {
         $obj = @{
             "key1" = "val1"
-            "key2" = @{"child1" = @{"grandchild1" = "grandchildval1"}}
+            "key2" = @{"child1" = @{"grandchild1" = "grandchildval1" } }
         }
         $block = @(Gen-Hash-Block $obj)
         $block[0]  | Should -Be "key1 = [String] val1"
@@ -588,7 +591,7 @@ Describe 'Gen-Hash-Block' {
     It 'Generates a debugging block with array' {
         $obj = @{
             "key1" = "val1"
-            "key2" = @("child1","child2")
+            "key2" = @("child1", "child2")
         }
         $block = @(Gen-Hash-Block $obj)
         $block[0]  | Should -Be "key1 = [String] val1"
@@ -599,17 +602,17 @@ Describe 'Gen-Hash-Block' {
 
     Context "Other Datatypes as val" {
         It 'Int Value' {
-            $obj = @{"key1" = 16}
+            $obj = @{"key1" = 16 }
             $block = @(Gen-Hash-Block $obj)
             $block[0]  | Should -Be "key1 = [Int32] 16"
         }
         It 'Float Value' {
-            $obj = @{"key1" = 16.58746}
+            $obj = @{"key1" = 16.58746 }
             $block = @(Gen-Hash-Block $obj)
             $block[0]  | Should -Be "key1 = [Double] 16.58746"
         }
         It 'Boolean Float' {
-            $obj = @{"key1" = $true}
+            $obj = @{"key1" = $true }
             $block = @(Gen-Hash-Block $obj)
             $block[0]  | Should -Be "key1 = [Boolean] true"
         }

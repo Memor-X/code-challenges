@@ -1,6 +1,6 @@
 BeforeAll {
     # Dynamic Link to file to test
-    . $PSCommandPath.Replace('.Tests.ps1','.ps1')
+    . $PSCommandPath.Replace('.Tests.ps1', '.ps1')
 
     # Variables
     $global:outputBuffer = @{}
@@ -21,27 +21,31 @@ BeforeAll {
     }
     Mock Write-Host {
         $outputBuffer."screen" += @(@{
-            "msg" = (Out-String -InputObject $PesterBoundParameters.Object).Trim()
-            "color" = (Out-String -InputObject $PesterBoundParameters.ForegroundColor).Trim()
-        })
+                "msg" = (Out-String -InputObject $PesterBoundParameters.Object).Trim()
+                "color" = (Out-String -InputObject $PesterBoundParameters.ForegroundColor).Trim()
+            })
     }
     Mock Get-Date {
         $returnVal = ""
         switch($PesterBoundParameters.UFormat)
         {
-            "%m-%d-%Y" {
+            "%m-%d-%Y"
+            {
                 $returnVal = "01-01-2000"
                 break
             }
-            "%R"{
+            "%R"
+            {
                 $returnVal = "11:10"
                 break
             }
-            "%m/%d/%Y %R"{
+            "%m/%d/%Y %R"
+            {
                 $returnVal = "01/01/2000 11:10"
                 break
             }
-            default {
+            default
+            {
                 $returnVal = New-Object DateTime 2000, 1, 1, 11, 10, 0
                 break
             }
@@ -223,7 +227,7 @@ Describe 'Mapping-Lookup' {
             @{seed = 55; soil = 57}
             @{seed = 13; soil = 13}
             @{seed = 82; soil = 84}
-        ){
+        ) {
             $rtnSoil = Mapping-Lookup $mapping."seed-to-soil" $seed
             $rtnSoil | Should -Be $soil
         }   
@@ -233,7 +237,7 @@ Describe 'Mapping-Lookup' {
             @{soil = 14; fertilizer = 53}
             @{soil = 57; fertilizer = 57}
             @{soil = 13; fertilizer = 52}
-        ){
+        ) {
             $rtnFert = Mapping-Lookup $mapping."soil-to-fertilizer" $soil
             $rtnFert | Should -Be $fertilizer
         }
@@ -243,7 +247,7 @@ Describe 'Mapping-Lookup' {
             @{fertilizer = 53; water = 49}
             @{fertilizer = 57; water = 53}
             @{fertilizer = 52; water = 41}
-        ){
+        ) {
             $rtnWater = Mapping-Lookup $mapping."fertilizer-to-water" $fertilizer
             $rtnWater | Should -Be $water
         }
@@ -253,7 +257,7 @@ Describe 'Mapping-Lookup' {
             @{water = 49; light = 42}
             @{water = 53; light = 46}
             @{water = 41; light = 34}
-        ){
+        ) {
             $rtnLight = Mapping-Lookup $mapping."water-to-light" $water
             $rtnLight | Should -Be $light
         }
@@ -263,7 +267,7 @@ Describe 'Mapping-Lookup' {
             @{light = 42; temperature = 42}
             @{light = 46; temperature = 82}
             @{light = 34; temperature = 34}
-        ){
+        ) {
             $rtnTemp = Mapping-Lookup $mapping."light-to-temperature" $light
             $rtnTemp | Should -Be $temperature
         }
@@ -273,7 +277,7 @@ Describe 'Mapping-Lookup' {
             @{temperature = 42; humidity = 43}
             @{temperature = 82; humidity = 82}
             @{temperature = 34; humidity = 35}
-        ){
+        ) {
             $rtnHum = Mapping-Lookup $mapping."temperature-to-humidity" $temperature
             $rtnHum | Should -Be $humidity
         }
@@ -283,7 +287,7 @@ Describe 'Mapping-Lookup' {
             @{humidity = 43; location = 43}
             @{humidity = 82; location = 86}
             @{humidity = 35; location = 35}
-        ){
+        ) {
             $rtnLoc = Mapping-Lookup $mapping."humidity-to-location" $humidity
             $rtnLoc | Should -Be $location
         }
@@ -304,7 +308,8 @@ Describe 'Get-Mapping-Range' {
                     7 = @(57, 4)
                     11 = @(0, 42)
                     53 = @(49, 8)
-                }}
+                }
+            }
             $map = $mapping."fertilizer-to-water"
             $fertilizer = 6
             $range = 20
@@ -321,7 +326,7 @@ Describe 'Get-Mapping-Range' {
             @{return = 57}
             @{return = 0}
             @{return = 15}
-        ){
+        ) {
             $found = $false
             foreach($val in $waterVals)
             {
@@ -343,7 +348,8 @@ Describe 'Get-Mapping-Range' {
                     7 = @(57, 4)
                     11 = @(0, 42)
                     53 = @(49, 8)
-                }}
+                }
+            }
             $map = $mapping."fertilizer-to-water"
             $fertilizer = 6
             $range = 0
@@ -394,7 +400,7 @@ Describe 'Scenario Testing' {
             @{key = 11; mapVal = 0; expectedRange = 42}
             @{key = 53; mapVal = 49; expectedRange = 8}
             @{key = 61; mapVal = 61; expectedRange = 0}
-        ){
+        ) {
             (($mapping."fertilizer-to-water")."$($key)")[0] | Should -Be $mapVal
             (($mapping."fertilizer-to-water")."$($key)")[1] | Should -Be $expectedRange
         }
@@ -407,7 +413,7 @@ Describe 'Scenario Testing' {
             @{return = 53}
             @{return = 61}
             @{return = 70}
-        ){
+        ) {
             $found = $false
             foreach($val in $waterVals)
             {
@@ -484,7 +490,7 @@ Describe 'Scenario Testing' {
                 @{pos = 1; seed = 50}
                 @{pos = 2; seed = 98}
                 @{pos = 3; seed = 100}
-            ){
+            ) {
                 $keys = @($mapping."seed-to-soil").Keys | Sort-Object {String-To-Int $_}
                 #$keys[$pos].GetType() | Should -Be "Int64"
                 $keys[$pos] | Should -Be $seed
@@ -502,11 +508,11 @@ Describe 'Scenario Testing' {
                 @{seed = 55; soil = 57}
                 @{seed = 68; soil = 70}
                 @{seed = 100; soil = 100}
-            ){
+            ) {
                 $rtnSoil = Mapping-Lookup $mapping."seed-to-soil" $seed
                 $rtnSoil | Should -Be $soil
             }
-            It 'seed-to-soil range collected correctly. 79-14 should return 81-14 and 85-0'{
+            It 'seed-to-soil range collected correctly. 79-14 should return 81-14 and 85-0' {
                 $seed = 79
                 $range = 14
                 $ranges = @(Get-Mapping-Range ($mapping."seed-to-soil") $seed $range)
@@ -527,7 +533,7 @@ Describe 'Scenario Testing' {
                 $ranges[1].val | Should -Be $rangMapping2.val
                 $ranges[1].range | Should -Be $rangMapping2.range
             }
-            It 'seed-to-soil range collected correctly. 55-13 should return 57-13 and 70-0'{
+            It 'seed-to-soil range collected correctly. 55-13 should return 57-13 and 70-0' {
                 $seed = 55
                 $range = 13
                 $ranges = @(Get-Mapping-Range ($mapping."seed-to-soil") $seed $range)
@@ -571,7 +577,7 @@ Describe 'Scenario Testing' {
                 @{pos = 2; fertilizer = 11}
                 @{pos = 3; fertilizer = 53}
                 @{pos = 4; fertilizer = 61}
-            ){
+            ) {
                 $keys = @($mapping."fertilizer-to-water").Keys | Sort-Object {String-To-Int $_}
                 #$keys[$pos].GetType() | Should -Be "Int64"
                 $keys[$pos] | Should -Be $fertilizer
@@ -583,7 +589,7 @@ Describe 'Scenario Testing' {
                 @{fertilizer = 53; water = 49}
                 @{fertilizer = 61; water = 61}
 
-            ){
+            ) {
                 $rtnWater = Mapping-Lookup $mapping."fertilizer-to-water" $fertilizer
                 $rtnWater | Should -Be $water
             }
@@ -595,7 +601,7 @@ Describe 'Scenario Testing' {
                 @{fertilizer = 57; range = 13; water = 61; waterRange = 9}
                 @{fertilizer = 57; range = 13; water = 70; waterRange = 0}
 
-            ){
+            ) {
                 $rangeCheck = @(Get-Mapping-Range ($mapping."fertilizer-to-water") $fertilizer $range)
 
                 $found = -1
@@ -633,7 +639,7 @@ Describe 'Scenario Testing' {
                 @{pos = 1; water = 18}
                 @{pos = 2; water = 25}
                 @{pos = 3; water = 95}
-            ){
+            ) {
                 $keys = @($mapping."water-to-light").Keys | Sort-Object {String-To-Int $_}
                 #$keys[$pos].GetType() | Should -Be "Int64"
                 $keys[$pos] | Should -Be $water
@@ -649,7 +655,7 @@ Describe 'Scenario Testing' {
                 @{water = 70; light = 63}
                 @{water = 81; light = 74}
 
-            ){
+            ) {
                 $rtnLight = Mapping-Lookup $mapping."water-to-light" $water
                 $rtnLight | Should -Be $light
             }

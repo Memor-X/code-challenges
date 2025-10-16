@@ -2,13 +2,13 @@
 #
 # File Name:	Seeds.ps1
 # Date Created:	21/02/2024
-# Description:	
+# Description:
 #	Advent of Code - Day 5 - Puzzle 2
 #
 ########################################
 
 # File Imports
-. "$($PSScriptRoot)\..\..\lib\AdventOfCode.ps1"
+. "$($PSScriptRoot)\..\..\..\lib\AdventOfCode.ps1"
 . "$($PSScriptRoot)\lib\LocalLib.ps1"
 
 # Global Variable Setting
@@ -23,20 +23,20 @@ Write-Start
 $data = Load-Input
 $locations = @()
 $mapping = @{}
-$header = $flase
+$header = $false
 $key = ""
 
 $mapping = Compile-Input-Data $data
 
 Write-Log "Collecting Seeds"
-$seeds = $data[0].Replace("seeds: ","").Split(" ")
+$seeds = $data[0].Replace("seeds: ", "").Split(" ")
 $locCol = @()
 
 for($i = 0; $i -lt $seeds.Length; $i = $i + 2)
 {
     $start = (String-To-Int $seeds[($i)])
-    $range = (String-To-Int $seeds[$i+1])
-    $end = $start + $range -1
+    $range = (String-To-Int $seeds[$i + 1])
+    $end = $start + $range - 1
 
     Write-Log "Seed Range - $($start) -> $($end)"
 
@@ -159,7 +159,7 @@ foreach($mapKey in $mapList)
     #    $arrayRep = Hash-To-Array $val
     #    Write-Debug $arrayRep
     #}
-    
+
 }
 
 $locCol += @($valCol)

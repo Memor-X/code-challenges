@@ -24,14 +24,19 @@
 ########################################
 Function Is-Digit($char)
 {
-    if($char.GetType().Name -ne "String")
+    Write-Debug "Checking Digit [$($char)]"
+    if(($char.GetType().Name -ne "Char") -and ($char.GetType().Name -ne "String"))
     {
+        Write-Debug "Not a String"
         return $false
     }
     if($char.Length -gt 1)
     {
+        Write-Debug "longer than 1 character"
         return $false
     }
+
+    Write-Debug "matching to ^\d+$"
     return ($char -match "^\d+$")
 }
 
@@ -138,19 +143,23 @@ Function String-to-TimeSpan($timeString)
     # checks how many time components we are working with assuming order will always be Days > Hours > Minutes > Seconds
     switch ($split.Count)
     {
-        1 {
+        1
+        {
             $timespan = New-TimeSpan -Seconds ([int]($split[0]))
             Break
         }
-        2 {
+        2
+        {
             $timespan = New-TimeSpan -Minutes ([int]($split[0])) -Seconds ([int]($split[1]))
             Break
         }
-        4 {
+        4
+        {
             $timespan = New-TimeSpan -Days ([int]($split[0])) -Hours ([int]($split[1])) -Minutes ([int]($split[2])) -Seconds ([int]($split[3]))
             Break
         }
-        default {
+        default
+        {
             $timespan = New-TimeSpan -Hours ([int]($split[0])) -Minutes ([int]($split[1])) -Seconds ([int]($split[2]))
             Break
         }

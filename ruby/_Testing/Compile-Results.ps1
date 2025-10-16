@@ -1,7 +1,8 @@
 # File Imports
 . "$($PSScriptRoot)\..\..\Powershell\lib\Common.ps1"
+. "$($PSScriptRoot)\..\..\Powershell\lib\XML.ps1"
 
-$global:logSetting.showDebug = $true
+$global:logSetting.showDebug = $false
 
 Write-Log "Compiling Inital Test Result Object"
 $durationCol = @()
@@ -49,20 +50,20 @@ foreach ($file in $files)
         $classSplit = $testCase.classname -split "::"
         $dropped, $classSplit = $classSplit
         $testName = $testCase.name.Split("_", 3)
-        $classSplit = @($classSplit, $testName[2])
+        $classSplit = @($classSplit) + @($testName[2])
+        Write-Debug (Gen-Block "classplit Array" $classSplit)
         Write-Log "Sorting $($testName[2])"
-        $testHash."$($testedFile)" = Initalize-Hash-Branch $testHash."$($testedFile)" $classSplit
+        $testHash."$($testedFile)" = Initalize-Hash-Branch $testHash."$($testedFile)" @($classSplit)
         $addedTestCase = @{
             "asserts" = $testCase.assertions
             "executed" = "True"
             "name" = $testName[2]
-            "result" = ($null -eq $testCase.failure)
+            "result" = (($null -eq $testCase.failure) -and ($null -eq $testCase.error))
             "time" = [decimal]$testCase.time
             "type" = "test-case"
         }
-        #Write-Debug (Gen-Block "addedTestCase Hash" (Gen-Hash-Block $addedTestCase))
+        Write-Debug (Gen-Block "addedTestCase Hash" (Gen-Hash-Block $addedTestCase))
         $testHash."$($testedFile)" = Populate-Hash-Branch $testHash."$($testedFile)" $classSplit $addedTestCase
-        Write-Debug (Gen-Block "classplit Array" $classSplit)
         Write-Debug (Gen-Block "testHash.`"$($testedFile)`" Hash" (Gen-Hash-Block $testHash."$($testedFile)"))
     }
 }

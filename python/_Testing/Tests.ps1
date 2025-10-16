@@ -57,7 +57,7 @@ else
         elseif ((Test-Path $file -PathType Container) -eq $true)
         {
             Write-Test-Log "Adding Folder - $($file)"
-            $files = Get-ChildItem -Path $file -Filter "*Tests.ps1" -Recurse
+            $files = Get-ChildItem -Path $file -Filter "*Tests.py" -Recurse
             foreach ($subfile in $files)
             {
                 Write-Test-Log "`tAdding Test from folder Folder - $($subfile.FullName)"

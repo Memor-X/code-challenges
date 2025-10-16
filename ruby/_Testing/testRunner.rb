@@ -2,7 +2,7 @@ require 'simplecov'
 
 SimpleCov.command_name "test:units"
 SimpleCov.coverage_dir SimpleCov.root+'\coverage'
-SimpleCov.root 'C:\_Work\_git\script-library\ruby'
+SimpleCov.root 'C:\_Work\_git\code-challenges\ruby'
 SimpleCov.minimum_coverage 90
 
 SimpleCov.add_filter /.*\.suite.rb$/

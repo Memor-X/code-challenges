@@ -2,13 +2,13 @@
 #
 # File Name:	Races.ps1
 # Date Created:	02/07/2024
-# Description:	
+# Description:
 #	Advent of Code - Day 6 - Puzzle 1
 #
 ########################################
 
 # File Imports
-. "$($PSScriptRoot)\..\..\lib\AdventOfCode.ps1"
+. "$($PSScriptRoot)\..\..\..\lib\AdventOfCode.ps1"
 . "$($PSScriptRoot)\lib\LocalLib.ps1"
 
 # Global Variable Setting
@@ -16,7 +16,7 @@ $global:AoC.puzzle = "6-1"
 $global:AoC.testInputMode = $false
 
 $global:logSetting.fileOutput = $true
-$global:logSetting.showDebug = $true
+$global:logSetting.showDebug = $false
 #=======================================
 
 Write-Start

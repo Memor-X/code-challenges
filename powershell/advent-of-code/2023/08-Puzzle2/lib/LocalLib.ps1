@@ -2,7 +2,7 @@
 #
 # File Name:	LocalLib.ps1
 # Date Created:	21/03/2025
-# Description:	
+# Description:
 #	Local Functions for Unit Testing
 #
 ########################################
@@ -56,13 +56,13 @@ function Find-LCM($multiples)
     $sortedMults = ($multiples | Sort-Object)
 
     $gcd = Find-GCD @($sortedMults[0], $sortedMults[1])
-    $lcm = (($sortedMults[0] * $sortedMults[1])/$gcd)
+    $lcm = (($sortedMults[0] * $sortedMults[1]) / $gcd)
 
     for($i = 2; $i -lt $sortedMults.length; $i += 1)
     {
         Write-Debug "Getting LCM of $($lcm) and $($sortedMults[$i]) (Index $($i))"
         $gcd = Find-GCD @($lcm, $sortedMults[$i])
-        $lcm = (($lcm * $sortedMults[$i])/$gcd)
+        $lcm = (($lcm * $sortedMults[$i]) / $gcd)
     }
 
     $returnVal = $lcm
@@ -93,7 +93,7 @@ function Find-GCD($numbers)
 
     $returnVal = $gcd
 
-   <#  $sortedDividers = ($numbers | Sort-Object)
+    <#  $sortedDividers = ($numbers | Sort-Object)
     $dividersGreater = Find-Dividers $sortedDividers[1]
     $dividersSmaller = Find-Dividers $sortedDividers[0]
 
@@ -111,9 +111,9 @@ function Find-GCD($numbers)
 function Find-Dividers($number)
 {
     $dividers = @(1, $number)
-    for($i = 2; $i -lt (($number / 2)+1); $i++)
+    for($i = 2; $i -lt (($number / 2) + 1); $i++)
     {
-        if (($number / $i).GetType() -ne  [System.Double])
+        if (($number / $i).GetType() -ne [System.Double])
         {
             $dividers += @($i)
         }

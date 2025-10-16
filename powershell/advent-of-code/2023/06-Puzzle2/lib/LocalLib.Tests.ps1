@@ -1,6 +1,6 @@
 BeforeAll {
     # Dynamic Link to file to test
-    . $PSCommandPath.Replace('.Tests.ps1','.ps1')
+    . $PSCommandPath.Replace('.Tests.ps1', '.ps1')
 
     # Variables
     $global:outputBuffer = @{}
@@ -21,27 +21,31 @@ BeforeAll {
     }
     Mock Write-Host {
         $outputBuffer."screen" += @(@{
-            "msg" = (Out-String -InputObject $PesterBoundParameters.Object).Trim()
-            "color" = (Out-String -InputObject $PesterBoundParameters.ForegroundColor).Trim()
-        })
+                "msg" = (Out-String -InputObject $PesterBoundParameters.Object).Trim()
+                "color" = (Out-String -InputObject $PesterBoundParameters.ForegroundColor).Trim()
+            })
     }
     Mock Get-Date {
         $returnVal = ""
         switch($PesterBoundParameters.UFormat)
         {
-            "%m-%d-%Y" {
+            "%m-%d-%Y"
+            {
                 $returnVal = "01-01-2000"
                 break
             }
-            "%R"{
+            "%R"
+            {
                 $returnVal = "11:10"
                 break
             }
-            "%m/%d/%Y %R"{
+            "%m/%d/%Y %R"
+            {
                 $returnVal = "01/01/2000 11:10"
                 break
             }
-            default {
+            default
+            {
                 $returnVal = New-Object DateTime 2000, 1, 1, 11, 10, 0
                 break
             }
@@ -91,7 +95,7 @@ Describe 'Find-Winning-Charges' {
         @{time = 5; dist = 999; winners = 0}
         @{time = 5; dist = 0; winners = 4}
         @{time = 8; dist = 10; winners = 5}
-    ){
+    ) {
         $inputData = @{
             "time" = $time
             "record-dist" = $dist

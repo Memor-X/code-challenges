@@ -2,13 +2,13 @@
 #
 # File Name:	Scratchcard.ps1
 # Date Created:	12/02/2024
-# Description:	
+# Description:
 #	Advent of Code - Day 4 - Puzzle 1
 #
 ########################################
 
 # File Imports
-. "$($PSScriptRoot)\..\..\lib\AdventOfCode.ps1"
+. "$($PSScriptRoot)\..\..\..\lib\AdventOfCode.ps1"
 . "$($PSScriptRoot)\lib\LocalLib.ps1"
 
 # Global Variable Setting
@@ -16,7 +16,7 @@ $global:AoC.puzzle = "4-1"
 $global:AoC.testInputMode = $false
 
 $global:logSetting.fileOutput = $true
-$global:logSetting.showDebug = $true
+$global:logSetting.showDebug = $false
 #=======================================
 
 # Local Functions
@@ -32,7 +32,7 @@ for($i = 0; $i -lt $cards.length; $i += 1)
     Write-Log "Splitting Card $($i+1)"
     $card, $numbers = ($cards[$i] -split ':')
 
-    $numbers = $numbers.Replace("  "," ").Trim()
+    $numbers = $numbers.Replace("  ", " ").Trim()
     $card = $card.Trim()
     $score = 0
 
@@ -61,5 +61,5 @@ for($i = 0; $i -lt $cards.length; $i += 1)
     Write-Log "==================================="
 }
 
-Get-Answer $scratchcards 
+Get-Answer $scratchcards
 Write-End

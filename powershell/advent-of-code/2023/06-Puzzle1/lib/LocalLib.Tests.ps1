@@ -1,6 +1,6 @@
 BeforeAll {
     # Dynamic Link to file to test
-    . $PSCommandPath.Replace('.Tests.ps1','.ps1')
+    . $PSCommandPath.Replace('.Tests.ps1', '.ps1')
 
     # Variables
     $global:outputBuffer = @{}
@@ -21,27 +21,31 @@ BeforeAll {
     }
     Mock Write-Host {
         $outputBuffer."screen" += @(@{
-            "msg" = (Out-String -InputObject $PesterBoundParameters.Object).Trim()
-            "color" = (Out-String -InputObject $PesterBoundParameters.ForegroundColor).Trim()
-        })
+                "msg" = (Out-String -InputObject $PesterBoundParameters.Object).Trim()
+                "color" = (Out-String -InputObject $PesterBoundParameters.ForegroundColor).Trim()
+            })
     }
     Mock Get-Date {
         $returnVal = ""
         switch($PesterBoundParameters.UFormat)
         {
-            "%m-%d-%Y" {
+            "%m-%d-%Y"
+            {
                 $returnVal = "01-01-2000"
                 break
             }
-            "%R"{
+            "%R"
+            {
                 $returnVal = "11:10"
                 break
             }
-            "%m/%d/%Y %R"{
+            "%m/%d/%Y %R"
+            {
                 $returnVal = "01/01/2000 11:10"
                 break
             }
-            default {
+            default
+            {
                 $returnVal = New-Object DateTime 2000, 1, 1, 11, 10, 0
                 break
             }
@@ -95,31 +99,31 @@ Describe 'Build-Race-Data' {
         It 'Race <raceno> exists' -TestCases @(
             @{raceno = 1}
             @{raceno = 2}
-        ){
+        ) {
             $raceData.ContainsKey("race $($raceno)") | Should -Be $true
         }
         It 'Race <raceno> Time should be Integer' -TestCases @(
             @{raceno = 1}
             @{raceno = 2}
-        ){
+        ) {
             $raceData."race $($raceno)"."time".GetType() | Should -Be "long"
         }
         It 'Race <raceno> Time is set to <time>' -TestCases @(
             @{raceno = 1; time = 2}
             @{raceno = 2; time = 16}
-        ){
+        ) {
             $raceData."race $($raceno)"."time" | Should -Be $time
         }
         It 'Race <raceno> Record Distance should be Integer' -TestCases @(
             @{raceno = 1}
             @{raceno = 2}
-        ){
+        ) {
             $raceData."race $($raceno)"."record-dist".GetType() | Should -Be "long"
         }
         It 'Race <raceno> Record Distance is set to <distance>' -TestCases @(
             @{raceno = 1; distance = 57}
             @{raceno = 2; distance = 542}
-        ){
+        ) {
             $raceData."race $($raceno)"."record-dist" | Should -Be $distance
         }
     }
@@ -151,7 +155,7 @@ Describe 'Find-Charges' {
             @{time = 3}
             @{time = 4}
             @{time = 5}
-        ){
+        ) {
             $rtnData[$time]."charge" | Should -be $time
         }
 
@@ -162,7 +166,7 @@ Describe 'Find-Charges' {
             @{charge = 3; remaining = 2}
             @{charge = 4; remaining = 1}
             @{charge = 5; remaining = 0}
-        ){
+        ) {
             $rtnData[$charge]."time-left" | Should -be $remaining
         }
 
@@ -173,7 +177,7 @@ Describe 'Find-Charges' {
             @{charge = 3; distance = 6}
             @{charge = 4; distance = 4}
             @{charge = 5; distance = 0}
-        ){
+        ) {
             $rtnData[$charge]."traveled" | Should -be $distance
         }
     }
@@ -230,7 +234,7 @@ Describe 'Find-Winners' {
         It 'Charge of <charge> should be in collection' -TestCases @(
             @{charge = 2}
             @{charge = 3}
-        ){
+        ) {
             $found = $false
             foreach($val in $rtnData)
             {
@@ -334,7 +338,7 @@ Describe 'Find-Winners' {
             @{charge = 2}
             @{charge = 3}
             @{charge = 4}
-        ){
+        ) {
             $found = $false
             foreach($val in $rtnData)
             {
@@ -393,7 +397,7 @@ Describe 'Find-Winners' {
         It 'Charge of <charge> should be in collection' -TestCases @(
             @{charge = 2}
             @{charge = 3}
-        ){
+        ) {
             $found = $false
             foreach($val in $rtnData)
             {

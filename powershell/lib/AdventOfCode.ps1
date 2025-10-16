@@ -12,7 +12,7 @@
 . "$($PSScriptRoot)\Data.ps1"
 
 # Global Variables
-if($global:AoC -eq $null)
+if($null -eq $global:AoC)
 {
     $global:AoC = @{
         "puzzle" = "0-0"
@@ -28,8 +28,8 @@ if($global:AoC -eq $null)
 # Name:		Load-Input
 # Input:	N/A
 # Output:	$inputData <Array>
-# Description:	
-#	Imports data based off global variable values allowing to load up test 
+# Description:
+#	Imports data based off global variable values allowing to load up test
 #   data or a specified override data, saving the need to keep changing input.txt
 #
 ########################################
@@ -64,9 +64,9 @@ function Load-Input()
 # Name:		Get-Answer
 # Input:	$collection <Array>
 # Output:	Screen Output
-# Description:	
-#	Calculates and outputs Advent of Code Answer. also outputs the data being 
-#   caculated for debugging
+# Description:
+#	Calculates and outputs Advent of Code Answer. also outputs the data being
+#   calculated for debugging
 #
 ########################################
 function Get-Answer($collection,$calc="sum")
@@ -75,7 +75,7 @@ function Get-Answer($collection,$calc="sum")
     $logSettingRetain = $global:logSetting
     $global:logSetting.showLog = $true
     $global:logSetting.showDebug = $true
-    
+
     Write-Debug (Gen-Block "Values to Calculate" (@("Collection Size = $($collection.Count)") + $collection))
 
     # Restoring log settings
@@ -108,7 +108,7 @@ function Get-Answer($collection,$calc="sum")
             break
         }
     }
-    
+
 
     Write-Success "AoC Day $($global:AoC.puzzle) Answer: ${answer}"
 }

@@ -2,7 +2,7 @@
 #
 # File Name:	LocalLib.ps1
 # Date Created:	10/05/2024
-# Description:	
+# Description:
 #	Local Functions for Unit Testing
 #
 ########################################
@@ -15,7 +15,7 @@
 
 #=======================================
 
-function Mapping-Lookup($map,$mapKey)
+function Mapping-Lookup($map, $mapKey)
 {
     $keys = $map.Keys | Sort-Object {[int64]$_} -Descending
     $pos = 0
@@ -28,7 +28,7 @@ function Mapping-Lookup($map,$mapKey)
         }
         else
         {
-            break;
+            break
         }
     }
 
@@ -42,15 +42,15 @@ function Mapping-Lookup($map,$mapKey)
     return $mappedVal
 }
 
-function Get-Mapping-Range($map,$mapKey,$range)
+function Get-Mapping-Range($map, $mapKey, $range)
 {
     $debug = @("key = $($mapKey), range = $($range)")
     $keys = $map.Keys | Sort-Object {[int64]$_}
     $vals = @()
     $vals += @(@{
-        "val" = (Mapping-Lookup $map $mapKey)
-        "range" = $range
-    })
+            "val" = (Mapping-Lookup $map $mapKey)
+            "range" = $range
+        })
 
     $debug += @("[OUT OF LOOP] val = $($mapKey) becomes $((Mapping-Lookup $map $mapKey)) | range = $(String-To-Int $range)")
     $mapKeyInt = String-To-Int $mapKey
@@ -68,11 +68,11 @@ function Get-Mapping-Range($map,$mapKey,$range)
         if(($maxMapKey -gt $key) -and ($key -gt $mapKeyInt))
         {
             $rangeToUse = String-To-Int $map.($keys[$i])[1]
-            if($i -eq $keys.Length-1)
+            if($i -eq $keys.Length - 1)
             {
                 $rangeToUse = $maxMapKey - $keys[$i]
             }
-            
+
             #$remainingRange -= String-To-Int $map.($keys[$i])[1]
 
             #if($remainingRange -gt 0)
@@ -81,17 +81,17 @@ function Get-Mapping-Range($map,$mapKey,$range)
             #}
             $val = (Mapping-Lookup $map ($keys[$i]))
             $vals += @(@{
-                "val" = ($val)
-                "range" = $rangeToUse
-            })
+                    "val" = ($val)
+                    "range" = $rangeToUse
+                })
             $debug += @("[IN LOOP $($i)] val = $($keys[$i]) becomes $($val) | range = $($rangeToUse)")
         }
     }
 
     $vals += @(@{
-        "val" = (Mapping-Lookup $map ($mapKeyInt+(String-To-Int $range)))
-        "range" = 0
-    })
+            "val" = (Mapping-Lookup $map ($mapKeyInt + (String-To-Int $range)))
+            "range" = 0
+        })
     $debug += @("[AFTER LOOP] val = $($mapKeyInt)+$((String-To-Int $range)) becomes $((Mapping-Lookup $map ($mapKeyInt+(String-To-Int $range)))) | range = $(String-To-Int 0)")
 
     #Write-Debug (Gen-Block "Get-Mapping-Range Keys" $keys)
@@ -108,11 +108,11 @@ function Compile-Input-Data($data)
     for($i = 1; $i -lt $data.length; $i += 1)
     {
         $line = $data[$i]
-        Write-Log "Processling Line $($i+1) - $($line)"
+        Write-Log "Processing Line $($i+1) - $($line)"
 
         if($line.Length -lt 1)
         {
-            Write-Log "Clearning Header Flag"
+            Write-Log "Clearing Header Flag"
             $header = $false
             $key = ""
         }
@@ -127,7 +127,7 @@ function Compile-Input-Data($data)
 
         if($line.Contains("map:") -eq $true -and $header -eq $false)
         {
-            $key = $line.Replace(" map:","")
+            $key = $line.Replace(" map:", "")
             Write-Log("Adding mappings - $($key)")
             $mapping.$key = [ordered]@{}
             $header = $true
@@ -137,10 +137,9 @@ function Compile-Input-Data($data)
     #foreach($mapKey in $mapping.Keys)
     #{
     #    Write-Log "Sorting $($mapKey)"
-    #    $mapping.$mapKey = $mapping.$mapKey.GetEnumerator() | Sort-Object -Property Name  
+    #    $mapping.$mapKey = $mapping.$mapKey.GetEnumerator() | Sort-Object -Property Name
     #}
     $returnMap = $mapping.Clone()
-    $smallest = 
     Write-Log "Filling Gaps"
     $mappingKeys = @($mapping.Keys)
     for($i = 0; $i -lt $mappingKeys.Length; $i++)

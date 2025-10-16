@@ -1,8 +1,8 @@
 ########################################
 #
 # File Name:	LocalLib.ps1
-# Date Created:	
-# Description:	
+# Date Created:
+# Description:
 #	Local Functions for Unit Testing
 #
 ########################################
@@ -15,32 +15,43 @@
 
 function Get-Card-Int($card)
 {
-    [int]$cardVal = 0;
+    [int]$cardVal = 0
     switch($card)
     {
-        "T" {
+        "T"
+        {
             $cardVal = 10
-            break;
+            break
         }
-        "J" {
+
+        "J"
+        {
             $cardVal = 1
-            break;
+            break
         }
-        "Q" {
+
+        "Q"
+        {
             $cardVal = 12
-            break;
+            break
         }
-        "K" {
+
+        "K"
+        {
             $cardVal = 13
-            break;
+            break
         }
-        "A" {
+
+        "A"
+        {
             $cardVal = 14
-            break;
+            break
         }
-        default {
+
+        default
+        {
             $cardVal = [int]$card
-            break;
+            break
         }
     }
 
@@ -61,7 +72,7 @@ function CardStr-to-IntArr($cardStr)
 
 function Get-Hand-Type($cardArr)
 {
-    $handType = "H";
+    $handType = "H"
 
     $cardArrClean = $()
     $cardArrClean = foreach($cardInt in $cardArr)
@@ -78,16 +89,21 @@ function Get-Hand-Type($cardArr)
 
     switch($uniqCards.count)
     {
-        0 {
+        0
+        {
             $handType = "5K"
-            break;
+            break
         }
-        1 {
+
+        1
+        {
             $handType = "5K"
-            break; 
+            break
         }
-        2 {
-            $cardsCounts = @($grouping."$($uniqCards[0])",$grouping."$($uniqCards[1])")
+
+        2
+        {
+            $cardsCounts = @($grouping."$($uniqCards[0])", $grouping."$($uniqCards[1])")
 
             if($cardsCounts.Contains(4))
             {
@@ -97,9 +113,11 @@ function Get-Hand-Type($cardArr)
             {
                 $handType = "FH"
             }
-            break;
+            break
         }
-        3 {
+
+        3
+        {
             $cardsCounts = @($grouping."$($uniqCards[0])", $grouping."$($uniqCards[1])", $grouping."$($uniqCards[2])")
 
             if($cardsCounts.Contains(3))
@@ -110,11 +128,13 @@ function Get-Hand-Type($cardArr)
             {
                 $handType = "2P"
             }
-            break;
+            break
         }
-        4 {
+
+        4
+        {
             $handType = "1P"
-            break;
+            break
         }
     }
 

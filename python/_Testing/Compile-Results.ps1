@@ -1,7 +1,8 @@
 # File Imports
 . "$($PSScriptRoot)\..\..\Powershell\lib\Common.ps1"
+. "$($PSScriptRoot)\..\..\Powershell\lib\XML.ps1"
 
-$global:logSetting.showDebug = $true
+$global:logSetting.showDebug = $false
 
 Write-Log "Compiling Inital Test Result Object"
 $durationCol = @()

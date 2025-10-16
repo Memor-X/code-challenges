@@ -2,8 +2,8 @@
 #
 # File Name:	Wasteland.ps1
 # Date Created:	24/03/2025
-# Description:	
-#	
+# Description:
+#
 #
 ########################################
 
@@ -19,7 +19,7 @@ $global:AoC.puzzle = "8-2"
 $global:AoC.testInputMode = $false
 
 $global:logSetting.fileOutput = $true
-$global:logSetting.showDebug = $true
+$global:logSetting.showDebug = $false
 #=======================================
 
 Write-Start
@@ -33,7 +33,7 @@ for($i = 2; $i -lt $data.length; $i += 1)
 {
     $split = $data[$i] -split " = "
     $nodeKey = $split[0]
-    $split = ($split[1].replace("(","").replace(")","")) -split ", "
+    $split = ($split[1].replace("(", "").replace(")", "")) -split ", "
     $nodes[$nodeKey] = @($split[0], $split[1])
 }
 

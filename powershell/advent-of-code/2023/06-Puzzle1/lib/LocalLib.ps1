@@ -2,7 +2,7 @@
 #
 # File Name:	LocalLib.ps1
 # Date Created:	02/07/2024
-# Description:	
+# Description:
 #	Local Functions for Unit Testing
 #
 ########################################
@@ -28,8 +28,8 @@ function Build-Race-Data($inputData)
 {
     Write-Log "Building Race Data"
     $cleanedData = $inputData
-    $cleanedData[0] = (Compress-Spaces ($cleanedData[0].Replace("Time:",""))).Trim().Split(" ")
-    $cleanedData[1] = (Compress-Spaces ($cleanedData[1].Replace("Distance:",""))).Trim().Split(" ")
+    $cleanedData[0] = (Compress-Spaces ($cleanedData[0].Replace("Time:", ""))).Trim().Split(" ")
+    $cleanedData[1] = (Compress-Spaces ($cleanedData[1].Replace("Distance:", ""))).Trim().Split(" ")
     $raceCount = $cleanedData[0].Count
 
     $races = @{}
@@ -57,8 +57,8 @@ function Build-Race-Data($inputData)
 ########################################
 function Find-Charges($raceData)
 {
-    Write-Log "Determing Charge Variations for Time = $($raceData."time") of Distance = $($raceData."duration")"
-    $time = $raceData.time+1
+    Write-Log "Determining Charge Variations for Time = $($raceData."time") of Distance = $($raceData."duration")"
+    $time = $raceData.time + 1
     $charges = Initalize-Array $time
 
     for($i = 0; $i -lt ($time); $i++)

@@ -2,22 +2,23 @@
 #
 # File Name:	Git-Functions.ps1
 # Date Created:	18/01/2023
-# Description:	
-#	Function library for git specific funtions
+# Description:
+#	Function library for git specific functions
 #
 ########################################
 
 # file imports
 . "$($PSScriptRoot)\Common.ps1"
+. "$($PSScriptRoot)\XML.ps1"
 
 ########################################
 #
 # Name:		Gen-Repo-List
 # Input:	$xml <XML Object>
 # Output:	$collectedRepoList <Hash Object>
-# Description:	
-#	returns a Hash Object with a collection of git repos, their directory locations 
-#   and if they are they main branch or not. all soruced from the git-settings.xml
+# Description:
+#	returns a Hash Object with a collection of git repos, their directory locations
+#   and if they are they main branch or not. all sourced from the git-settings.xml
 #
 ########################################
 function Gen-Repo-List($xml)
@@ -27,21 +28,23 @@ function Gen-Repo-List($xml)
     $collectedRepoList = @()
 
     # checks if we have only the 1 <repo> node or an array of them
-    if($repos.repo.GetType().BaseType.Name -eq "XmlLinkedNode")
+    if ($repos.repo.GetType().BaseType.Name -eq "XmlLinkedNode")
     {
         $collectedRepoList += @(
-            @{"name"=$repos.repo.'#text'
-              "location"=$repos.repo.location
-              "main"=$repos.repo.main})
+            @{"name" = $repos.repo.'#text'
+                "location" = $repos.repo.location
+                "main" = $repos.repo.main
+            })
     }
     else
     {
         # if an array of nodes, loops though them
-        foreach($singleRepo in $repos.repo)
+        foreach ($singleRepo in $repos.repo)
         {
-            $collectedRepoList += @(@{"name"=$singleRepo.'#text'
-                           "location"=$singleRepo.location
-                           "main"=$singleRepo.main})
+            $collectedRepoList += @(@{"name" = $singleRepo.'#text'
+                    "location" = $singleRepo.location
+                    "main" = $singleRepo.main
+                })
         }
     }
     return $collectedRepoList
@@ -52,26 +55,26 @@ function Gen-Repo-List($xml)
 # Name:		Find-Repo
 # Input:	$repoName <String>
 #			$repoCol <Array Hash Object>
-# Output:	$returnObj <Hash Obect>
-# Description:	
-#	looks through the Array of Hash Objects created by Gen-Repo-List and returns the 
-#   has object who's name matches what is passed by $repoName. otherwise returns an empty 
+# Output:	$returnObj <Hash Object>
+# Description:
+#	looks through the Array of Hash Objects created by Gen-Repo-List and returns the
+#   has object who's name matches what is passed by $repoName. otherwise returns an empty
 #   hash object with found still being false
 #
 ########################################
 function Find-Repo($repoName, $repoCol)
 {
     $returnObj = @{
-        name=""
-        location=""
-        main=""
-        found=$false
+        name = ""
+        location = ""
+        main = ""
+        found = $false
     }
 
-    foreach($singleRepo in $repoCol)
+    foreach ($singleRepo in $repoCol)
     {
         Write-Debug $singleRepo.name
-        if($singleRepo.name -eq $repoName)
+        if ($singleRepo.name -eq $repoName)
         {
             $returnObj.name = $singleRepo.name
             $returnObj.location = "$($singleRepo.location)\$($singleRepo.name)"
@@ -88,18 +91,18 @@ function Find-Repo($repoName, $repoCol)
 #
 # Name:		Get-Commits
 # Input:	$filters <Array>
-# Output:	$returnObj <Hash Obect>
-# Description:	
+# Output:	$returnObj <Hash Object>
+# Description:
 #	returns a formatted hash object of commits
 #
 ########################################
-function Get-Commits($filters,$path="")
+function Get-Commits($filters, $path = "")
 {
     $commit_entry = @{
-        "commitID"="";
-        "author"="";
-        "time"="";
-        "comment"=""
+        "commitID" = "";
+        "author" = "";
+        "time" = "";
+        "comment" = ""
     }
     $commit_obj = @()
     $filter_str = $filters -join " "

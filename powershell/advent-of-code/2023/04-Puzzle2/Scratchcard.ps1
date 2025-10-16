@@ -2,13 +2,13 @@
 #
 # File Name:	Scratchcard.ps1
 # Date Created:	12/02/2024
-# Description:	
+# Description:
 #	Advent of Code - Day 4 - Puzzle 2
 #
 ########################################
 
 # File Imports
-. "$($PSScriptRoot)\..\..\lib\AdventOfCode.ps1"
+. "$($PSScriptRoot)\..\..\..\lib\AdventOfCode.ps1"
 . "$($PSScriptRoot)\lib\LocalLib.ps1"
 
 # Global Variable Setting
@@ -16,7 +16,7 @@ $global:AoC.puzzle = "4-2"
 $global:AoC.testInputMode = $false
 
 $global:logSetting.fileOutput = $true
-$global:logSetting.showDebug = $true
+$global:logSetting.showDebug = $false
 #=======================================
 
 # Local Functions
@@ -26,15 +26,15 @@ $global:logSetting.showDebug = $true
 Write-Start
 $cards = Load-Input
 $scratchcards = @()
-$extraCards = Initalize-Array $cards.length 0
-#Write-Host $extraCards
+$extraCards = Initialize-Array $cards.length 0
+#$extraCards
 
 for($i = 0; $i -lt $cards.length; $i += 1)
 {
     Write-Log "Splitting Card $($i+1)"
     $card, $numbers = ($cards[$i] -split ':')
 
-    $numbers = $numbers.Replace("  "," ").Trim()
+    $numbers = $numbers.Replace("  ", " ").Trim()
     $card = $card.Trim()
 
     Write-Log "Splitting Numbers - $($numbers)"
@@ -45,13 +45,17 @@ for($i = 0; $i -lt $cards.length; $i += 1)
 
     $cardCount = 0
     Write-Log "$($card) has $($noMatched) wins"
-    for($copies = 0; $copies -lt $extraCards[$i]+1; $copies += 1)
+    Write-Debug "i = $($i)"
+    Write-Debug "i = $($extraCards[$i].GetType().Name )"
+    #$extraCards[$i].GetType()
+    Write-Debug "$($copies) -lt '$($extraCards[$i])' + 1 ($($extraCards[$i] + 1))"
+    for($copies = 0; $copies -lt $extraCards[$i] + 1; $copies += 1)
     {
         #Write-Log "Processing $($card) #$($copies+1)"
         $cardCount += 1
         for($wins = 0; $wins -lt $noMatched; $wins += 1)
         {
-            $cardCopyNum = $i+($wins+1)
+            $cardCopyNum = $i + ($wins + 1)
             if($cardCopyNum -lt $extraCards.length)
             {
                 $extraCards[$cardCopyNum] += 1
@@ -67,5 +71,5 @@ for($i = 0; $i -lt $cards.length; $i += 1)
     Write-Log "==================================="
 }
 
-Get-Answer $scratchcards 
+Get-Answer $scratchcards
 Write-End

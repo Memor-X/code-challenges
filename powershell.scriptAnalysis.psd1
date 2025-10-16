@@ -6,7 +6,7 @@
 
     # Analyze **only** the following rules. Use IncludeRules when you want
     # to invoke only a small subset of the default rules.
-<#
+    <#
     IncludeRules = @('PSAvoidDefaultValueSwitchParameter',
                      'PSMisleadingBacktick',
                      'PSMissingModuleManifestField',
@@ -27,6 +27,7 @@
         'PSAvoidUsingInvokeExpression',
         'PSUseSingularNouns',
         'PSAvoidGlobalVars',
-        'PSAvoidOverwritingBuiltInCmdlets'
+        'PSAvoidOverwritingBuiltInCmdlets',
+        'PSAvoidInvokingEmptyMembers'
     )
 }

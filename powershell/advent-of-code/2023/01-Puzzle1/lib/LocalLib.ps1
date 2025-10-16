@@ -2,7 +2,7 @@
 #
 # File Name:	LocalLib.ps1
 # Date Created:	10/05/2024
-# Description:	
+# Description:
 #	Local Functions for Unit Testing
 #
 ########################################
@@ -20,7 +20,7 @@
 # Name:		Get-Calibration
 # Input:	$str <String>
 # Output:	$calNum <Integer>
-# Description:	
+# Description:
 #	Extracts the Calibration Number
 #
 ########################################

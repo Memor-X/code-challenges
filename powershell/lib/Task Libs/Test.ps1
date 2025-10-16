@@ -29,15 +29,15 @@ function Get-Task-Title($id)
     $msg_block = @(
         "id = ${id}"
     )
-    Gen-Block "Arguments", $msg_block
+    #Gen-Block "Arguments", $msg_block
 
-    $api_data["task_title"] = "Test Task Title"
-    Write-Debug "Getting Task Title. Value: $($api_data["task_title"])"
+    $api_data."task_title" = "Test Task Title"
+    Write-Debug "Getting Task Title. Value: $($api_data."task_title")"
 
     Write-Debug "Restoring Debugging Setting"
     $global:logSetting.showDebug = $retainedDebugSetting
 
-    return $api_data.task_title
+    return $api_data."task_title"
 }
 
 function Get-Task-Url($id)

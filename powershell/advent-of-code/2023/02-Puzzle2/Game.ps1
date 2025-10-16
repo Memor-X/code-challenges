@@ -2,13 +2,13 @@
 #
 # File Name:	Game.ps1
 # Date Created:	08/12/2023
-# Description:	
+# Description:
 #	Advent of Code - Day 2 - Puzzle 2
 #
 ########################################
 
 # File Imports
-. "$($PSScriptRoot)\..\..\lib\AdventOfCode.ps1"
+. "$($PSScriptRoot)\..\..\..\lib\AdventOfCode.ps1"
 . "$($PSScriptRoot)\lib\LocalLib.ps1"
 
 # Global Variable Setting
@@ -16,7 +16,7 @@ $global:AoC.puzzle = "2-2"
 $global:AoC.testInputMode = $false
 
 $global:logSetting.fileOutput = $true
-$global:logSetting.showDebug = $true
+$global:logSetting.showDebug = $false
 
 Write-Start
 $data = Load-Input
@@ -34,7 +34,7 @@ foreach($line in $data)
     Write-Log "Processing line - $($line)"
     $split = $line -split ":"
 
-    $gameID = $split[0].Replace("Game ","").Trim()
+    $gameID = $split[0].Replace("Game ", "").Trim()
     Write-Log "Adding Game $($gameID)"
     $gameData[$gameID] = @()
 
@@ -81,7 +81,7 @@ foreach($gameID in $games)
     #    "Blue = $($gameMmax.blue)"
     #)
     #Write-Debug (Gen-Block "Game $($gameID) Data" $outputblock)
-    
+
     Write-Log "Calculating Power"
     $power = $gameMmax.red * $gameMmax.green * $gameMmax.blue
     #Write-Debug "Game $($gameID) Power = $($power)"

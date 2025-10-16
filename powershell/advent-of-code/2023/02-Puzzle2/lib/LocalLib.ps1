@@ -2,7 +2,7 @@
 #
 # File Name:	LocalLib.ps1
 # Date Created:	10/05/2024
-# Description:	
+# Description:
 #	Local Functions for Unit Testing
 #
 ########################################
@@ -20,7 +20,7 @@
 # Name:		Min-Game
 # Input:	$game <Array>
 # Output:	$min <Hash Object>
-# Description:	
+# Description:
 #	Works out the lowest value of each color among all sets of a game
 #
 ########################################
@@ -36,7 +36,7 @@ function Min-Game($game)
     {
         foreach($color in $set.GetEnumerator())
         {
-            if($min.($color.Name) -eq $null)
+            if($null -eq $min.($color.Name))
             {
                 $min.($color.Name) = 999999
             }
@@ -55,7 +55,7 @@ function Min-Game($game)
 # Name:		Max-Game
 # Input:	$game <Array>
 # Output:	$max <Hash Object>
-# Description:	
+# Description:
 #	Works out the highest value of each color among all sets of a game
 #
 ########################################

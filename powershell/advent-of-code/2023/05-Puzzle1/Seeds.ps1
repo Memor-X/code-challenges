@@ -2,13 +2,13 @@
 #
 # File Name:	Seeds.ps1
 # Date Created:	15/02/2024
-# Description:	
+# Description:
 #	Advent of Code - Day 5 - Puzzle 1
 #
 ########################################
 
 # File Imports
-. "$($PSScriptRoot)\..\..\lib\AdventOfCode.ps1"
+. "$($PSScriptRoot)\..\..\..\lib\AdventOfCode.ps1"
 . "$($PSScriptRoot)\lib\LocalLib.ps1"
 
 # Global Variable Setting
@@ -16,25 +16,25 @@ $global:AoC.puzzle = "5-1"
 $global:AoC.testInputMode = $false
 
 $global:logSetting.fileOutput = $true
-$global:logSetting.showDebug = $true
+$global:logSetting.showDebug = $false
 #=======================================
 
 Write-Start
 $data = Load-Input
 $locations = @()
 $mapping = @{}
-$header = $flase
+$header = $false
 $key = ""
 
 Write-Log "Compiling mapping object"
 for($i = 1; $i -lt $data.length; $i += 1)
 {
     $line = $data[$i]
-    Write-Log "Processling Line $($i+1) - $($line)"
+    Write-Log "Processing Line $($i+1) - $($line)"
 
     if($line.Length -lt 1)
     {
-        Write-Log "Clearning Header Flag"
+        Write-Log "Clearing Header Flag"
         $header = $false
         $key = ""
     }
@@ -49,7 +49,7 @@ for($i = 1; $i -lt $data.length; $i += 1)
 
     if($line.Contains("map:") -eq $true -and $header -eq $false)
     {
-        $key = $line.Replace(" map:","")
+        $key = $line.Replace(" map:", "")
         Write-Log("Adding mappings - $($key)")
         $mapping.$key = @{}
         $header = $true
@@ -61,7 +61,7 @@ for($i = 1; $i -lt $data.length; $i += 1)
 #Write-Host $mapping.$map.$start[0]
 
 Write-Log "Collecting Seeds"
-$seeds = $data[0].Replace("seeds: ","").Split(" ")
+$seeds = $data[0].Replace("seeds: ", "").Split(" ")
 #$seeds = @(2035874278)
 Write-Log "Fetching Locations"
 foreach($seed in $seeds)

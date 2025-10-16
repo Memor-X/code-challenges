@@ -1,24 +1,24 @@
 $packageDir = "C:\_Work\_Packages"
 $packages = @{
     "Unified-Tester" = @{
-        "version" = "1.0.0"
+        "version" = "1.0.2"
         "loc" = "$($PSScriptRoot)\..\_Unified-Tester"
     }
     "Unit-Test-Display" = @{
-        "version" = "1.0.2"
+        "version" = "1.0.4"
         "loc" = "$($PSScriptRoot)\..\_Unified-Tester"
     }
 
     "Powershell-Tester" = @{
-        "version" = "1.0.3"
+        "version" = "1.0.4"
         "loc" = "$($PSScriptRoot)\..\powershell\_Testing"
     }
     "Ruby-Tester" = @{
-        "version" = "1.0.1"
+        "version" = "1.0.2"
         "loc" = "$($PSScriptRoot)\..\ruby\_Testing"
     }
     "Python-Tester" = @{
-        "version" = "1.0.1"
+        "version" = "1.0.2"
         "loc" = "$($PSScriptRoot)\..\python\_Testing"
     }
 }

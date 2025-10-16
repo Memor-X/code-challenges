@@ -2,7 +2,7 @@
 #
 # File Name:	LocalLib.ps1
 # Date Created:	10/05/2024
-# Description:	
+# Description:
 #	Local Functions for Unit Testing
 #
 ########################################
@@ -20,7 +20,7 @@
 # Name:		Total-Game
 # Input:	$game <Array>
 # Output:	$total <Hash Object>
-# Description:	
+# Description:
 #	Gets the color totals for all sets in a game
 #
 ########################################
@@ -48,7 +48,7 @@ function Total-Game($game)
 # Name:		Max-Game
 # Input:	$game <Array>
 # Output:	$max <Hash Object>
-# Description:	
+# Description:
 #	Works out the highest value of each color among all sets of a game
 #
 ########################################

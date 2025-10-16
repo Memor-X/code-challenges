@@ -2,7 +2,7 @@
 #
 # File Name:	LocalLib.ps1
 # Date Created:	10/05/2024
-# Description:	
+# Description:
 #	Local Functions for Unit Testing
 #
 ########################################
@@ -15,7 +15,7 @@
 
 #=======================================
 
-function Mapping-Lookup($map,$mapKey)
+function Mapping-Lookup($map, $mapKey)
 {
     $keys = $map.Keys | Sort-Object {String-To-Int $_}
     $pos = 0

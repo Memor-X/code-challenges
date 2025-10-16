@@ -1,5 +1,5 @@
 BeforeAll {
-    . $PSCommandPath.Replace('.Tests.ps1','.ps1')
+    . $PSCommandPath.Replace('.Tests.ps1', '.ps1')
 
     # Variables
     $global:outputBuffer = @{}
@@ -8,7 +8,7 @@ BeforeAll {
     # Function Mocking
     Mock Add-Content {
         $file = (Out-String -InputObject $PesterBoundParameters.Path).Trim()
-        if($outputBuffer.ContainsKey($file) -eq $false)
+        if ($outputBuffer.ContainsKey($file) -eq $false)
         {
             $outputBuffer.$file = @()
         }
@@ -18,29 +18,33 @@ BeforeAll {
         $file = (Out-String -InputObject $PesterBoundParameters.Path).Trim()
         $outputBuffer.$file = @($PesterBoundParameters.Value)
     }
-   Mock Write-Host {
+    Mock Write-Host {
         $outputBuffer."screen" += @(@{
-            "msg" = (Out-String -InputObject $PesterBoundParameters.Object).Trim()
-            "color" = (Out-String -InputObject $PesterBoundParameters.ForegroundColor).Trim()
-        })
+                "msg" = (Out-String -InputObject $PesterBoundParameters.Object).Trim()
+                "color" = (Out-String -InputObject $PesterBoundParameters.ForegroundColor).Trim()
+            })
     }
     Mock Get-Date {
         $returnVal = ""
-        switch($PesterBoundParameters.UFormat)
+        switch ($PesterBoundParameters.UFormat)
         {
-            "%m-%d-%Y" {
+            "%m-%d-%Y"
+            {
                 $returnVal = "01-01-2000"
                 break
             }
-            "%R"{
+            "%R"
+            {
                 $returnVal = "11:10"
                 break
             }
-            "%m/%d/%Y %R"{
+            "%m/%d/%Y %R"
+            {
                 $returnVal = "01/01/2000 11:10"
                 break
             }
-            default {
+            default
+            {
                 $returnVal = New-Object DateTime 2000, 2, 1, 11, 10, 0
                 break
             }
@@ -50,17 +54,19 @@ BeforeAll {
 }
 
 Describe 'Run-Command' {
-    BeforeEach{
-        Mock Invoke-Expression {return $PesterBoundParameters.Command}
+    BeforeEach {
+        Mock Invoke-Expression { return $PesterBoundParameters.Command }
         Mock Get-Date {
             $returnVal = ""
-            switch($PesterBoundParameters.UFormat)
+            switch ($PesterBoundParameters.UFormat)
             {
-                "%m-%d-%Y" {
+                "%m-%d-%Y"
+                {
                     $returnVal = "01-01-2000"
                     break
                 }
-                "%R"{
+                "%R"
+                {
                     $returnVal = "11:10"
                     break
                 }
@@ -79,13 +85,13 @@ Describe 'Run-Command' {
     }
 }
 
-Describe 'Initalize-Hash-Branch' {
+Describe 'Initialize-Hash-Branch' {
     Context 'Empty Hash' {
         Context 'Child element' {
-            BeforeEach{
+            BeforeEach {
                 $hash = @{}
                 $path = @("first-child")
-                $initalizedHash = Initalize-Hash-Branch $hash $path
+                $initalizedHash = Initialize-Hash-Branch $hash $path
             }
 
             It 'Should only have 1 child' {
@@ -99,11 +105,11 @@ Describe 'Initalize-Hash-Branch' {
             }
         }
 
-        Context 'Granndchild element' {
-            BeforeEach{
+        Context 'Grandchild element' {
+            BeforeEach {
                 $hash = @{}
-                $path = @("first-child","grand-child")
-                $initalizedHash = Initalize-Hash-Branch $hash $path
+                $path = @("first-child", "grand-child")
+                $initalizedHash = Initialize-Hash-Branch $hash $path
             }
 
             It 'Should only have 1 child' {
@@ -124,10 +130,10 @@ Describe 'Initalize-Hash-Branch' {
         }
 
         Context 'Great Grandchild element' {
-            BeforeEach{
+            BeforeEach {
                 $hash = @{}
-                $path = @("first-child","grand-child","great-child")
-                $initalizedHash = Initalize-Hash-Branch $hash $path
+                $path = @("first-child", "grand-child", "great-child")
+                $initalizedHash = Initialize-Hash-Branch $hash $path
             }
 
             It 'Should only have 1 child' {
@@ -156,17 +162,17 @@ Describe 'Initalize-Hash-Branch' {
 
     Context 'Existing Hash' {
         Context 'Child element' {
-            BeforeEach{
+            BeforeEach {
                 $hash = @{
                     "first" = 6
                     "second" = "two"
-                    "third" = @(4,6,"twelove")
+                    "third" = @(4, 6, "twelove")
                     "4" = @{
                         "hellow" = "world"
                     }
                 }
                 $path = @("first-child")
-                $initalizedHash = Initalize-Hash-Branch $hash $path
+                $initalizedHash = Initialize-Hash-Branch $hash $path
             }
 
             It 'Should have 5 children' {
@@ -181,17 +187,17 @@ Describe 'Initalize-Hash-Branch' {
         }
 
         Context 'Granndchild element' {
-            BeforeEach{
+            BeforeEach {
                 $hash = @{
                     "first" = 6
                     "second" = "two"
-                    "third" = @(4,6,"twelove")
+                    "third" = @(4, 6, "twelove")
                     "4" = @{
                         "hellow" = "world"
                     }
                 }
-                $path = @("first-child","grand-child")
-                $initalizedHash = Initalize-Hash-Branch $hash $path
+                $path = @("first-child", "grand-child")
+                $initalizedHash = Initialize-Hash-Branch $hash $path
             }
 
             It 'Should have 5 children' {
@@ -212,17 +218,17 @@ Describe 'Initalize-Hash-Branch' {
         }
 
         Context 'Great Grandchild element' {
-            BeforeEach{
+            BeforeEach {
                 $hash = @{
                     "first" = 6
                     "second" = "two"
-                    "third" = @(4,6,"twelove")
+                    "third" = @(4, 6, "twelove")
                     "4" = @{
                         "hellow" = "world"
                     }
                 }
-                $path = @("first-child","grand-child","great-child")
-                $initalizedHash = Initalize-Hash-Branch $hash $path
+                $path = @("first-child", "grand-child", "great-child")
+                $initalizedHash = Initialize-Hash-Branch $hash $path
             }
 
             It 'Should have 5 children' {
@@ -251,17 +257,17 @@ Describe 'Initalize-Hash-Branch' {
 
     Context 'Existing Key in Hash' {
         Context 'first-child hash element' {
-            BeforeEach{
+            BeforeEach {
                 $hash = @{
                     "first" = 6
                     "second" = "two"
-                    "third" = @(4,6,"twelove")
+                    "third" = @(4, 6, "twelove")
                     "first-child" = @{
                         "hellow" = "world"
                     }
                 }
-                $path = @("first-child","grand-child")
-                $initalizedHash = Initalize-Hash-Branch $hash $path
+                $path = @("first-child", "grand-child")
+                $initalizedHash = Initialize-Hash-Branch $hash $path
             }
 
             It 'Should only have 4 children' {
@@ -282,21 +288,21 @@ Describe 'Initalize-Hash-Branch' {
         }
 
         Context 'grand-child non hash element' {
-            BeforeEach{
+            BeforeEach {
                 $global:outputBuffer = @{}
                 $outputBuffer."screen" = @()
                 $hash = @{
                     "first" = 6
                     "second" = "two"
-                    "third" = @(4,6,"twelove")
+                    "third" = @(4, 6, "twelove")
                     "first-child" = @{
                         "hellow" = "world"
                         "grand-child" = "helo"
                         "54" = "8765"
                     }
                 }
-                $path = @("first-child","grand-child","great-child")
-                $initalizedHash = Initalize-Hash-Branch $hash $path
+                $path = @("first-child", "grand-child", "great-child")
+                $initalizedHash = Initialize-Hash-Branch $hash $path
             }
 
             It 'Should only have 4 children' {
@@ -319,15 +325,33 @@ Describe 'Initalize-Hash-Branch' {
                 $outputBuffer."screen"[0].color | Should -Be "Yellow"
             }
         }
+
+        Context 'Legacy Function Call (to be removed after all corrections have been made)' {
+            BeforeEach {
+                $global:outputBuffer = @{}
+                $hash = @{}
+                $path = @("first-child")
+                $initalizedHash = Initalize-Hash-Branch $hash $path
+            }
+
+            It 'have warning about use' {
+                $outputBuffer."screen"[0].msg | Should -Be "[WARNING] 01/01/2000 11:10 | Incorrect Spelled Function (Initalize-Hash-Branch). To Be Removed"
+                $outputBuffer."screen"[0].color | Should -Be "Yellow"
+            }
+
+            It 'Should only have 1 child' {
+                $initalizedHash.Keys.Count | Should -Be 1
+            }
+        }
     }
 }
 
 Describe 'Populate-Hash-Branch' {
-    BeforeEach{
+    BeforeEach {
         $hash = @{
             "first" = 6
             "second" = "two"
-            "third" = @(4,6,"twelove")
+            "third" = @(4, 6, "twelove")
             "first-child" = @{
                 "hellow" = "world"
                 "grand-child" = "helo"
@@ -342,7 +366,7 @@ Describe 'Populate-Hash-Branch' {
 
     Context 'Adding new values' {
         Context 'creates string for child forth' {
-            BeforeEach{
+            BeforeEach {
                 $path = @("forth")
                 $val = "test"
                 $newHash = Populate-Hash-Branch $hash $path $val
@@ -358,8 +382,8 @@ Describe 'Populate-Hash-Branch' {
         }
 
         Context 'creates string for new child-grandchild' {
-            BeforeEach{
-                $path = @("forth","child")
+            BeforeEach {
+                $path = @("forth", "child")
                 $val = "test"
                 $newHash = Populate-Hash-Branch $hash $path $val
             }
@@ -378,8 +402,8 @@ Describe 'Populate-Hash-Branch' {
         }
 
         Context 'creates string for new child-grandchild-greatgrandchild' {
-            BeforeEach{
-                $path = @("forth","child","world")
+            BeforeEach {
+                $path = @("forth", "child", "world")
                 $val = "test"
                 $newHash = Populate-Hash-Branch $hash $path $val
             }
@@ -404,8 +428,8 @@ Describe 'Populate-Hash-Branch' {
 
     Context 'Adding new values to existing keys' {
         Context 'creates string for new grandchild' {
-            BeforeEach{
-                $path = @("first-child","child")
+            BeforeEach {
+                $path = @("first-child", "child")
                 $val = "test"
                 $newHash = Populate-Hash-Branch $hash $path $val
             }
@@ -424,8 +448,8 @@ Describe 'Populate-Hash-Branch' {
         }
 
         Context 'creates string for new child-grandchild-greatgrandchild' {
-            BeforeEach{
-                $path = @("existchild","existgarnd","greatgrandchild")
+            BeforeEach {
+                $path = @("existchild", "existgarnd", "greatgrandchild")
                 $val = "test"
                 $newHash = Populate-Hash-Branch $hash $path $val
             }
@@ -445,56 +469,26 @@ Describe 'Populate-Hash-Branch' {
     }
 
     Context 'Overwriting values' {
-        It 'Overrite direct child' {
+        It 'Overwrite direct child' {
             $path = @("first")
             $val = 999
             $newHash = Populate-Hash-Branch $hash $path $val
             $newHash."$($path[0])" | Should -Be $val
         }
 
-        It 'Overrite grand child' {
-            $path = @("first-child","hellow")
+        It 'Overwrite grand child' {
+            $path = @("first-child", "hellow")
             $val = 999
             $newHash = Populate-Hash-Branch $hash $path $val
             $newHash."$($path[0])"."$($path[1])" | Should -Be $val
         }
 
-        It 'Overrite grand child with new great grand child' {
-            $path = @("first-child","hellow","new-element")
+        It 'Overwrite grand child with new great grand child' {
+            $path = @("first-child", "hellow", "new-element")
             $val = 999
             $newHash = Populate-Hash-Branch $hash $path $val
             $newHash."$($path[0])"."$($path[1])"."$($path[2])" | Should -Be $val
         }
-    }
-}
-
-Describe 'Fetch-XMLVal' {
-    BeforeEach{
-        [XML]$testXML = '<?xml version="1.0" encoding="UTF-8" ?><test><test1>val1</test1><test2><child>val 2</child></test2><test3><child>child 1</child><child>child 2</child></test3><test4><child1>child named 1</child1><child>child named 2</child></test4><test5 testAttrib="valAttrib">valText</test5></test>'
-    }
-    It 'Return 1st Level value' {
-        $testVal = Fetch-XMLVal $testXML "test.test1"
-        $testVal | Should -Be "val1"
-    }
-
-    It 'return 2nd Level value' {
-        $testVal = Fetch-XMLVal $testXML "test.test2.child"
-        $testVal | Should -Be "val 2"
-    }
-
-    It 'return 2nd Level value from identical children' {
-        $testVal = Fetch-XMLVal $testXML "test.test3.child"
-        $testVal[1] | Should -Be "child 2"
-    }
-
-    It 'return 2nd Level value from same child name' {
-        $testVal = Fetch-XMLVal $testXML "test.test4.child"
-        $testVal | Should -Be "child named 2"
-    }
-
-    It 'return attribue' {
-        $testVal = Fetch-XMLVal $testXML "test.test5"
-        $testVal.testAttrib | Should -Be "valAttrib"
     }
 }
 
@@ -539,7 +533,7 @@ Describe 'Bulk-Replace' {
     }
 }
 
-Describe 'FirstIndexOfAnyStr'{
+Describe 'FirstIndexOfAnyStr' {
     It 'Find match from Array' {
         $string = "one two three four five sex seven eight nine ten eleven twelve thirteen fourteen"
         $values = @(
@@ -565,7 +559,7 @@ Describe 'FirstIndexOfAnyStr'{
     }
 }
 
-Describe 'LastIndexOfAnyStr'{
+Describe 'LastIndexOfAnyStr' {
     It 'Find match from Array' {
         $string = "one two three four five ten eleven twelve sex seven eight nine thirteen fourteen"
         $values = @(
@@ -612,7 +606,7 @@ Describe 'Find-Bell' {
 
     It 'Returns 2nd Bell Character position when first is removed' {
         $string = "test$([char]7)stri$([char]7)ng"
-        $string = $string.Remove(4,1)
+        $string = $string.Remove(4, 1)
         $index = Find-Bell $string
         $index | Should -Be 8
     }
@@ -628,8 +622,8 @@ Describe 'Repair-Trim' {
 
     Context "Special Characters" {
         It 'Trims <name> Character from String' -TestCases @(
-            @{Name = "Bell"; Char = ([char]7)}
-        ){
+            @{Name = "Bell"; Char = ([char]7) }
+        ) {
             $string = "$($char)Test$($char)"
             $testStr = Repair-Trim $string
             $testStr | Should -Be "Test"
@@ -637,8 +631,8 @@ Describe 'Repair-Trim' {
         }
 
         It 'Trims <name> Character from String with touching instances in the String' -TestCases @(
-            @{Name = "Bell"; Char = ([char]7)}
-        ){
+            @{Name = "Bell"; Char = ([char]7) }
+        ) {
             $string = "$($char)Te$($char)st$($char)"
             $testStr = Repair-Trim $string
             $testStr | Should -Be "Te$($char)st"
@@ -646,8 +640,8 @@ Describe 'Repair-Trim' {
         }
 
         It 'Trims <name> Character from String with Spaces' -TestCases @(
-            @{Name = "Bell"; Char = ([char]7)}
-        ){
+            @{Name = "Bell"; Char = ([char]7) }
+        ) {
             $string = "$($char) $($char)Test$($char) "
             $testStr = Repair-Trim $string
             $testStr | Should -Be "Test"
@@ -656,8 +650,8 @@ Describe 'Repair-Trim' {
     }
 }
 
-Describe 'Test-Function-Exists'{
-    BeforeEach{
+Describe 'Test-Function-Exists' {
+    BeforeEach {
         Mock Write-Success {}
         Mock Write-Error {}
     }
@@ -672,8 +666,8 @@ Describe 'Test-Function-Exists'{
     }
 }
 
-Describe 'Test-Function-Loop'{
-    BeforeEach{
+Describe 'Test-Function-Loop' {
+    BeforeEach {
         Mock Write-Success {}
         Mock Write-Error {}
     }
@@ -709,36 +703,36 @@ Describe 'Test-Function-Loop'{
     }
 }
 
-Describe 'Count-Array-Matches'{
-    BeforeEach{
+Describe 'Count-Array-Matches' {
+    BeforeEach {
         $collection = @("Lorem", "ipsum", "dolor", "sit", "amet", "consectetur", "Lorem", "adipiscing", "elit", "Aliquam", "metus", "Lorem", "nunc", "venenatis", "eu", "fermentum", "at")
     }
     It 'Find 1 match' {
         $toFind = @("sit")
-        $matches = Count-Array-Matches $collection $toFind
-        $matches | Should -Be 1
+        $rtnVal = Count-Array-Matches $collection $toFind
+        $rtnVal | Should -Be 1
     }
 
     It 'Find 3 matches' {
         $toFind = @("sit", "dolor", "nunc")
-        $matches = Count-Array-Matches $collection $toFind
-        $matches | Should -Be 3
+        $rtnVal = Count-Array-Matches $collection $toFind
+        $rtnVal | Should -Be 3
     }
 
     It 'Find 0 matches' {
         $toFind = @("hello", "world")
-        $matches = Count-Array-Matches $collection $toFind
-        $matches | Should -Be 0
+        $rtnVal = Count-Array-Matches $collection $toFind
+        $rtnVal | Should -Be 0
     }
 
     It 'Find 1 match in to find array while match is duplicated in collection array' {
         $toFind = @("Lorem")
-        $matches = Count-Array-Matches $collection $toFind
-        $matches | Should -Be 1
+        $rtnVal = Count-Array-Matches $collection $toFind
+        $rtnVal | Should -Be 1
     }
 }
 
-Describe 'Initalize-Array'{
+Describe 'Initalize-Array' {
     It 'New Array with no paramaters passed defaulting to 1 null value' {
         $newArray = @(Initalize-Array)
         $newArray.Length | Should -Be 1
@@ -779,7 +773,7 @@ Describe 'Initalize-Array'{
     }
 
     It 'New 10-size array with uneven default array' {
-        $newArray = Initalize-Array 10 @("hello","all","worlds")
+        $newArray = Initalize-Array 10 @("hello", "all", "worlds")
         $newArray.Length | Should -Be 10
         $newArray[0] | Should -Be "hello"
         $newArray[1] | Should -Be "all"
@@ -791,37 +785,37 @@ Describe 'Initalize-Array'{
     }
 }
 
-Describe 'Add-Into-Array'{
-    BeforeEach{
+Describe 'Add-Into-Array' {
+    BeforeEach {
         Mock New-Item {}
         Mock Split-Path {
             $split = $PesterBoundParameters.Path -Split "/"
 
-            return $split[0..($split.Length-1)] -Join "/"
+            return $split[0..($split.Length - 1)] -Join "/"
         }
     }
 
     It 'Inserting value <addVal> into index <injectingPos> of array <initArrStr>' -TestCases @(
-        @{initArr = @("a", "b", "c"); injectingPos = 1; addVal = "d"; initArrStr = "(a, b, c)"}
-        @{initArr = @("a", "b", "c"); injectingPos = 2; addVal = "d"; initArrStr = "(a, b, c)"}
-        @{initArr = @("a", "b", "c"); injectingPos = 0; addVal = "d"; initArrStr = "(a, b, c)"}
-        @{initArr = @("a"); injectingPos = 0; addVal = "d"; initArrStr = "(a)"}
-        @{initArr = @("a"); injectingPos = 1; addVal = "d"; initArrStr = "(a)"}
-    ){
+        @{initArr = @("a", "b", "c"); injectingPos = 1; addVal = "d"; initArrStr = "(a, b, c)" }
+        @{initArr = @("a", "b", "c"); injectingPos = 2; addVal = "d"; initArrStr = "(a, b, c)" }
+        @{initArr = @("a", "b", "c"); injectingPos = 0; addVal = "d"; initArrStr = "(a, b, c)" }
+        @{initArr = @("a"); injectingPos = 0; addVal = "d"; initArrStr = "(a)" }
+        @{initArr = @("a"); injectingPos = 1; addVal = "d"; initArrStr = "(a)" }
+    ) {
         $newArray = Add-Into-Array $initArr $addVal $injectingPos
-        $expectedLength = $initArr.length+1
+        $expectedLength = $initArr.length + 1
 
         $newArray.Length | Should -Be $expectedLength
-        for($i = 0; $i -lt $newArray.length; $i++)
+        for ($i = 0; $i -lt $newArray.length; $i++)
         {
             $testval = "NOVAL"
-            if($i -lt $injectingPos)
+            if ($i -lt $injectingPos)
             {
                 $testval = $initArr[$i]
             }
-            elseif($i -gt $injectingPos)
+            elseif ($i -gt $injectingPos)
             {
-                $testval = $initArr[$i-1]
+                $testval = $initArr[$i - 1]
             }
             else
             {
@@ -833,13 +827,13 @@ Describe 'Add-Into-Array'{
     }
 }
 
-Describe 'Create-Path'{
-    BeforeEach{
+Describe 'Create-Path' {
+    BeforeEach {
         Mock New-Item {}
         Mock Split-Path {
             $split = $PesterBoundParameters.Path -Split "/"
 
-            return $split[0..($split.Length-1)] -Join "/"
+            return $split[0..($split.Length - 1)] -Join "/"
         }
     }
     It 'New Directory would be created' {
@@ -854,7 +848,7 @@ Describe 'Create-Path'{
     }
 }
 
-Describe 'Group-Replace'{
+Describe 'Group-Replace' {
     It 'Change String with Find Array of size 1' {
         $string = "Hello World"
         $findArr = @("Hell")
@@ -905,8 +899,8 @@ Describe 'Group-Replace'{
 }
 
 
-Describe 'Get-Version'{
-    BeforeEach{
+Describe 'Get-Version' {
+    BeforeEach {
         $global:outputBuffer = @{}
         $outputBuffer."screen" = @()
     }
@@ -930,37 +924,37 @@ Describe 'Get-Version'{
 
 }
 
-Describe 'Merge-Hash'{
-    BeforeEach{
+Describe 'Merge-Hash' {
+    BeforeEach {
         $global:outputBuffer = @{}
         $outputBuffer."screen" = @()
     }
 
     It 'merges 2 hash objects with different keys' {
-        $hash1 = @{"key 1" = "val 1"}
-        $hash2 = @{"key 2" = "val 2"}
+        $hash1 = @{"key 1" = "val 1" }
+        $hash2 = @{"key 2" = "val 2" }
         $mergedHash = Merge-Hash $hash1 $hash2
         $mergedHash."key 1" | Should -Be "val 1"
         $mergedHash."key 2" | Should -Be "val 2"
     }
     It 'merges 2 hash objects with identical keys' {
-        $hash1 = @{"key 1" = "val 1"}
-        $hash2 = @{"key 1" = "val 2"}
+        $hash1 = @{"key 1" = "val 1" }
+        $hash2 = @{"key 1" = "val 2" }
         $mergedHash = Merge-Hash $hash1 $hash2
         $mergedHash."key 1"[0] | Should -Be "val 1"
         $mergedHash."key 1"[1] | Should -Be "val 2"
     }
     It 'merges 2 hash objects with identical keys with one array value' {
-        $hash1 = @{"key 1" = "val 1"}
-        $hash2 = @{"key 1" = @("val 2", "val 3")}
+        $hash1 = @{"key 1" = "val 1" }
+        $hash2 = @{"key 1" = @("val 2", "val 3") }
         $mergedHash = Merge-Hash $hash1 $hash2
         $mergedHash."key 1"[0] | Should -Be "val 1"
         $mergedHash."key 1"[1] | Should -Be "val 2"
         $mergedHash."key 1"[2] | Should -Be "val 3"
     }
     It 'merges 2 hash objects with identical keys with two array values' {
-        $hash1 = @{"key 1" = @("val 1", "val 4")}
-        $hash2 = @{"key 1" = @("val 2", "val 3")}
+        $hash1 = @{"key 1" = @("val 1", "val 4") }
+        $hash2 = @{"key 1" = @("val 2", "val 3") }
         $mergedHash = Merge-Hash $hash1 $hash2
         $mergedHash."key 1"[0] | Should -Be "val 1"
         $mergedHash."key 1"[1] | Should -Be "val 4"
@@ -968,16 +962,16 @@ Describe 'Merge-Hash'{
         $mergedHash."key 1"[3] | Should -Be "val 3"
     }
     It 'merges 2 hash objects with identical keys with one hash value' {
-        $hash1 = @{"key 1" = "val 1"}
-        $hash2 = @{"key 1" = @{"subkey1" = "val 2"; "subkey2" = "val 3"}}
+        $hash1 = @{"key 1" = "val 1" }
+        $hash2 = @{"key 1" = @{"subkey1" = "val 2"; "subkey2" = "val 3" } }
         $mergedHash = Merge-Hash $hash1 $hash2
         $mergedHash."key 1"[0] | Should -Be "val 1"
         $mergedHash."key 1"[1]."subkey1" | Should -Be "val 2"
         $mergedHash."key 1"[1]."subkey2" | Should -Be "val 3"
     }
     It 'merges 2 hash objects with identical keys with two hash values' {
-        $hash1 = @{"key 1" = @{"subkey3" = "val 1"; "subkey4" = "val 4"}}
-        $hash2 = @{"key 1" = @{"subkey1" = "val 2"; "subkey2" = "val 3"}}
+        $hash1 = @{"key 1" = @{"subkey3" = "val 1"; "subkey4" = "val 4" } }
+        $hash2 = @{"key 1" = @{"subkey1" = "val 2"; "subkey2" = "val 3" } }
         $mergedHash = Merge-Hash $hash1 $hash2
         $mergedHash."key 1"[0]."subkey3" | Should -Be "val 1"
         $mergedHash."key 1"[0]."subkey4" | Should -Be "val 4"
@@ -987,8 +981,8 @@ Describe 'Merge-Hash'{
 
 }
 
-Describe 'Compress-Spaces'{
-    BeforeEach{
+Describe 'Compress-Spaces' {
+    BeforeEach {
         Mock Create-Path {}
         $global:fileOutputBuffer = @{}
     }
@@ -1009,8 +1003,8 @@ Describe 'Compress-Spaces'{
     }
 }
 
-Describe 'Append-File'{
-    BeforeEach{
+Describe 'Append-File' {
+    BeforeEach {
         Mock Create-Path {}
         $global:outputBuffer = @{}
     }
@@ -1035,8 +1029,8 @@ Describe 'Append-File'{
     }
 }
 
-Describe 'Write-File'{
-    BeforeEach{
+Describe 'Write-File' {
+    BeforeEach {
         Mock Create-Path {}
         $global:outputBuffer = @{}
     }

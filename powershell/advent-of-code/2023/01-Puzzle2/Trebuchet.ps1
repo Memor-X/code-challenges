@@ -2,13 +2,13 @@
 #
 # File Name:	Trebuchet.ps1
 # Date Created:	06/12/2023
-# Description:	
+# Description:
 #	Advent of Code - Day 1 - Puzzle 2
 #
 ########################################
 
 # File Imports
-. "$($PSScriptRoot)\..\..\lib\AdventOfCode.ps1"
+. "$($PSScriptRoot)\..\..\..\lib\AdventOfCode.ps1"
 . "$($PSScriptRoot)\lib\LocalLib.ps1"
 
 # Global Variable Setting
@@ -16,7 +16,7 @@ $global:AoC.puzzle = "1-2"
 $global:AoC.testInputMode = $false
 
 $global:logSetting.fileOutput = $true
-$global:logSetting.showDebug = $true
+$global:logSetting.showDebug = $false
 
 Write-Start
 $data = Load-Input

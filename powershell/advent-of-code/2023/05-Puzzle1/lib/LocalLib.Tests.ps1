@@ -1,6 +1,6 @@
 BeforeAll {
     # Dynamic Link to file to test
-    . $PSCommandPath.Replace('.Tests.ps1','.ps1')
+    . $PSCommandPath.Replace('.Tests.ps1', '.ps1')
 
     # Variables
     $global:outputBuffer = @{}
@@ -21,27 +21,31 @@ BeforeAll {
     }
     Mock Write-Host {
         $outputBuffer."screen" += @(@{
-            "msg" = (Out-String -InputObject $PesterBoundParameters.Object).Trim()
-            "color" = (Out-String -InputObject $PesterBoundParameters.ForegroundColor).Trim()
-        })
+                "msg" = (Out-String -InputObject $PesterBoundParameters.Object).Trim()
+                "color" = (Out-String -InputObject $PesterBoundParameters.ForegroundColor).Trim()
+            })
     }
     Mock Get-Date {
         $returnVal = ""
         switch($PesterBoundParameters.UFormat)
         {
-            "%m-%d-%Y" {
+            "%m-%d-%Y"
+            {
                 $returnVal = "01-01-2000"
                 break
             }
-            "%R"{
+            "%R"
+            {
                 $returnVal = "11:10"
                 break
             }
-            "%m/%d/%Y %R"{
+            "%m/%d/%Y %R"
+            {
                 $returnVal = "01/01/2000 11:10"
                 break
             }
-            default {
+            default
+            {
                 $returnVal = New-Object DateTime 2000, 1, 1, 11, 10, 0
                 break
             }
@@ -53,9 +57,9 @@ BeforeAll {
 # Tests
 Describe 'Mapping-Lookup' {
     BeforeEach {
-            $global:outputBuffer = @{}
-            $outputBuffer."screen" = @()
-        }
+        $global:outputBuffer = @{}
+        $outputBuffer."screen" = @()
+    }
 
 
     Context 'AoC example' {
@@ -78,17 +82,17 @@ Describe 'Mapping-Lookup' {
             @{seed = 14; soil = 14}
             @{seed = 55; soil = 57}
             @{seed = 13; soil = 13}
-        ){
+        ) {
             $rtnSoil = Mapping-Lookup $mapping."seed-to-soil" $seed
             $rtnSoil | Should -Be $soil
-        }   
-        
+        }
+
         It 'Seed <soil> should return Fertilizer <fertilizer>' -TestCases @(
             @{soil = 81; fertilizer = 81}
             @{soil = 14; fertilizer = 53}
             @{soil = 57; fertilizer = 57}
             @{soil = 13; fertilizer = 52}
-        ){
+        ) {
             $rtnFert = Mapping-Lookup $mapping."soil-to-fertilizer" $soil
             $rtnFert | Should -Be $fertilizer
         }
