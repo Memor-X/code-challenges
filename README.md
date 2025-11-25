@@ -24,6 +24,7 @@ Memor-X's Public Programming Challenges Solutions
 | [08](https://adventofcode.com/2023/day/8) | 1 | 12361 | ![Powershell Static Badge](https://img.shields.io/badge/Powershell-012456?style=for-the-badge&logo=powershell) | [Link](powershell/advent-of-code/2023/08-Puzzle1) | 0 | 100% |
 | | 2 | 18215611419223 | ![Powershell Static Badge](https://img.shields.io/badge/Powershell-012456?style=for-the-badge&logo=powershell) | [Link](powershell/advent-of-code/2023/08-Puzzle2) | 25 | 100% |
 | [09](https://adventofcode.com/2023/day/9) | 1 | 1992273652 | ![Powershell Static Badge](https://img.shields.io/badge/Powershell-012456?style=for-the-badge&logo=powershell) | [Link](powershell/advent-of-code/2023/09-Puzzle1) | 50 | 100% |
+| | 2 | 1012 | ![Powershell Static Badge](https://img.shields.io/badge/Powershell-012456?style=for-the-badge&logo=powershell) | [Link](powershell/advent-of-code/2023/09-Puzzle2) |  | 100% |
 | --- | --- | --- | --- | --- | --- | --- |
 
 ## Codewars
